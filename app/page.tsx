@@ -3,9 +3,13 @@ import { ThemeToggle } from "@/components/theme/theme-toogle";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <ThemeToggle />
-      {/* <AppleHelloEnglishEffect color="red" /> */}
-    </div>
+    <main className="relative min-h-screen">
+      <div className="fixed right-4 top-4 z-50">
+        <ThemeToggle />
+      </div>
+      <div className="flex min-h-screen flex-col items-center justify-center p-24">
+        <AppleHelloEnglishEffect />
+      </div>
+    </main>
   );
 }
