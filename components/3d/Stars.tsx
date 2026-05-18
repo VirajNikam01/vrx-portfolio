@@ -1,11 +1,11 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useTheme } from "next-themes";
 import React, {
     useEffect,
     useMemo,
     useRef,
     useState,
-    useTransition,
 } from "react";
 import * as THREE from "three";
 
@@ -26,12 +26,10 @@ interface Particle {
 interface StarProps {
     scrollSpeed: number;
     scrollDirection: number;
+    theme: string;
 }
 
-const Star: React.FC<StarProps> = ({ scrollSpeed, scrollDirection }) => {
-    const [, startTransition] = useTransition();
-    const color = "white";
-
+const Star: React.FC<StarProps> = ({ scrollSpeed, scrollDirection, theme }) => {
     const light = useRef<THREE.PointLight>(null);
     const mesh = useRef<THREE.InstancedMesh>(null);
     const count = 150;
@@ -51,19 +49,18 @@ const Star: React.FC<StarProps> = ({ scrollSpeed, scrollDirection }) => {
     }, [count]);
 
     const dummy = useMemo(() => new THREE.Object3D(), []);
+    const color = theme === "dark" ? "white" : "black";
 
     useFrame(() => {
-        startTransition(() => {
-            particles.forEach((particle, index) => {
-                const { x, y, z, speed } = particle;
-                particle.time += speed * scrollSpeed * scrollDirection;
-                const t = particle.time;
-                dummy.position.set(x, y, z + (t % 100));
-                dummy.updateMatrix();
-                mesh.current?.setMatrixAt(index, dummy.matrix);
-            });
-            if (mesh.current) mesh.current.instanceMatrix.needsUpdate = true;
+        particles.forEach((particle, index) => {
+            const { x, y, z, speed } = particle;
+            particle.time += speed * scrollSpeed * scrollDirection;
+            const t = particle.time;
+            dummy.position.set(x, y, z + (t % 100));
+            dummy.updateMatrix();
+            mesh.current?.setMatrixAt(index, dummy.matrix);
         });
+        if (mesh.current) mesh.current.instanceMatrix.needsUpdate = true;
     });
 
     return (
@@ -92,6 +89,9 @@ export const Stars: React.FC = () => {
     const [scrollSpeed, setScrollSpeed] = useState<number>(1);
     const [scrollDirection, setScrollDirection] = useState<number>(1);
     const lastScrollY = useRef<number>(0);
+    const themeContext = useTheme();
+    const backgroundColor = themeContext.resolvedTheme === "dark" ? "black" : "white";
+    const resolvedTheme = themeContext.resolvedTheme ?? "light";
 
     useEffect(() => {
         const handleScroll = (): void => {
@@ -122,14 +122,18 @@ export const Stars: React.FC = () => {
                 position: "fixed",
                 top: "0",
                 left: "0",
-                background: "black",
+                background: backgroundColor,
             }}
             flat
             shadows={false}
         >
             <>
                 <PerspectiveCamera makeDefault position={cameraPosVector} />
-                <Star scrollSpeed={scrollSpeed} scrollDirection={scrollDirection} />
+                <Star
+                    scrollSpeed={scrollSpeed}
+                    scrollDirection={scrollDirection}
+                    theme={resolvedTheme}
+                />
             </>
         </Canvas>
     );

@@ -14,9 +14,9 @@ export default function Home() {
 
   return (
     <main className="relative h-dvh overflow-hidden">
-      {/* <div className="fixed right-4 top-4 z-50">
+      <div className="fixed right-4 top-4 z-50">
         <ThemeToggle />
-      </div> */}
+      </div>
       <Stars />
 
 
