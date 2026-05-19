@@ -5,6 +5,7 @@ import { useCallback, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { META_THEME_COLORS } from "@/config/site";
+import { useMounted } from "@/hooks/use-mounted";
 import { useMetaColor } from "@/hooks/theme/use-meta-color";
 import { useSound } from "@/hooks/theme/use-sound";
 import { useThemeTransition } from "@/hooks/theme/use-theme-transaction";
@@ -17,12 +18,17 @@ import { Kbd } from "../ui/kbd";
 
 export function ThemeToggle() {
     const { resolvedTheme, setTheme } = useTheme();
+    const mounted = useMounted();
     const { setMetaColor } = useMetaColor();
     const playClick = useSound("/audio/ui-sounds/click.wav");
     const buttonRef = useRef<HTMLButtonElement>(null);
     const triggerTransition = useThemeTransition(buttonRef);
 
     const switchTheme = useCallback(() => {
+        if (!mounted || !resolvedTheme) {
+            return;
+        }
+
         playClick(0.5);
         triggerTransition(() => {
             setTheme(resolvedTheme === "dark" ? "light" : "dark");
@@ -32,7 +38,7 @@ export function ThemeToggle() {
                     : META_THEME_COLORS.dark
             );
         });
-    }, [resolvedTheme, setTheme, setMetaColor, playClick, triggerTransition]);
+    }, [mounted, resolvedTheme, setTheme, setMetaColor, playClick, triggerTransition]);
 
     useHotkeys("d", switchTheme);
 
@@ -45,6 +51,7 @@ export function ThemeToggle() {
                         variant="ghost"
                         size="icon"
                         onClick={switchTheme}
+                        disabled={!mounted}
                     >
                         <MoonIcon className="relative hidden after:absolute after:-inset-2 [html.dark_&]:block" />
                         <SunMediumIcon className="relative hidden after:absolute after:-inset-2 [html.light_&]:block" />

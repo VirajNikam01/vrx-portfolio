@@ -1,5 +1,6 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useMounted } from "@/hooks/use-mounted";
 import { useTheme } from "next-themes";
 import React, {
     useEffect,
@@ -89,9 +90,10 @@ export const Stars: React.FC = () => {
     const [scrollSpeed, setScrollSpeed] = useState<number>(1);
     const [scrollDirection, setScrollDirection] = useState<number>(1);
     const lastScrollY = useRef<number>(0);
-    const themeContext = useTheme();
-    const backgroundColor = themeContext.resolvedTheme === "dark" ? "black" : "white";
-    const resolvedTheme = themeContext.resolvedTheme ?? "light";
+    const mounted = useMounted();
+    const { resolvedTheme } = useTheme();
+    const activeTheme = resolvedTheme === "dark" ? "dark" : "light";
+    const backgroundColor = activeTheme === "dark" ? "black" : "white";
 
     useEffect(() => {
         const handleScroll = (): void => {
@@ -115,6 +117,10 @@ export const Stars: React.FC = () => {
         };
     }, []);
 
+    if (!mounted) {
+        return <div className="fixed inset-0 bg-background" />;
+    }
+
     return (
         <Canvas
             style={{
@@ -132,7 +138,7 @@ export const Stars: React.FC = () => {
                 <Star
                     scrollSpeed={scrollSpeed}
                     scrollDirection={scrollDirection}
-                    theme={resolvedTheme}
+                    theme={activeTheme}
                 />
             </>
         </Canvas>
