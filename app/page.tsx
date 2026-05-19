@@ -13,21 +13,19 @@ export default function Home() {
   const handleSplashComplete = () => setIsSplashDone(true);
 
   return (
-    <main className="relative h-dvh overflow-hidden">
+    <main className="relative min-h-dvh overflow-x-hidden">
       <div className="fixed right-4 top-4 z-50">
         <ThemeToggle />
       </div>
       <Stars />
 
 
-      <AnimatePresence>
-        {!isSplashDone && (
+      <AnimatePresence mode="wait">
+        {!isSplashDone ? (
           <SplashScreen onComplete={handleSplashComplete} />
+        ) : (
+          <MainContent />
         )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isSplashDone && <MainContent />}
       </AnimatePresence>
     </main>
   );

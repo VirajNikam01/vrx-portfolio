@@ -23,7 +23,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     return (
         <motion.div
             key="splash"
-            className="absolute inset-0 flex items-center justify-center"
+            className="fixed inset-0 z-20 flex items-center justify-center"
             exit={SPLASH_EXIT}
             transition={SPLASH_EXIT_TRANSITION}
         >

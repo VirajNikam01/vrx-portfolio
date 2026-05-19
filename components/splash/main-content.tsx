@@ -1,6 +1,8 @@
 "use client";
 
 import { motion, Target, Transition } from "framer-motion";
+import { WorkExperience } from "@/components/pages/landing-page/sections/work-experience";
+import { workExperiences } from "@/config/work-experience";
 
 const CONTENT_INITIAL: Target = { opacity: 0, filter: "blur(12px)" };
 const CONTENT_ANIMATE: Target = { opacity: 1, filter: "blur(0px)" };
@@ -10,34 +12,41 @@ export function MainContent() {
     return (
         <motion.div
             key="content"
-            className="absolute inset-0 flex items-center justify-center"
+            className="relative z-10"
             initial={CONTENT_INITIAL}
             animate={CONTENT_ANIMATE}
             transition={CONTENT_TRANSITION}
         >
-            <div className="max-w-xl w-full space-y-4">
-                <p className="text-sm tracking-widest uppercase text-muted-foreground">
-                    Software Developer
-                </p>
-                <h1 className="text-5xl font-medium tracking-tight">
-                    I'm Viraj.
-                </h1>
-                <p className="text-base leading-relaxed text-muted-foreground">
-                    I specialize in crafting elegant and efficient web applications —
-                    blending strong JavaScript fundamentals with a keen eye for design
-                    to create seamless user experiences that are both intuitive and
-                    performant.
-                </p>
-                <div className="flex items-center gap-4 pt-2">
-                    <button className="text-sm font-medium underline underline-offset-4 hover:opacity-60 transition-opacity">
-                        View my work
-                    </button>
-                    <span className="text-muted-foreground">·</span>
-                    <button className="text-sm font-medium underline underline-offset-4 hover:opacity-60 transition-opacity">
-                        Get in touch
-                    </button>
+            <section className="flex min-h-dvh items-center justify-center px-6 py-24">
+                <div className="w-full max-w-xl space-y-4">
+                    <p className="text-sm tracking-widest uppercase text-muted-foreground">
+                        Software Developer
+                    </p>
+                    <h1 className="text-5xl font-medium tracking-tight">
+                        I&apos;m Viraj.
+                    </h1>
+                    <p className="text-base leading-relaxed text-muted-foreground">
+                        I specialize in crafting elegant and efficient web applications -
+                        blending strong JavaScript fundamentals with a keen eye for design
+                        to create seamless user experiences that are both intuitive and
+                        performant.
+                    </p>
+                    <div className="flex items-center gap-4 pt-2">
+                        <a
+                            href="#experience"
+                            className="text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-60"
+                        >
+                            View my work
+                        </a>
+                        <span className="text-muted-foreground">/</span>
+                        <button className="text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-60">
+                            Get in touch
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <WorkExperience experiences={workExperiences} />
         </motion.div>
     );
 }
