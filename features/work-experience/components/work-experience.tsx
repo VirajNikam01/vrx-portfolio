@@ -20,7 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import type {
     ExperienceItemType,
     ExperiencePositionItemType,
-} from "@/features/work-experience";
+} from "../types";
 import { cn } from "@/lib/utils";
 
 const iconMap = {

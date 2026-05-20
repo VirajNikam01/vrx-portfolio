@@ -192,7 +192,7 @@ This project already has it in `package.json`:
 File:
 
 ```txt
-components/theme/theme-provider.tsx
+providers/theme-provider.tsx
 ```
 
 Setup:
@@ -295,7 +295,7 @@ className="bg-background text-foreground"
 File:
 
 ```txt
-components/theme/theme-toogle.tsx
+components/theme/theme-toggle.tsx
 ```
 
 The toggle waits for mount before using `resolvedTheme`:

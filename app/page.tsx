@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { ThemeToggle } from "@/components/theme/theme-toogle";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { SplashScreen } from "@/components/splash/splash-screen";
-import { MainContent } from "@/components/splash/main-content";
+import { MainContent } from "@/components/pages/landing-page/main-content";
 import Stars from "@/components/3d/Stars";
 
 export default function Home() {

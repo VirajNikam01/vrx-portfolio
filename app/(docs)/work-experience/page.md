@@ -7,13 +7,14 @@ This note explains how the work experience section is wired into the landing pag
 Main component:
 
 ```txt
-components/pages/landing-page/sections/work-experience/work-experience.tsx
+features/work-experience/components/work-experience.tsx
 ```
 
 Export file:
 
 ```txt
-components/pages/landing-page/sections/work-experience/index.ts
+features/work-experience/components/index.ts
+features/work-experience/index.ts
 ```
 
 Data file:
@@ -25,6 +26,7 @@ config/work-experience.ts
 Feature data layer:
 
 ```txt
+features/work-experience/components/work-experience.tsx
 features/work-experience/types.ts
 features/work-experience/schema.ts
 features/work-experience/api.ts
@@ -92,19 +94,16 @@ The query uses the config data as the first render and as the fallback if the AP
 The section is rendered inside `MainContent`:
 
 ```tsx
-import { WorkExperience } from "@/components/pages/landing-page/sections/work-experience";
+import { Introduction } from "@/components/pages/landing-page/sections/introduction";
 import { workExperiences as fallbackWorkExperiences } from "@/config/work-experience";
-import { useWorkExperiences } from "@/features/work-experience";
+import { useWorkExperiences, WorkExperience } from "@/features/work-experience";
 
 export function MainContent() {
   const { data: workExperiences = fallbackWorkExperiences } = useWorkExperiences();
 
   return (
     <motion.div className="relative z-10">
-      <section>
-        {/* intro content */}
-      </section>
-
+      <Introduction />
       <WorkExperience experiences={workExperiences} />
     </motion.div>
   );
