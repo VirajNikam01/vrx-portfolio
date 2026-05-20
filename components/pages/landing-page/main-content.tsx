@@ -1,8 +1,7 @@
 "use client";
 
 import { motion, Target, Transition } from "framer-motion";
-import { Introduction } from "@/components/pages/landing-page/sections/introduction";
-import { workExperiences as fallbackWorkExperiences } from "@/config/work-experience";
+import { Introduction, useIntroductionContent } from "@/features/introduction";
 import { useWorkExperiences } from "@/features/work-experience";
 import { WorkExperience } from "@/features/work-experience/components";
 
@@ -11,7 +10,12 @@ const CONTENT_ANIMATE: Target = { opacity: 1, filter: "blur(0px)" };
 const CONTENT_TRANSITION: Transition = { duration: 0.8, ease: "easeOut" };
 
 export function MainContent() {
-    const { data: workExperiences = fallbackWorkExperiences } = useWorkExperiences();
+    const { data: introductionContent } = useIntroductionContent();
+    const { data: workExperiences } = useWorkExperiences();
+
+    if (!introductionContent || !workExperiences) {
+        return null;
+    }
 
     return (
         <motion.div
@@ -21,7 +25,7 @@ export function MainContent() {
             animate={CONTENT_ANIMATE}
             transition={CONTENT_TRANSITION}
         >
-            <Introduction />
+            <Introduction content={introductionContent} />
             <WorkExperience experiences={workExperiences} />
         </motion.div>
     );

@@ -87,23 +87,27 @@ export async function getWorkExperiences(): Promise<ExperienceItemType[]> {
 }
 ```
 
-The query uses the config data as the first render and as the fallback if the API request fails or returns an invalid payload.
+The query calls the API first. If the API request fails or returns an invalid payload, the feature API helper returns the static config fallback.
 
 ## Rendering setup
 
 The section is rendered inside `MainContent`:
 
 ```tsx
-import { Introduction } from "@/components/pages/landing-page/sections/introduction";
-import { workExperiences as fallbackWorkExperiences } from "@/config/work-experience";
+import { Introduction, useIntroductionContent } from "@/features/introduction";
 import { useWorkExperiences, WorkExperience } from "@/features/work-experience";
 
 export function MainContent() {
-  const { data: workExperiences = fallbackWorkExperiences } = useWorkExperiences();
+  const { data: introductionContent } = useIntroductionContent();
+  const { data: workExperiences } = useWorkExperiences();
+
+  if (!introductionContent || !workExperiences) {
+    return null;
+  }
 
   return (
     <motion.div className="relative z-10">
-      <Introduction />
+      <Introduction content={introductionContent} />
       <WorkExperience experiences={workExperiences} />
     </motion.div>
   );
