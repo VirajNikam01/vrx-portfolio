@@ -2,13 +2,16 @@
 
 import { motion, Target, Transition } from "framer-motion";
 import { WorkExperience } from "@/components/pages/landing-page/sections/work-experience";
-import { workExperiences } from "@/config/work-experience";
+import { workExperiences as fallbackWorkExperiences } from "@/config/work-experience";
+import { useWorkExperiences } from "@/features/work-experience";
 
 const CONTENT_INITIAL: Target = { opacity: 0, filter: "blur(12px)" };
 const CONTENT_ANIMATE: Target = { opacity: 1, filter: "blur(0px)" };
 const CONTENT_TRANSITION: Transition = { duration: 0.8, ease: "easeOut" };
 
 export function MainContent() {
+    const { data: workExperiences = fallbackWorkExperiences } = useWorkExperiences();
+
     return (
         <motion.div
             key="content"

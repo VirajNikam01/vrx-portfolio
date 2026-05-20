@@ -22,6 +22,15 @@ Data file:
 config/work-experience.ts
 ```
 
+Feature data layer:
+
+```txt
+features/work-experience/types.ts
+features/work-experience/schema.ts
+features/work-experience/api.ts
+features/work-experience/useWorkExperiences.tsx
+```
+
 Landing integration:
 
 ```txt
@@ -30,10 +39,10 @@ components/splash/main-content.tsx
 
 ## Data setup
 
-The experience content is kept outside the UI component:
+The local fallback content is kept outside the UI component:
 
 ```tsx
-import type { ExperienceItemType } from "@/components/pages/landing-page/sections/work-experience";
+import type { ExperienceItemType } from "@/features/work-experience";
 
 export const workExperiences = [
   {
@@ -62,15 +71,34 @@ This is better than hardcoding content inside the component because:
 - The content can be updated without touching layout logic.
 - TypeScript verifies that the data matches the expected shape.
 
+The runtime data comes through the feature API/query layer. The API response is parsed with Zod, so either a raw array or a `{ data: [...] }` payload is accepted only when it matches the expected shape:
+
+```tsx
+export async function getWorkExperiences(): Promise<ExperienceItemType[]> {
+  try {
+    const response = await httpClient.get<unknown>("/work-experience");
+
+    return resolveWorkExperiencePayload(response.data);
+  } catch {
+    return workExperiences;
+  }
+}
+```
+
+The query uses the config data as the first render and as the fallback if the API request fails or returns an invalid payload.
+
 ## Rendering setup
 
 The section is rendered inside `MainContent`:
 
 ```tsx
 import { WorkExperience } from "@/components/pages/landing-page/sections/work-experience";
-import { workExperiences } from "@/config/work-experience";
+import { workExperiences as fallbackWorkExperiences } from "@/config/work-experience";
+import { useWorkExperiences } from "@/features/work-experience";
 
 export function MainContent() {
+  const { data: workExperiences = fallbackWorkExperiences } = useWorkExperiences();
+
   return (
     <motion.div className="relative z-10">
       <section>

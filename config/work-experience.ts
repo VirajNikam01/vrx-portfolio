@@ -1,4 +1,4 @@
-import type { ExperienceItemType } from "@/components/pages/landing-page/sections/work-experience";
+import type { ExperienceItemType } from "@/features/work-experience";
 
 export const workExperiences = [
   {

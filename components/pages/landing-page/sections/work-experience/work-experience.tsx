@@ -17,6 +17,10 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
+import type {
+    ExperienceItemType,
+    ExperiencePositionItemType,
+} from "@/features/work-experience";
 import { cn } from "@/lib/utils";
 
 const iconMap = {
@@ -25,44 +29,6 @@ const iconMap = {
     business: BriefcaseBusinessIcon,
     education: GraduationCapIcon,
 } as const;
-
-/**
- * Represents the valid keys of the `iconMap` object, used to specify the type of icon
- * associated with an experience position.
- */
-export type ExperiencePositionIconType = keyof typeof iconMap;
-
-export type ExperiencePositionItemType = {
-    /** Unique identifier for the position */
-    id: string;
-    /** The job title or position name */
-    title: string;
-    /** The period during which the position was held (e.g., "Jan 2020 - Dec 2021") */
-    employmentPeriod: string;
-    /** The type of employment (e.g., "Full-time", "Part-time", "Contract") */
-    employmentType?: string;
-    /** A brief description of the position or responsibilities */
-    description?: string;
-    /** An icon representing the position */
-    icon?: ExperiencePositionIconType;
-    /** A list of skills associated with the position */
-    skills?: string[];
-    /** Indicates if the position details are expanded in the UI */
-    isExpanded?: boolean;
-};
-
-export type ExperienceItemType = {
-    /** Unique identifier for the experience item */
-    id: string;
-    /** Name of the company where the experience was gained */
-    companyName: string;
-    /** URL or path to the company's logo image */
-    companyLogo?: string;
-    /** List of positions held at the company */
-    positions: ExperiencePositionItemType[];
-    /** Indicates if this is the user's current employer */
-    isCurrentEmployer?: boolean;
-};
 
 export function WorkExperience({
     className,
