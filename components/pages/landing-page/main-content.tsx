@@ -4,6 +4,7 @@ import { motion, Target, Transition } from "framer-motion";
 import { Introduction, useIntroductionContent } from "@/features/introduction";
 import { useWorkExperiences } from "@/features/work-experience";
 import { WorkExperience } from "@/features/work-experience/components";
+import { SiteFooter } from "@/components/layout/site-footer";
 
 const CONTENT_INITIAL: Target = { opacity: 0, filter: "blur(12px)" };
 const CONTENT_ANIMATE: Target = { opacity: 1, filter: "blur(0px)" };
@@ -27,6 +28,7 @@ export function MainContent() {
         >
             <Introduction content={introductionContent} />
             <WorkExperience experiences={workExperiences} />
+            <SiteFooter />
         </motion.div>
     );
 }

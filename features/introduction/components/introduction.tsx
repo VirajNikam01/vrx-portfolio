@@ -7,7 +7,7 @@ export function Introduction({
     content: IntroductionContentType;
 }) {
     return (
-        <section className="flex min-h-dvh items-center justify-center px-6 py-24">
+        <section id="top" className="flex min-h-dvh items-center justify-center px-6 py-28">
             <div className="w-full max-w-xl space-y-4">
                 <p className="text-sm tracking-widest uppercase text-muted-foreground">
                     {content.eyebrow}
