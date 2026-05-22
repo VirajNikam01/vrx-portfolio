@@ -12,7 +12,7 @@ const experiencePositionSchema = z.object({
     title: z.string(),
     employmentPeriod: z.string(),
     employmentType: z.string().optional(),
-    description: z.string().optional(),
+    description: z.array(z.string().min(1)).optional(),
     icon: experiencePositionIconSchema.optional(),
     skills: z.array(z.string()).optional(),
     isExpanded: z.boolean().optional(),

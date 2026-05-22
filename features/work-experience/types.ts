@@ -13,8 +13,8 @@ export type ExperiencePositionItemType = {
     employmentPeriod: string;
     /** The type of employment (e.g., "Full-time", "Part-time", "Contract") */
     employmentType?: string;
-    /** A brief description of the position or responsibilities */
-    description?: string;
+    /** Brief bullet points describing the position or responsibilities */
+    description?: string[];
     /** An icon representing the position */
     icon?: ExperiencePositionIconType;
     /** A list of skills associated with the position */

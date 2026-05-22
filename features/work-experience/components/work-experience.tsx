@@ -178,12 +178,13 @@ export function ExperiencePositionItem({
                 </CollapsibleTrigger>
 
                 <CollapsibleContent className="overflow-hidden duration-300 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                    {position.description && (
-                        <Prose className="pt-2 pl-9">
-                            {position.description.split("\n").map((paragraph) => (
-                                <p key={paragraph}>{paragraph}</p>
-                            ))}
-                        </Prose>
+                    {Array.isArray(position.description) &&
+                        position.description.length > 0 && (
+                            <DescriptionList className="mt-2 ml-9">
+                                {position.description.map((descriptionPoint) => (
+                                    <li key={descriptionPoint}>{descriptionPoint}</li>
+                                ))}
+                            </DescriptionList>
                     )}
 
                     {Array.isArray(position.skills) && position.skills.length > 0 && (
@@ -201,11 +202,14 @@ export function ExperiencePositionItem({
     );
 }
 
-function Prose({ className, ...props }: React.ComponentProps<"div">) {
+function DescriptionList({
+    className,
+    ...props
+}: React.ComponentProps<"ul">) {
     return (
-        <div
+        <ul
             className={cn(
-                "max-w-2xl space-y-3 font-mono text-sm leading-6 text-muted-foreground",
+                "max-w-2xl list-disc space-y-2 pl-5 font-mono text-sm leading-6 text-muted-foreground marker:text-primary/70",
                 className
             )}
             {...props}

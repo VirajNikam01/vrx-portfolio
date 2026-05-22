@@ -59,7 +59,10 @@ export const workExperiences = [
         employmentType: "Project Work",
         icon: "code",
         isExpanded: true,
-        description: "Building polished web interfaces...",
+        description: [
+          "Building polished web interfaces...",
+          "Translating product ideas into responsive frontend experiences.",
+        ],
         skills: ["Next.js", "React", "TypeScript"],
       },
     ],

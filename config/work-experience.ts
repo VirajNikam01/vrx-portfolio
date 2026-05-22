@@ -13,8 +13,10 @@ export const workExperiences = [
         employmentType: "Project Work",
         icon: "code",
         isExpanded: true,
-        description:
+        description: [
           "Building polished web interfaces with React, Next.js, TypeScript, Tailwind CSS, and animation-focused UI patterns.",
+          "Translating product ideas into responsive, accessible, and maintainable frontend experiences.",
+        ],
         skills: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
       },
     ],
@@ -29,8 +31,11 @@ export const workExperiences = [
         employmentPeriod: "Ongoing",
         employmentType: "Learning",
         icon: "education",
-        description:
-          "Practicing component architecture, responsive layouts, theme systems, 3D canvas integration, and performance-minded frontend development.",
+        isExpanded: true,
+        description: [
+          "Practicing component architecture, responsive layouts, theme systems, and 3D canvas integration.",
+          "Improving performance-minded frontend development habits through focused engineering practice.",
+        ],
         skills: ["JavaScript", "UI Architecture", "Three.js", "Design Systems"],
       },
     ],
