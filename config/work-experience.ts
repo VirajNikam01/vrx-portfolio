@@ -2,8 +2,8 @@ import type { ExperienceItemType } from "@/features/work-experience";
 
 export const workExperiences = [
   {
-    id: "independent-projects",
-    companyName: "Independent Projects",
+    id: "1",
+    companyName: "Zybra",
     isCurrentEmployer: true,
     positions: [
       {
@@ -22,8 +22,8 @@ export const workExperiences = [
     ],
   },
   {
-    id: "engineering-practice",
-    companyName: "Engineering Practice",
+    id: "2",
+    companyName: "Artoon Solutions",
     positions: [
       {
         id: "software-development",

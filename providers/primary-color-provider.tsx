@@ -8,6 +8,7 @@ import React, {
   useMemo,
   useSyncExternalStore,
 } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import {
   DEFAULT_PRIMARY_COLOR,
@@ -16,6 +17,7 @@ import {
   PrimaryColor,
   isPrimaryColor,
 } from "@/config/primary-colors";
+import { KEYBOARD_SHORTCUTS } from "@/config/keyboard-shortcuts";
 
 type PrimaryColorContextValue = {
   colors: typeof PRIMARY_COLORS;
@@ -66,6 +68,20 @@ export function PrimaryColorProvider({ children }: { children: React.ReactNode }
     localStorage.setItem(PRIMARY_COLOR_STORAGE_KEY, color);
     window.dispatchEvent(new Event(PRIMARY_COLOR_CHANGE_EVENT));
   }, []);
+
+  const cyclePrimaryColor = useCallback(() => {
+    const currentIndex = PRIMARY_COLORS.findIndex((color) => color.value === primaryColor);
+    const nextColor = PRIMARY_COLORS[(currentIndex + 1) % PRIMARY_COLORS.length];
+
+    setPrimaryColor(nextColor.value);
+  }, [primaryColor, setPrimaryColor]);
+
+  useHotkeys(
+    KEYBOARD_SHORTCUTS.primaryColor.hotkey,
+    cyclePrimaryColor,
+    { preventDefault: true },
+    [cyclePrimaryColor]
+  );
 
   const value = useMemo(
     () => ({

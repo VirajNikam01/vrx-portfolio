@@ -3,11 +3,13 @@
 import { Check } from "lucide-react";
 import { DropdownMenu } from "radix-ui";
 
+import { KEYBOARD_SHORTCUTS } from "@/config/keyboard-shortcuts";
 import { useMounted } from "@/hooks/use-mounted";
 import { usePrimaryColor } from "@/providers/primary-color-provider";
 import { cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
+import { Kbd } from "../ui/kbd";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 export function PrimaryColorPicker() {
@@ -39,7 +41,12 @@ export function PrimaryColorPicker() {
             </DropdownMenu.Trigger>
           </TooltipTrigger>
 
-          <TooltipContent>Primary Color</TooltipContent>
+          <TooltipContent className="pr-2 pl-3">
+            <div className="flex items-center gap-3">
+              Primary Color
+              <Kbd>{KEYBOARD_SHORTCUTS.primaryColor.label}</Kbd>
+            </div>
+          </TooltipContent>
         </Tooltip>
 
         <DropdownMenu.Portal>

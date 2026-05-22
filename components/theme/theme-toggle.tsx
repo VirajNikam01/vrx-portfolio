@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { useCallback, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
+import { KEYBOARD_SHORTCUTS } from "@/config/keyboard-shortcuts";
 import { META_THEME_COLORS } from "@/config/site";
 import { useMounted } from "@/hooks/use-mounted";
 import { useMetaColor } from "@/hooks/theme/use-meta-color";
@@ -40,7 +41,7 @@ export function ThemeToggle() {
         });
     }, [mounted, resolvedTheme, setTheme, setMetaColor, playClick, triggerTransition]);
 
-    useHotkeys("d", switchTheme);
+    useHotkeys(KEYBOARD_SHORTCUTS.theme.hotkey, switchTheme);
 
     return (
         <TooltipProvider>
@@ -62,7 +63,7 @@ export function ThemeToggle() {
                 <TooltipContent className="pr-2 pl-3">
                     <div className="flex items-center gap-3">
                         Toggle Mode
-                        <Kbd>D</Kbd>
+                        <Kbd>{KEYBOARD_SHORTCUTS.theme.label}</Kbd>
                     </div>
                 </TooltipContent>
             </Tooltip>
