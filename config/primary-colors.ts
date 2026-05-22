@@ -2,6 +2,11 @@ export const PRIMARY_COLOR_STORAGE_KEY = "vrx-primary-color";
 
 export const PRIMARY_COLORS = [
   {
+    name: "Red",
+    value: "red",
+    swatch: "oklch(0.577 0.245 27.325)",
+  },
+  {
     name: "Blue",
     value: "blue",
     swatch: "oklch(0.546 0.245 262.881)",
@@ -12,19 +17,9 @@ export const PRIMARY_COLORS = [
     swatch: "oklch(0.541 0.281 293.009)",
   },
   {
-    name: "Emerald",
-    value: "emerald",
-    swatch: "oklch(0.596 0.145 163.225)",
-  },
-  {
-    name: "Rose",
-    value: "rose",
-    swatch: "oklch(0.586 0.253 17.585)",
-  },
-  {
-    name: "Amber",
-    value: "amber",
-    swatch: "oklch(0.666 0.179 58.318)",
+    name: "Pink",
+    value: "pink",
+    swatch: "oklch(0.558 0.244 333.0)",
   },
 ] as const;
 

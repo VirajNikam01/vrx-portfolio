@@ -28,10 +28,10 @@ export function PrimaryColorPicker() {
                 size="icon"
                 aria-label="Change primary color"
                 disabled={!mounted}
+              >
+                <span
+                  className="size-4 rounded-full border border-border shadow-sm ring-2 ring-background"
                 >
-                  <span
-                    className="size-4 rounded-full border border-border shadow-sm ring-2 ring-background"
-                  >
                   <span
                     className="block size-full rounded-full"
                     style={{ backgroundColor: selectedColor.swatch }}
