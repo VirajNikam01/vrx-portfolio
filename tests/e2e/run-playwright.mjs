@@ -12,6 +12,7 @@ function spawnCommand(command, args) {
   return spawn(command, args, {
     cwd: process.cwd(),
     env: process.env,
+    shell: isWindows,
     stdio: "inherit",
   });
 }
