@@ -5,7 +5,7 @@ export const workExperiences = [
     id: "1",
     companyName: "Zybra",
     isCurrentEmployer: true,
-    companyLogo: './public/images/work-experience/zybra-logo.svg',
+    companyLogo: "/images/work-experience/zybra-logo.svg",
     positions: [
       {
         id: "frontend-developer",
@@ -26,12 +26,13 @@ export const workExperiences = [
   {
     id: "2",
     companyName: "Artoon Solutions",
+    companyLogo: "/images/work-experience/artoon-logo.png",
     positions: [
       {
         id: "software-development",
         title: "Frontend Developer",
         category: "professional",
-        startDate: "2024-01-01",
+        startDate: "2023-01-15",
         endDate: "2024-11-20",
         employmentType: "professional",
         icon: "code",

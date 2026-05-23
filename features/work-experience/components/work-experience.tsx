@@ -85,7 +85,7 @@ export function ExperienceItem({
         <article className="space-y-4 py-6">
             <div className="not-prose flex items-center gap-3">
                 <div
-                    className="flex size-6 shrink-0 items-center justify-center"
+                    className="flex size-fit shrink-0 items-center justify-center"
                     aria-hidden
                 >
                     {experience.companyLogo ? (
@@ -95,7 +95,7 @@ export function ExperienceItem({
                             width={24}
                             height={24}
                             quality={100}
-                            className="rounded-full"
+                            className="bg-cover bg-center object-cover"
                             unoptimized
                         />
                     ) : (

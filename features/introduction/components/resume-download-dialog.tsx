@@ -21,6 +21,7 @@ import {
     type ResumeDownloadRequestType,
 } from "../schema";
 import type { IntroductionResumeActionType } from "../types";
+import { DownloadIcon } from "lucide-react";
 
 type ResumeDownloadDialogProps = {
     children: React.ReactNode;
@@ -50,11 +51,12 @@ export function ResumeDownloadDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent>
+            <DialogContent className="border-primary/20 bg-popover/95 shadow-lg sm:max-w-xl">
                 <DialogHeader>
-                    <DialogTitle>Download CV
+                    <DialogTitle className="text-3xl font-bold text-primary">
+                        Download CV
                     </DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-base leading-7 text-foreground">
                         Would you like to share a quick message before downloading my CV?
                     </DialogDescription>
                 </DialogHeader>
@@ -64,42 +66,47 @@ export function ResumeDownloadDialog({
                     onSubmit={form.handleSubmit(handleValidSubmit)}
                 >
                     <FormField
-                        label="Name"
+                        label="Full Name"
                         error={form.formState.errors.name?.message}
                     >
                         <Input
                             autoComplete="name"
+                            placeholder="Enter your full name here"
+                            className="h-12 border-primary/15 bg-muted/70 px-5 text-base placeholder:font-semibold placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25"
                             aria-invalid={Boolean(form.formState.errors.name)}
                             {...form.register("name")}
                         />
                     </FormField>
 
                     <FormField
-                        label="Email"
+                        label="Email Address"
                         error={form.formState.errors.email?.message}
                     >
                         <Input
                             type="email"
                             autoComplete="email"
+                            placeholder="Enter your email address here"
+                            className="h-12 border-primary/15 bg-muted/70 px-5 text-base placeholder:font-semibold placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25"
                             aria-invalid={Boolean(form.formState.errors.email)}
                             {...form.register("email")}
                         />
                     </FormField>
 
                     <FormField
-                        label="Description (optional)"
+                        label="Message"
                         error={form.formState.errors.reason?.message}
                     >
                         <Textarea
                             aria-invalid={Boolean(form.formState.errors.reason)}
                             placeholder="Please share your message or let me know why you'd like to download my CV."
+                            className="min-h-32 border-primary/15 bg-muted/70 px-5 py-3 text-base placeholder:font-semibold placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25"
                             {...form.register("reason")}
                         />
                     </FormField>
 
                     <div className="flex justify-end">
-                        <Button type="submit" disabled={form.formState.isSubmitting}>
-                            Continue to resume
+                        <Button type="submit" className="px-3 py-1" disabled={form.formState.isSubmitting}>
+                            Download CV <DownloadIcon className="ml-2" />
                         </Button>
                     </div>
                 </form>
@@ -118,7 +125,7 @@ function FormField({
     label: string;
 }) {
     return (
-        <label className="grid gap-2 text-sm font-medium">
+        <label className="grid gap-2 text-sm font-semibold text-foreground">
             <span>{label}</span>
             {children}
             {error && <span className="text-xs text-destructive">{error}</span>}
