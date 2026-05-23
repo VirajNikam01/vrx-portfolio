@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import type { IntroductionContentType } from "../types";
 import { IntroductionActions } from "./introduction-actions";
 
@@ -18,13 +20,24 @@ export function Introduction({
     return (
         <section
             id="top"
-            className="flex min-h-dvh items-center justify-center px-5 py-28 sm:px-8"
+            className="flex min-h-dvh items-center justify-center px-5 pt-36 pb-16 sm:px-8 lg:pt-40"
         >
-            <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-16 text-center">
-                <p className="text-xs font-medium tracking-[0.32em] uppercase text-muted-foreground">
+            <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7">
+                <div className="relative size-32 overflow-hidden rounded-full border-4 border-primary/35 bg-primary/10 shadow-[0_0_80px_color-mix(in_oklch,var(--primary)_32%,transparent)] sm:size-36 lg:size-40">
+                    <Image
+                        src={content.image.src}
+                        alt={content.image.alt}
+                        fill
+                        priority
+                        sizes="(max-width: 640px) 128px, (max-width: 1024px) 144px, 160px"
+                        className="object-cover object-top"
+                    />
+                </div>
+
+                <p className="text-xs font-semibold tracking-[0.32em] text-primary uppercase">
                     {content.eyebrow}
                 </p>
-                <h1 className="max-w-6xl text-4xl leading-tight font-medium text-balance text-foreground sm:text-5xl lg:text-6xl">
+                <h1 className="max-w-5xl text-3xl leading-tight font-medium text-balance text-foreground sm:text-4xl lg:text-[2.75rem]">
                     {content.statement.map((segment, index) => {
                         const text =
                             segment.emphasis === "duration"

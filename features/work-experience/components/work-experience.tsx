@@ -21,7 +21,10 @@ import type {
     ExperienceItemType,
     ExperiencePositionItemType,
 } from "../types";
-import { getExperienceDurationLabel, getPositionDurationLabel } from "../experience-duration";
+import {
+    getExperienceDurationLabel,
+    getPositionDurationLabel,
+} from "../experience-duration";
 import { cn } from "@/lib/utils";
 
 const iconMap = {
@@ -48,23 +51,23 @@ export function WorkExperience({
                 className
             )}
         >
-            <div className="mx-auto w-full max-w-3xl">
+            <div className="mx-auto w-full max-w-5xl">
                 <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <div className="max-w-xl space-y-3">
-                    <p className="text-sm tracking-widest uppercase text-muted-foreground">
-                        Experience
-                    </p>
-                    <h2 className="text-3xl font-medium tracking-tight text-foreground">
-                        Work that shaped the craft.
-                    </h2>
-                    <p className="text-sm leading-6 text-muted-foreground">
-                        A concise timeline of practical engineering, UI work, and the
-                        technologies used along the way.
-                    </p>
+                        <p className="text-lg font-semibold tracking-widest text-primary uppercase">
+                            Experience
+                        </p>
+                        <h2 className="text-3xl font-semibold tracking-tight text-foreground">
+                            Work that shaped the craft.
+                        </h2>
+                        <p className="text-sm leading-6 text-muted-foreground">
+                            A concise timeline of practical engineering, UI work, and the
+                            technologies used along the way.
+                        </p>
                     </div>
 
                     <div className="w-fit border-l-4 border-primary pl-4">
-                        <p className="text-xs tracking-widest uppercase text-muted-foreground">
+                        <p className="text-xs font-semibold tracking-widest text-primary uppercase">
                             Total
                         </p>
                         <p className="text-2xl font-semibold text-primary">
@@ -246,7 +249,7 @@ function Skill({ className, ...props }: React.ComponentProps<"span">) {
     return (
         <span
             className={cn(
-                "inline-flex items-center rounded-md border border-border bg-muted/50 px-1.5 py-0.5 font-mono text-xs text-muted-foreground",
+                "inline-flex items-center rounded-md bg-primary px-2 py-1 font-mono text-xs font-medium text-primary-foreground",
                 className
             )}
             {...props}

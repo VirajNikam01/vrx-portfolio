@@ -5,6 +5,10 @@ export const introductionContent = {
     headline: "I build polished, reliable web experiences.",
     intro:
         "I'm Viraj, a frontend-focused developer who cares about clean architecture, thoughtful interaction design, and interfaces that feel fast, clear, and dependable in real use.",
+    image: {
+        src: "/images/intro/sample-logo.jpg",
+        alt: "Viraj Nikam portrait",
+    },
     statement: [
         { text: "A passionate " },
         { text: "Frontend Developer", emphasis: "solid" },

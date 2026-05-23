@@ -15,10 +15,16 @@ const introductionStatementSegmentSchema = z.object({
     emphasis: z.enum(["solid", "accent", "duration"]).optional(),
 });
 
+const introductionImageSchema = z.object({
+    src: z.string(),
+    alt: z.string(),
+});
+
 export const introductionContentSchema = z.object({
     eyebrow: z.string(),
     headline: z.string(),
     intro: z.string(),
+    image: introductionImageSchema,
     statement: z.array(introductionStatementSegmentSchema),
     actions: z.object({
         connect: introductionLinkActionSchema,

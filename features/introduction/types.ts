@@ -13,10 +13,16 @@ export type IntroductionStatementSegmentType = {
     emphasis?: "solid" | "accent" | "duration";
 };
 
+export type IntroductionImageType = {
+    src: string;
+    alt: string;
+};
+
 export type IntroductionContentType = {
     eyebrow: string;
     headline: string;
     intro: string;
+    image: IntroductionImageType;
     statement: IntroductionStatementSegmentType[];
     actions: {
         connect: IntroductionLinkActionType;
