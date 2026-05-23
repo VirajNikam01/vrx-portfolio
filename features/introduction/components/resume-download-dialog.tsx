@@ -52,10 +52,10 @@ export function ResumeDownloadDialog({
             <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Resume access</DialogTitle>
+                    <DialogTitle>Download CV
+                    </DialogTitle>
                     <DialogDescription>
-                        Share a few details so I can understand who is viewing the
-                        resume and the context behind the request.
+                        Would you like to share a quick message before downloading my CV?
                     </DialogDescription>
                 </DialogHeader>
 
@@ -87,11 +87,12 @@ export function ResumeDownloadDialog({
                     </FormField>
 
                     <FormField
-                        label="Why do you want to download the resume?"
+                        label="Description (optional)"
                         error={form.formState.errors.reason?.message}
                     >
                         <Textarea
                             aria-invalid={Boolean(form.formState.errors.reason)}
+                            placeholder="Please share your message or let me know why you'd like to download my CV."
                             {...form.register("reason")}
                         />
                     </FormField>

@@ -5,12 +5,13 @@ export const workExperiences = [
     id: "1",
     companyName: "Zybra",
     isCurrentEmployer: true,
+    companyLogo: './public/images/work-experience/zybra-logo.svg',
     positions: [
       {
         id: "frontend-developer",
-        title: "Frontend Developer",
+        title: "Full-Stack Developer",
         category: "professional",
-        startDate: "2024-01-01",
+        startDate: "2024-12-27",
         employmentType: "Project Work",
         icon: "code",
         isExpanded: true,
@@ -28,11 +29,12 @@ export const workExperiences = [
     positions: [
       {
         id: "software-development",
-        title: "Frontend Engineering Practice",
-        category: "learning",
-        startDate: "2023-06-01",
-        employmentType: "Learning",
-        icon: "education",
+        title: "Frontend Developer",
+        category: "professional",
+        startDate: "2024-01-01",
+        endDate: "2024-11-20",
+        employmentType: "professional",
+        icon: "code",
         isExpanded: true,
         description: [
           "Practicing component architecture, responsive layouts, theme systems, and 3D canvas integration.",

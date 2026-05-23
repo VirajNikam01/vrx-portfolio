@@ -9,12 +9,6 @@ import { cn } from "@/lib/utils";
 
 const LOGO_TEXT = "Viraj Nikam";
 
-const navItems = [
-  { label: "Home", href: "#top" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "mailto:hello@example.com" },
-];
-
 function useScrollState(threshold = 4) {
   const [scrollState, setScrollState] = useState({
     activeSection: "top",
@@ -94,32 +88,6 @@ export function SiteHeader() {
             className="ml-1 mt-1.5 inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_18px_var(--primary)]"
           />
         </Link>
-
-        <nav className="hidden items-center gap-9 text-lg font-semibold text-foreground/85 md:flex">
-          {navItems.map((item) => {
-            const isActive = getNavItemId(item.href) === activeSection;
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive ? "page" : undefined}
-                className={cn(
-                  "relative py-2 transition-colors hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
-                  isActive && "text-primary"
-                )}
-              >
-                {item.label}
-                {isActive && (
-                  <span
-                    aria-hidden
-                    className="absolute left-1/2 top-full size-2 -translate-x-1/2 rounded-full bg-primary"
-                  />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
 
         <div className="flex shrink-0 items-center gap-2">
           <PrimaryColorPicker />

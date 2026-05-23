@@ -53,28 +53,17 @@ export function WorkExperience({
             )}
         >
             <div className="mx-auto w-full max-w-5xl">
-                <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                    <div className="max-w-xl space-y-3">
-                        <p className="text-lg font-semibold tracking-widest text-primary uppercase">
+                <div className=" mb-2 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                    <div className=" max-w-2xl space-y-3">
+                        <h1 className="text-3xl font-semibold text-primary uppercase">
                             Experience
-                        </p>
-                        <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-                            Work that shaped the craft.
-                        </h2>
-                        <p className="text-sm leading-6 text-muted-foreground">
-                            A concise timeline of practical engineering, UI work, and the
+                        </h1>
+                        <p className="tracking-tight text-muted-foreground">
+                            Work that shaped the craft. A concise timeline of practical engineering, UI work, and the
                             technologies used along the way.
                         </p>
                     </div>
 
-                    <div className="w-fit border-l-4 border-primary pl-4">
-                        <p className="text-xs font-semibold tracking-widest text-primary uppercase">
-                            Total
-                        </p>
-                        <p className="text-2xl font-semibold text-primary">
-                            {experienceDurationLabel}
-                        </p>
-                    </div>
                 </div>
 
                 <div className="divide-y divide-border">
@@ -114,7 +103,7 @@ export function ExperienceItem({
                     )}
                 </div>
 
-                <h3 className="text-lg leading-snug font-medium text-foreground">
+                <h3 className="text:xl sm:text-2xl leading-snug font-semibold text-foreground">
                     {experience.companyName}
                 </h3>
 
@@ -176,20 +165,6 @@ export function ExperiencePositionItem({
                     </div>
 
                     <div className="relative z-1 flex items-center gap-2 pl-9 text-sm text-muted-foreground">
-                        {position.employmentType && (
-                            <>
-                                <dl>
-                                    <dt className="sr-only">Employment Type</dt>
-                                    <dd>{position.employmentType}</dd>
-                                </dl>
-
-                                <Separator
-                                    className="data-[orientation=vertical]:h-4"
-                                    orientation="vertical"
-                                />
-                            </>
-                        )}
-
                         <dl>
                             <dt className="sr-only">Employment Period</dt>
                             <dd>{periodLabel}</dd>
@@ -215,7 +190,7 @@ export function ExperiencePositionItem({
                                     <li key={descriptionPoint}>{descriptionPoint}</li>
                                 ))}
                             </DescriptionList>
-                    )}
+                        )}
 
                     {Array.isArray(position.skills) && position.skills.length > 0 && (
                         <ul className="not-prose flex flex-wrap gap-1.5 pt-2 pl-9">
