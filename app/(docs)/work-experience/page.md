@@ -55,7 +55,8 @@ export const workExperiences = [
       {
         id: "frontend-developer",
         title: "Frontend Developer",
-        employmentPeriod: "2024 - Present",
+        category: "professional",
+        startDate: "2024-01-01",
         employmentType: "Project Work",
         icon: "code",
         isExpanded: true,

@@ -7,17 +7,22 @@ const experiencePositionIconSchema = z.enum([
     "education",
 ]);
 
+const experiencePositionCategorySchema = z.enum([
+    "professional",
+    "education",
+    "learning",
+]);
+
 const experiencePositionSchema = z.object({
     id: z.string(),
     title: z.string(),
+    category: experiencePositionCategorySchema,
     startDate: z.iso.date(),
     endDate: z.iso.date().optional(),
-    employmentPeriod: z.string(),
     employmentType: z.string().optional(),
     description: z.array(z.string().min(1)).optional(),
     icon: experiencePositionIconSchema.optional(),
     skills: z.array(z.string()).optional(),
-    countsTowardExperience: z.boolean().optional(),
     isExpanded: z.boolean().optional(),
 });
 

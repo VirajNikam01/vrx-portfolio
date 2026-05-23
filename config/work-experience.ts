@@ -9,8 +9,8 @@ export const workExperiences = [
       {
         id: "frontend-developer",
         title: "Frontend Developer",
+        category: "professional",
         startDate: "2024-01-01",
-        employmentPeriod: "Jan 2024 - Present",
         employmentType: "Project Work",
         icon: "code",
         isExpanded: true,
@@ -29,11 +29,10 @@ export const workExperiences = [
       {
         id: "software-development",
         title: "Frontend Engineering Practice",
+        category: "learning",
         startDate: "2023-06-01",
-        employmentPeriod: "Jun 2023 - Present",
         employmentType: "Learning",
         icon: "education",
-        countsTowardExperience: false,
         isExpanded: true,
         description: [
           "Practicing component architecture, responsive layouts, theme systems, and 3D canvas integration.",

@@ -23,6 +23,7 @@ import type {
 } from "../types";
 import {
     getExperienceDurationLabel,
+    getPositionPeriodLabel,
     getPositionDurationLabel,
 } from "../experience-duration";
 import { cn } from "@/lib/utils";
@@ -142,6 +143,7 @@ export function ExperiencePositionItem({
 }) {
     const ExperienceIcon = iconMap[position.icon || "business"];
     const durationLabel = getPositionDurationLabel(position);
+    const periodLabel = getPositionPeriodLabel(position);
 
     return (
         <Collapsible defaultOpen={position.isExpanded} asChild>
@@ -190,7 +192,7 @@ export function ExperiencePositionItem({
 
                         <dl>
                             <dt className="sr-only">Employment Period</dt>
-                            <dd>{position.employmentPeriod}</dd>
+                            <dd>{periodLabel}</dd>
                         </dl>
 
                         <Separator
@@ -237,7 +239,7 @@ function DescriptionList({
     return (
         <ul
             className={cn(
-                "max-w-2xl list-disc space-y-2 pl-5 font-mono text-sm leading-6 text-muted-foreground marker:text-primary/70",
+                "max-w-2xl list-disc space-y-2 pl-5 text-sm leading-6 text-muted-foreground marker:text-primary/70",
                 className
             )}
             {...props}
@@ -249,7 +251,7 @@ function Skill({ className, ...props }: React.ComponentProps<"span">) {
     return (
         <span
             className={cn(
-                "inline-flex items-center rounded-md bg-primary px-2 py-1 font-mono text-xs font-medium text-primary-foreground",
+                "inline-flex items-center rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground",
                 className
             )}
             {...props}

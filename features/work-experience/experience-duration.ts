@@ -6,6 +6,11 @@ type DateRange = {
 };
 
 const MONTHS_PER_YEAR = 12;
+const PROFESSIONAL_POSITION_CATEGORY = "professional";
+const MONTH_YEAR_FORMATTER = new Intl.DateTimeFormat("en", {
+    month: "short",
+    year: "numeric",
+});
 
 export function getExperienceDurationLabel(
     experiences: ExperienceItemType[],
@@ -21,6 +26,15 @@ export function getPositionDurationLabel(
     currentDate = new Date()
 ) {
     return formatMonthCount(countMonths(toDateRange(position, currentDate)));
+}
+
+export function getPositionPeriodLabel(position: ExperiencePositionItemType) {
+    const startLabel = formatMonthYear(position.startDate);
+    const endLabel = position.endDate
+        ? formatMonthYear(position.endDate)
+        : "Present";
+
+    return `${startLabel} - ${endLabel}`;
 }
 
 function formatMonthCount(totalMonths: number) {
@@ -59,15 +73,15 @@ function getExperienceRanges(
 ) {
     return experiences
         .flatMap((experience) => experience.positions)
-        .filter(countsTowardExperience)
+        .filter(isProfessionalPosition)
         .map((position) => toDateRange(position, currentDate))
         .sort((firstRange, secondRange) => {
             return firstRange.start.getTime() - secondRange.start.getTime();
         });
 }
 
-function countsTowardExperience(position: ExperiencePositionItemType) {
-    return position.countsTowardExperience !== false;
+function isProfessionalPosition(position: ExperiencePositionItemType) {
+    return position.category === PROFESSIONAL_POSITION_CATEGORY;
 }
 
 function toDateRange(
@@ -82,6 +96,10 @@ function toDateRange(
 
 function parseDate(value: string) {
     return new Date(`${value}T00:00:00`);
+}
+
+function formatMonthYear(value: string) {
+    return MONTH_YEAR_FORMATTER.format(parseDate(value));
 }
 
 function mergeRanges(ranges: DateRange[]) {
