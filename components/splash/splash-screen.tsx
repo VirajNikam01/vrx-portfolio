@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useEffect, useRef } from "react";
 import { motion, Target, Transition } from "framer-motion";
 import { AppleHelloEnglishEffect } from "@/components/animations/apple-hello-effect";
 
@@ -19,7 +20,29 @@ interface SplashScreenProps {
     onComplete: () => void;
 }
 
+const SPLASH_FALLBACK_TIMEOUT_MS = 5000;
+
 export function SplashScreen({ onComplete }: SplashScreenProps) {
+    const hasCompletedRef = useRef(false);
+
+    const completeOnce = useCallback(() => {
+        if (hasCompletedRef.current) {
+            return;
+        }
+
+        hasCompletedRef.current = true;
+        onComplete();
+    }, [onComplete]);
+
+    useEffect(() => {
+        const timeoutId = window.setTimeout(
+            completeOnce,
+            SPLASH_FALLBACK_TIMEOUT_MS
+        );
+
+        return () => window.clearTimeout(timeoutId);
+    }, [completeOnce]);
+
     return (
         <motion.div
             key="splash"
@@ -27,7 +50,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
             exit={SPLASH_EXIT}
             transition={SPLASH_EXIT_TRANSITION}
         >
-            <AppleHelloEnglishEffect onAnimationComplete={onComplete} />
+            <AppleHelloEnglishEffect onAnimationComplete={completeOnce} />
         </motion.div>
     );
 }
