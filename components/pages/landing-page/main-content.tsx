@@ -2,7 +2,10 @@
 
 import { motion, Target, Transition } from "framer-motion";
 import { Introduction, useIntroductionContent } from "@/features/introduction";
-import { useWorkExperiences } from "@/features/work-experience";
+import {
+    getExperienceDurationLabel,
+    useWorkExperiences,
+} from "@/features/work-experience";
 import { WorkExperience } from "@/features/work-experience/components";
 import { SiteFooter } from "@/components/layout/site-footer";
 
@@ -18,6 +21,8 @@ export function MainContent() {
         return null;
     }
 
+    const experienceDurationLabel = getExperienceDurationLabel(workExperiences);
+
     return (
         <motion.div
             key="content"
@@ -26,7 +31,10 @@ export function MainContent() {
             animate={CONTENT_ANIMATE}
             transition={CONTENT_TRANSITION}
         >
-            <Introduction content={introductionContent} />
+            <Introduction
+                content={introductionContent}
+                experienceDurationLabel={experienceDurationLabel}
+            />
             <WorkExperience experiences={workExperiences} />
             <SiteFooter />
         </motion.div>

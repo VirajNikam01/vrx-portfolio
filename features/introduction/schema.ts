@@ -10,10 +10,16 @@ const introductionResumeActionSchema = z.object({
     fileUrl: z.string(),
 });
 
+const introductionStatementSegmentSchema = z.object({
+    text: z.string(),
+    emphasis: z.enum(["solid", "accent", "duration"]).optional(),
+});
+
 export const introductionContentSchema = z.object({
     eyebrow: z.string(),
     headline: z.string(),
     intro: z.string(),
+    statement: z.array(introductionStatementSegmentSchema),
     actions: z.object({
         connect: introductionLinkActionSchema,
         resume: introductionResumeActionSchema,

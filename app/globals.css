@@ -186,10 +186,27 @@ html[data-primary="pink"] {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  *::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+  *::-webkit-scrollbar {
+    @apply size-2;
+  }
+  *::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  *::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-primary;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/80;
   }
   html {
     @apply font-sans;
+    scrollbar-color: var(--primary) var(--background);
+    scrollbar-width: thin;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

@@ -9,6 +9,10 @@ export type ExperiencePositionItemType = {
     id: string;
     /** The job title or position name */
     title: string;
+    /** ISO start date used for live duration calculations */
+    startDate: string;
+    /** ISO end date; omit for current roles */
+    endDate?: string;
     /** The period during which the position was held (e.g., "Jan 2020 - Dec 2021") */
     employmentPeriod: string;
     /** The type of employment (e.g., "Full-time", "Part-time", "Contract") */
@@ -19,6 +23,8 @@ export type ExperiencePositionItemType = {
     icon?: ExperiencePositionIconType;
     /** A list of skills associated with the position */
     skills?: string[];
+    /** Excludes learning/non-professional entries from the total experience count */
+    countsTowardExperience?: boolean;
     /** Indicates if the position details are expanded in the UI */
     isExpanded?: boolean;
 };

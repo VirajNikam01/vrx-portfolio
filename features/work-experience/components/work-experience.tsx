@@ -21,6 +21,7 @@ import type {
     ExperienceItemType,
     ExperiencePositionItemType,
 } from "../types";
+import { getExperienceDurationLabel, getPositionDurationLabel } from "../experience-duration";
 import { cn } from "@/lib/utils";
 
 const iconMap = {
@@ -37,6 +38,8 @@ export function WorkExperience({
     className?: string;
     experiences: ExperienceItemType[];
 }) {
+    const experienceDurationLabel = getExperienceDurationLabel(experiences);
+
     return (
         <section
             id="experience"
@@ -46,7 +49,8 @@ export function WorkExperience({
             )}
         >
             <div className="mx-auto w-full max-w-3xl">
-                <div className="mb-10 max-w-xl space-y-3">
+                <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                    <div className="max-w-xl space-y-3">
                     <p className="text-sm tracking-widest uppercase text-muted-foreground">
                         Experience
                     </p>
@@ -57,6 +61,16 @@ export function WorkExperience({
                         A concise timeline of practical engineering, UI work, and the
                         technologies used along the way.
                     </p>
+                    </div>
+
+                    <div className="w-fit border-l-4 border-primary pl-4">
+                        <p className="text-xs tracking-widest uppercase text-muted-foreground">
+                            Total
+                        </p>
+                        <p className="text-2xl font-semibold text-primary">
+                            {experienceDurationLabel}
+                        </p>
+                    </div>
                 </div>
 
                 <div className="divide-y divide-border">
@@ -124,6 +138,7 @@ export function ExperiencePositionItem({
     position: ExperiencePositionItemType;
 }) {
     const ExperienceIcon = iconMap[position.icon || "business"];
+    const durationLabel = getPositionDurationLabel(position);
 
     return (
         <Collapsible defaultOpen={position.isExpanded} asChild>
@@ -173,6 +188,16 @@ export function ExperiencePositionItem({
                         <dl>
                             <dt className="sr-only">Employment Period</dt>
                             <dd>{position.employmentPeriod}</dd>
+                        </dl>
+
+                        <Separator
+                            className="data-[orientation=vertical]:h-4"
+                            orientation="vertical"
+                        />
+
+                        <dl>
+                            <dt className="sr-only">Duration</dt>
+                            <dd className="text-primary">{durationLabel}</dd>
                         </dl>
                     </div>
                 </CollapsibleTrigger>
