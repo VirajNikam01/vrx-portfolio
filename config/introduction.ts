@@ -11,17 +11,17 @@ export const introductionContent = {
     },
     statement: [
         { text: "A passionate " },
-        { text: "Frontend Developer", emphasis: "solid" },
+        { text: "Software Engineer", emphasis: "solid" },
         { text: " with " },
         { text: "", emphasis: "duration" },
         { text: " of experience building " },
-        { text: "clean, reliable web applications", emphasis: "accent" },
-        { text: " using React, Next.js, TypeScript, and Tailwind CSS." },
+        { text: "clean, reliable & scalable web/desktop applications", emphasis: "accent" },
+        { text: " using React, Next.js, Tauri, TypeScript, and Tailwind CSS." },
     ],
     actions: {
         connect: {
             label: "Contact Me",
-            href: "mailto:hello@example.com",
+            href: "mailto:virajnikam.connect@gmail.com",
         },
         resume: {
             label: "Download CV",

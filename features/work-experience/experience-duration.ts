@@ -49,9 +49,7 @@ function formatMonthCount(totalMonths: number) {
         return `${years} ${years === 1 ? "year" : "years"}`;
     }
 
-    return `${years} ${years === 1 ? "year" : "years"} ${months} ${
-        months === 1 ? "month" : "months"
-    }`;
+    return `${years}.${months} ${years === 1 ? "year" : "years"}`;
 }
 
 function countExperienceMonths(
