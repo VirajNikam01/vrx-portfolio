@@ -1,57 +1,143 @@
 import Image from "next/image";
 
-import type { IntroductionContentType } from "../types";
+import type {
+    IntroductionContentType,
+    IntroductionImageType,
+    IntroductionStatementSegmentType,
+} from "../types";
 import { IntroductionActions } from "./introduction-actions";
 
-const segmentClassName = {
+type IntroductionProps = {
+    content: IntroductionContentType;
+    experienceDurationLabel: string;
+};
+
+type IntroductionStatementProps = {
+    experienceDurationLabel: string;
+    segments: IntroductionStatementSegmentType[];
+};
+
+type IntroductionStatementSegmentProps = {
+    experienceDurationLabel: string;
+    segment: IntroductionStatementSegmentType;
+};
+
+type IntroductionMediaProps = {
+    eyebrow: string;
+    image: IntroductionImageType;
+};
+
+type IntroductionSummaryProps = {
+    headline: string;
+    intro: string;
+};
+
+const INTRODUCTION_IMAGE_SIZE = 112;
+
+const sectionClassName =
+    "flex min-h-dvh items-center justify-center px-5 pt-36 pb-16 sm:px-8 lg:pt-40";
+
+const contentClassName =
+    "mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7";
+
+const segmentClassNameByEmphasis = {
     solid:
         "inline-block rounded-none bg-primary px-3 py-1 font-semibold text-primary-foreground",
     accent: "font-semibold text-primary",
     duration: "font-semibold text-primary",
 } as const;
 
+function getSegmentText(
+    segment: IntroductionStatementSegmentType,
+    experienceDurationLabel: string,
+) {
+    return segment.emphasis === "duration"
+        ? experienceDurationLabel
+        : segment.text;
+}
+
 export function Introduction({
     content,
     experienceDurationLabel,
-}: {
-    content: IntroductionContentType;
-    experienceDurationLabel: string;
-}) {
+}: IntroductionProps) {
     return (
-        <section
-            id="top"
-            className="flex min-h-dvh items-center justify-center px-5 pt-36 pb-16 sm:px-8 lg:pt-40"
-        >
-            <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7">
-                <h1 className="max-w-5xl text-xl leading-tight font-medium text-balance text-foreground sm:text-2xl lg:text-[1.75rem]">
-                    {content.statement.map((segment, index) => {
-                        const text =
-                            segment.emphasis === "duration"
-                                ? experienceDurationLabel
-                                : segment.text;
-
-                        if (!segment.emphasis) {
-                            return text;
-                        }
-
-                        return (
-                            <span
-                                className={segmentClassName[segment.emphasis]}
-                                key={`${segment.emphasis}-${index}`}
-                            >
-                                {text}
-                            </span>
-                        );
-                    })}
-                </h1>
-                <p className="sr-only">
-                    {content.headline}
-                </p>
-                <p className="sr-only">
-                    {content.intro}
-                </p>
+        <section id="top" className={sectionClassName}>
+            <div className={contentClassName}>
+                <IntroductionMedia
+                    eyebrow={content.eyebrow}
+                    image={content.image}
+                />
+                <IntroductionStatement
+                    segments={content.statement}
+                    experienceDurationLabel={experienceDurationLabel}
+                />
+                <IntroductionSummary
+                    headline={content.headline}
+                    intro={content.intro}
+                />
                 <IntroductionActions actions={content.actions} />
             </div>
         </section>
+    );
+}
+
+function IntroductionMedia({ eyebrow, image }: IntroductionMediaProps) {
+    return (
+        <div className="flex flex-col items-center gap-3">
+            <Image
+                priority
+                src={image.src}
+                alt={image.alt}
+                width={INTRODUCTION_IMAGE_SIZE}
+                height={INTRODUCTION_IMAGE_SIZE}
+                className="size-28 rounded-full border border-primary/20 object-cover shadow-lg shadow-primary/10"
+            />
+            <p className="text-sm font-semibold tracking-wide text-primary uppercase">
+                {eyebrow}
+            </p>
+        </div>
+    );
+}
+
+function IntroductionStatement({
+    experienceDurationLabel,
+    segments,
+}: IntroductionStatementProps) {
+    return (
+        <h1 className="max-w-5xl text-xl leading-tight font-medium text-balance text-foreground sm:text-2xl lg:text-[1.75rem]">
+            {segments.map((segment, index) => (
+                <IntroductionStatementSegment
+                    key={`${segment.emphasis ?? "plain"}-${segment.text}-${index}`}
+                    segment={segment}
+                    experienceDurationLabel={experienceDurationLabel}
+                />
+            ))}
+        </h1>
+    );
+}
+
+function IntroductionStatementSegment({
+    experienceDurationLabel,
+    segment,
+}: IntroductionStatementSegmentProps) {
+    const text = getSegmentText(segment, experienceDurationLabel);
+
+    if (!segment.emphasis) {
+        return text;
+    }
+
+    return (
+        <span className={segmentClassNameByEmphasis[segment.emphasis]}>
+            {text}
+        </span>
+    );
+}
+
+function IntroductionSummary({ headline, intro }: IntroductionSummaryProps) {
+    return (
+        <div className="sr-only">
+            <p>{headline}</p>
+            <p>{intro}</p>
+        </div>
     );
 }
