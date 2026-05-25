@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { inquirySubmissionSchema } from "@/features/inquiries/schema";
+
 const introductionLinkActionSchema = z.object({
     label: z.string(),
     href: z.string(),
@@ -39,13 +41,8 @@ export const introductionContentResponseSchema = z.union([
     }),
 ]);
 
-export const resumeDownloadRequestSchema = z.object({
-    name: z.string().min(2, "Please enter your name."),
-    email: z.email("Please enter a valid email address."),
-    reason: z
-        .string()
-        .min(12, "Please share a little more context.")
-        .max(500, "Please keep this under 500 characters."),
+export const resumeDownloadRequestSchema = inquirySubmissionSchema.omit({
+    source: true,
 });
 
 export type ResumeDownloadRequestType = z.infer<

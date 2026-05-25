@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { InquirySubmissionError, submitInquiry } from "@/features/inquiries/api";
 import {
     resumeDownloadRequestSchema,
     type ResumeDownloadRequestType,
@@ -33,6 +34,7 @@ export function ResumeDownloadDialog({
     resume,
 }: ResumeDownloadDialogProps) {
     const [open, setOpen] = useState(false);
+    const [submissionError, setSubmissionError] = useState<string | null>(null);
     const form = useForm<ResumeDownloadRequestType>({
         resolver: zodResolver(resumeDownloadRequestSchema),
         defaultValues: {
@@ -42,10 +44,55 @@ export function ResumeDownloadDialog({
         },
     });
 
-    function handleValidSubmit() {
-        window.open(resume.fileUrl, "_blank", "noopener,noreferrer");
-        form.reset();
-        setOpen(false);
+    function applyServerErrors(error: unknown) {
+        if (error instanceof InquirySubmissionError) {
+            const { issues } = error;
+
+            if (issues) {
+                for (const field of ["name", "email", "reason"] as const) {
+                    const message = issues[field]?.[0];
+
+                    if (message) {
+                        form.setError(field, {
+                            type: "server",
+                            message,
+                        });
+                    }
+                }
+            }
+
+            setSubmissionError(
+                issues
+                    ? null
+                    : error.message ||
+                          "I couldn't submit your details right now. Please try again.",
+            );
+            return;
+        }
+
+        setSubmissionError(
+            "I couldn't submit your details right now. Please try again.",
+        );
+    }
+
+    async function handleValidSubmit(values: ResumeDownloadRequestType) {
+        setSubmissionError(null);
+
+        try {
+            const response = await submitInquiry({
+                ...values,
+                source: "resume_download",
+            });
+            window.open(
+                response.data.resumeUrl ?? resume.fileUrl,
+                "_blank",
+                "noopener,noreferrer",
+            );
+            form.reset();
+            setOpen(false);
+        } catch (error) {
+            applyServerErrors(error);
+        }
     }
 
     return (
@@ -63,7 +110,9 @@ export function ResumeDownloadDialog({
 
                 <form
                     className="space-y-4"
-                    onSubmit={form.handleSubmit(handleValidSubmit)}
+                    onSubmit={form.handleSubmit(handleValidSubmit, () =>
+                        setSubmissionError(null),
+                    )}
                 >
                     <FormField
                         label="Full Name"
@@ -104,9 +153,26 @@ export function ResumeDownloadDialog({
                         />
                     </FormField>
 
+                    {submissionError && (
+                        <p
+                            className="text-sm font-medium text-destructive"
+                            role="alert"
+                        >
+                            {submissionError}
+                        </p>
+                    )}
+
                     <div className="flex justify-end">
-                        <Button type="submit" className="px-3 py-1" disabled={form.formState.isSubmitting}>
-                            Download CV <DownloadIcon className="ml-2" />
+                        <Button
+                            type="submit"
+                            className="px-3 py-1"
+                            disabled={form.formState.isSubmitting}
+                            onClick={() => setSubmissionError(null)}
+                        >
+                            {form.formState.isSubmitting
+                                ? "Submitting..."
+                                : "Download CV"}{" "}
+                            <DownloadIcon className="ml-2" />
                         </Button>
                     </div>
                 </form>
