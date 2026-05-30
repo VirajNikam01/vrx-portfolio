@@ -9,12 +9,26 @@ import {
     designConfigs,
     uiPages,
     uiSections,
+    introductions,
+    introductionActions,
+    introductionStatementSegments,
+    workExperienceCompanies,
+    workExperiencePositionDescriptions,
+    workExperiencePositions,
+    workExperiencePositionSkills,
     type NewDesignConfig,
     type NewFeatureFlag,
     type NewFeatureFlagRule,
     type NewFeatureFlagVariant,
+    type NewIntroduction,
+    type NewIntroductionAction,
+    type NewIntroductionStatementSegment,
     type NewUiPage,
     type NewUiSection,
+    type NewWorkExperienceCompany,
+    type NewWorkExperiencePosition,
+    type NewWorkExperiencePositionDescription,
+    type NewWorkExperiencePositionSkill,
 } from "./schema";
 import { landingPageSeedData } from "./seed-data/landing-page";
 
@@ -187,6 +201,188 @@ export async function seedCurrentUiContent() {
                     },
                 }),
         ),
+    );
+
+    const [introduction] = await db
+        .insert(introductions)
+        .values(landingPageSeedData.introduction satisfies NewIntroduction)
+        .onConflictDoUpdate({
+            target: introductions.key,
+            set: {
+                eyebrow: landingPageSeedData.introduction.eyebrow,
+                headline: landingPageSeedData.introduction.headline,
+                intro: landingPageSeedData.introduction.intro,
+                imageSrc: landingPageSeedData.introduction.imageSrc,
+                imageAlt: landingPageSeedData.introduction.imageAlt,
+                status: landingPageSeedData.introduction.status,
+                metadata: landingPageSeedData.introduction.metadata,
+                publishedAt: landingPageSeedData.introduction.publishedAt,
+                updatedAt: new Date(),
+            },
+        })
+        .returning();
+
+    await Promise.all(
+        landingPageSeedData.introductionStatementSegments.map((segment) => {
+            const values = {
+                ...segment,
+                introductionId: introduction.id,
+            } satisfies NewIntroductionStatementSegment;
+
+            return db
+                .insert(introductionStatementSegments)
+                .values(values)
+                .onConflictDoUpdate({
+                    target: [
+                        introductionStatementSegments.introductionId,
+                        introductionStatementSegments.sortOrder,
+                    ],
+                    set: {
+                        text: segment.text,
+                        emphasis: segment.emphasis,
+                        metadata: segment.metadata,
+                        updatedAt: new Date(),
+                    },
+                });
+        }),
+    );
+
+    await Promise.all(
+        landingPageSeedData.introductionActions.map((action) => {
+            const values = {
+                ...action,
+                introductionId: introduction.id,
+            } satisfies NewIntroductionAction;
+
+            return db
+                .insert(introductionActions)
+                .values(values)
+                .onConflictDoUpdate({
+                    target: [
+                        introductionActions.introductionId,
+                        introductionActions.kind,
+                    ],
+                    set: {
+                        label: action.label,
+                        href: action.href,
+                        fileUrl: action.fileUrl,
+                        sortOrder: action.sortOrder,
+                        metadata: action.metadata,
+                        updatedAt: new Date(),
+                    },
+                });
+        }),
+    );
+
+    await Promise.all(
+        landingPageSeedData.workExperienceCompanies.map(async (company) => {
+            const [savedCompany] = await db
+                .insert(workExperienceCompanies)
+                .values({
+                    key: company.key,
+                    companyName: company.companyName,
+                    companyLogo: company.companyLogo,
+                    isCurrentEmployer: company.isCurrentEmployer,
+                    status: company.status,
+                    sortOrder: company.sortOrder,
+                    metadata: company.metadata,
+                    publishedAt: company.publishedAt,
+                } satisfies NewWorkExperienceCompany)
+                .onConflictDoUpdate({
+                    target: workExperienceCompanies.key,
+                    set: {
+                        companyName: company.companyName,
+                        companyLogo: company.companyLogo,
+                        isCurrentEmployer: company.isCurrentEmployer,
+                        status: company.status,
+                        sortOrder: company.sortOrder,
+                        metadata: company.metadata,
+                        publishedAt: company.publishedAt,
+                        updatedAt: new Date(),
+                    },
+                })
+                .returning();
+
+            await Promise.all(
+                company.positions.map(async (position) => {
+                    const [savedPosition] = await db
+                        .insert(workExperiencePositions)
+                        .values({
+                            companyId: savedCompany.id,
+                            key: position.key,
+                            title: position.title,
+                            category: position.category,
+                            startDate: position.startDate,
+                            endDate: position.endDate,
+                            employmentType: position.employmentType,
+                            icon: position.icon,
+                            isExpanded: position.isExpanded,
+                            sortOrder: position.sortOrder,
+                            metadata: position.metadata,
+                        } satisfies NewWorkExperiencePosition)
+                        .onConflictDoUpdate({
+                            target: [
+                                workExperiencePositions.companyId,
+                                workExperiencePositions.key,
+                            ],
+                            set: {
+                                title: position.title,
+                                category: position.category,
+                                startDate: position.startDate,
+                                endDate: position.endDate,
+                                employmentType: position.employmentType,
+                                icon: position.icon,
+                                isExpanded: position.isExpanded,
+                                sortOrder: position.sortOrder,
+                                metadata: position.metadata,
+                                updatedAt: new Date(),
+                            },
+                        })
+                        .returning();
+
+                    await Promise.all([
+                        ...position.descriptions.map((description) =>
+                            db
+                                .insert(workExperiencePositionDescriptions)
+                                .values({
+                                    ...description,
+                                    positionId: savedPosition.id,
+                                } satisfies NewWorkExperiencePositionDescription)
+                                .onConflictDoUpdate({
+                                    target: [
+                                        workExperiencePositionDescriptions.positionId,
+                                        workExperiencePositionDescriptions.sortOrder,
+                                    ],
+                                    set: {
+                                        body: description.body,
+                                        metadata: description.metadata,
+                                        updatedAt: new Date(),
+                                    },
+                                }),
+                        ),
+                        ...position.skills.map((skill) =>
+                            db
+                                .insert(workExperiencePositionSkills)
+                                .values({
+                                    ...skill,
+                                    positionId: savedPosition.id,
+                                } satisfies NewWorkExperiencePositionSkill)
+                                .onConflictDoUpdate({
+                                    target: [
+                                        workExperiencePositionSkills.positionId,
+                                        workExperiencePositionSkills.name,
+                                    ],
+                                    set: {
+                                        sortOrder: skill.sortOrder,
+                                        metadata: skill.metadata,
+                                        updatedAt: new Date(),
+                                    },
+                                }),
+                        ),
+                    ]);
+                }),
+            );
+        }),
     );
 
     return db

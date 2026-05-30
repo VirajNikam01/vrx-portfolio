@@ -1,4 +1,6 @@
 import { landingPageContent } from "@/config/landing-page";
+import { introductionContent } from "@/config/introduction";
+import { workExperiences } from "@/config/work-experience";
 import type { JsonValue } from "@/lib/db/schema";
 
 function toJsonValue(value: unknown): JsonValue {
@@ -182,4 +184,78 @@ export const landingPageSeedData = {
             }),
         },
     ],
+    introduction: {
+        key: "landing-page-introduction",
+        eyebrow: introductionContent.eyebrow,
+        headline: introductionContent.headline,
+        intro: introductionContent.intro,
+        imageSrc: introductionContent.image.src,
+        imageAlt: introductionContent.image.alt,
+        status: "published" as const,
+        metadata: toJsonValue({
+            scope: "landing-page",
+            sectionKey: "introduction",
+        }),
+        publishedAt: landingPageSeedDataDate,
+    },
+    introductionStatementSegments: introductionContent.statement.map(
+        (segment, index) => ({
+            text: segment.text,
+            emphasis: segment.emphasis,
+            sortOrder: index * 10,
+            metadata: toJsonValue({}),
+        }),
+    ),
+    introductionActions: [
+        {
+            kind: "connect" as const,
+            label: introductionContent.actions.connect.label,
+            href: introductionContent.actions.connect.href,
+            fileUrl: null,
+            sortOrder: 10,
+            metadata: toJsonValue({}),
+        },
+        {
+            kind: "resume" as const,
+            label: introductionContent.actions.resume.label,
+            href: null,
+            fileUrl: introductionContent.actions.resume.fileUrl,
+            sortOrder: 20,
+            metadata: toJsonValue({}),
+        },
+    ],
+    workExperienceCompanies: workExperiences.map((experience, index) => ({
+        key: experience.id,
+        companyName: experience.companyName,
+        companyLogo: experience.companyLogo,
+        isCurrentEmployer: experience.isCurrentEmployer ?? false,
+        status: "published" as const,
+        sortOrder: index * 10,
+        metadata: toJsonValue({ scope: "landing-page" }),
+        publishedAt: landingPageSeedDataDate,
+        positions: experience.positions.map((position, positionIndex) => ({
+            key: position.id,
+            title: position.title,
+            category: position.category,
+            startDate: position.startDate,
+            endDate: position.endDate,
+            employmentType: position.employmentType,
+            icon: position.icon,
+            isExpanded: position.isExpanded ?? false,
+            sortOrder: positionIndex * 10,
+            metadata: toJsonValue({}),
+            descriptions: (position.description ?? []).map(
+                (description, descriptionIndex) => ({
+                    body: description,
+                    sortOrder: descriptionIndex * 10,
+                    metadata: toJsonValue({}),
+                }),
+            ),
+            skills: (position.skills ?? []).map((skill, skillIndex) => ({
+                name: skill,
+                sortOrder: skillIndex * 10,
+                metadata: toJsonValue({}),
+            })),
+        })),
+    })),
 };

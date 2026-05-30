@@ -15,6 +15,13 @@
       "when": 1780147212828,
       "tag": "0001_polite_onslaught",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780148355753,
+      "tag": "0002_right_spiral",
+      "breakpoints": true
     }
   ]
 }
