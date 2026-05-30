@@ -1,16 +1,5 @@
-import { jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-
-export const inquiries = pgTable("inquiries", {
-    id: uuid("id").defaultRandom().primaryKey(),
-    source: text("source").notNull(),
-    name: text("name").notNull(),
-    email: text("email").notNull(),
-    reason: text("reason").notNull(),
-    metadata: jsonb("metadata").$type<Record<string, unknown>>(),
-    createdAt: timestamp("created_at", { withTimezone: true })
-        .defaultNow()
-        .notNull(),
-});
-
-export type NewInquiry = typeof inquiries.$inferInsert;
-export type Inquiry = typeof inquiries.$inferSelect;
+export * from "./schema/content";
+export * from "./schema/design";
+export * from "./schema/feature-flags";
+export * from "./schema/inquiries";
+export * from "./schema/shared";

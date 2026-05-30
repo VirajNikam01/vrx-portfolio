@@ -51,12 +51,8 @@ function getActiveSection() {
     : "top";
 }
 
-function getNavItemId(href: string) {
-  return href.startsWith("#") ? href.slice(1) : href;
-}
-
 export function SiteHeader() {
-  const { activeSection, hasScrolled, progress } = useScrollState();
+  const { hasScrolled, progress } = useScrollState();
 
   return (
     <header className="fixed inset-x-0 top-0 z-40 px-4 pt-6 sm:px-8">

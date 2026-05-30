@@ -55,9 +55,8 @@ describe("experience duration helpers", () => {
         },
         new Date("2026-02-15T00:00:00")
       )
-    ).toBe("1 year 3 months");
+    ).toBe("1.3 year");
   });
-
   it("uses Present for open-ended position periods", () => {
     expect(
       getPositionPeriodLabel({

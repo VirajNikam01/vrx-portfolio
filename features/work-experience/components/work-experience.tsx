@@ -22,7 +22,6 @@ import type {
     ExperiencePositionItemType,
 } from "../types";
 import {
-    getExperienceDurationLabel,
     getPositionPeriodLabel,
     getPositionDurationLabel,
 } from "../experience-duration";
@@ -37,13 +36,15 @@ const iconMap = {
 
 export function WorkExperience({
     className,
+    description = "Work that shaped the craft. A concise timeline of practical engineering, UI work, and the technologies used along the way.",
     experiences,
+    heading = "Experience",
 }: {
     className?: string;
+    description?: string;
     experiences: ExperienceItemType[];
+    heading?: string;
 }) {
-    const experienceDurationLabel = getExperienceDurationLabel(experiences);
-
     return (
         <section
             id="experience"
@@ -56,11 +57,10 @@ export function WorkExperience({
                 <div className=" mb-2 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <div className=" max-w-2xl space-y-3">
                         <h1 className="text-3xl font-semibold text-primary uppercase">
-                            Experience
+                            {heading}
                         </h1>
                         <p className="tracking-tight text-muted-foreground">
-                            Work that shaped the craft. A concise timeline of practical engineering, UI work, and the
-                            technologies used along the way.
+                            {description}
                         </p>
                     </div>
 

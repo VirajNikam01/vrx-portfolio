@@ -6,7 +6,7 @@ test("renders the landing page content after the splash animation", async ({ pag
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: /A passionate Frontend Developer/i,
+      name: /A passionate Software Engineer/i,
     })
   ).toBeVisible({ timeout: 15_000 });
   await expect(
@@ -15,7 +15,7 @@ test("renders the landing page content after the splash animation", async ({ pag
   await expect(page.getByRole("heading", { name: "Zybra" })).toBeVisible();
   await expect(page.getByRole("link", { name: /contact me/i })).toHaveAttribute(
     "href",
-    "mailto:hello@example.com"
+    "mailto:virajnikam.connect@gmail.com"
   );
 });
 

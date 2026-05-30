@@ -1,24 +1,14 @@
 import { render, screen } from "@testing-library/react";
 
 import { MainContent } from "@/components/pages/landing-page/main-content";
-import { introductionContent } from "@/config/introduction";
-import { workExperiences } from "@/config/work-experience";
-import * as introductionFeature from "@/features/introduction";
-import * as workExperienceFeature from "@/features/work-experience";
+import { landingPageContent } from "@/config/landing-page";
+import * as landingPageFeature from "@/features/landing-page";
 
-jest.mock("@/features/introduction", () => {
-  const actual = jest.requireActual("@/features/introduction");
+jest.mock("@/features/landing-page", () => {
+  const actual = jest.requireActual("@/features/landing-page");
   return {
     ...actual,
-    useIntroductionContent: jest.fn(),
-  };
-});
-
-jest.mock("@/features/work-experience", () => {
-  const actual = jest.requireActual("@/features/work-experience");
-  return {
-    ...actual,
-    useWorkExperiences: jest.fn(),
+    useLandingPageContent: jest.fn(),
   };
 });
 
@@ -31,19 +21,13 @@ jest.mock("framer-motion", () => ({
 }));
 
 describe("MainContent integration", () => {
-  const useIntroductionContentMock = jest.mocked(
-    introductionFeature.useIntroductionContent
-  );
-  const useWorkExperiencesMock = jest.mocked(
-    workExperienceFeature.useWorkExperiences
+  const useLandingPageContentMock = jest.mocked(
+    landingPageFeature.useLandingPageContent
   );
 
   beforeEach(() => {
-    useIntroductionContentMock.mockReturnValue({ data: introductionContent } as ReturnType<
-      typeof introductionFeature.useIntroductionContent
-    >);
-    useWorkExperiencesMock.mockReturnValue({ data: workExperiences } as ReturnType<
-      typeof workExperienceFeature.useWorkExperiences
+    useLandingPageContentMock.mockReturnValue({ data: landingPageContent } as ReturnType<
+      typeof landingPageFeature.useLandingPageContent
     >);
   });
 
@@ -57,26 +41,42 @@ describe("MainContent integration", () => {
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: /A passionate Frontend Developer/i,
+        name: /A passionate Software Engineer/i,
       })
     ).toBeInTheDocument();
-    expect(screen.getByText(introductionContent.headline)).toBeInTheDocument();
+    expect(screen.getByText(landingPageContent.introduction.headline)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Zybra" })).toBeInTheDocument();
     expect(screen.getByText("Current Employer")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /email/i })).toHaveAttribute(
       "href",
-      "mailto:hello@example.com"
+      "mailto:virajnikam.connect@gmail.com"
     );
   });
 
   it("renders nothing while required content is unavailable", () => {
-    useIntroductionContentMock.mockReturnValue({ data: undefined } as ReturnType<
-      typeof introductionFeature.useIntroductionContent
+    useLandingPageContentMock.mockReturnValue({ data: undefined } as ReturnType<
+      typeof landingPageFeature.useLandingPageContent
     >);
 
     const { container } = render(<MainContent />);
 
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it("does not render sections disabled by feature flags", () => {
+    useLandingPageContentMock.mockReturnValue({
+      data: {
+        ...landingPageContent,
+        featureFlags: {
+          ...landingPageContent.featureFlags,
+          showWorkExperience: false,
+        },
+      },
+    } as ReturnType<typeof landingPageFeature.useLandingPageContent>);
+
+    render(<MainContent />);
+
+    expect(screen.queryByRole("heading", { name: "Experience" })).not.toBeInTheDocument();
   });
 });

@@ -6,7 +6,7 @@ export const introductionContent = {
     intro:
         "I'm Viraj, a frontend-focused developer who cares about clean architecture, thoughtful interaction design, and interfaces that feel fast, clear, and dependable in real use.",
     image: {
-        src: "/images/intro/sample-logo.jpg",
+        src: "/images/intro/vrx-image.jpg",
         alt: "Viraj Nikam portrait",
     },
     statement: [

@@ -11,7 +11,7 @@ describe("WorkExperience UI", () => {
     expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Zybra" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /full-stack developer/i })).toBeInTheDocument();
-    expect(screen.getByText(/Dec 2024 - Present/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mar 2025 - Present/i)).toBeInTheDocument();
     expect(screen.getByText("Next.js")).toBeInTheDocument();
     expect(screen.getByText(/Building polished web interfaces/i)).toBeInTheDocument();
   });

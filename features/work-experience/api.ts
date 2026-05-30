@@ -1,22 +1,8 @@
-import { workExperiences } from "@/config/work-experience";
-import { httpClient } from "@/lib/api/http-client";
 import type { ExperienceItemType } from "./types";
-import { workExperiencesResponseSchema } from "./schema";
-
-const WORK_EXPERIENCE_ENDPOINT = "/work-experience";
-
-function resolveWorkExperiencePayload(payload: unknown): ExperienceItemType[] {
-    const parsedPayload = workExperiencesResponseSchema.parse(payload);
-
-    return Array.isArray(parsedPayload) ? parsedPayload : parsedPayload.data;
-}
+import { getLandingPageContent } from "@/features/landing-page/api";
 
 export async function getWorkExperiences(): Promise<ExperienceItemType[]> {
-    try {
-        const response = await httpClient.get<unknown>(WORK_EXPERIENCE_ENDPOINT);
+    const landingPageContent = await getLandingPageContent();
 
-        return resolveWorkExperiencePayload(response.data);
-    } catch {
-        return workExperiences;
-    }
+    return landingPageContent.workExperiences;
 }

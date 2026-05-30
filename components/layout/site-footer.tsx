@@ -1,7 +1,7 @@
 import { ArrowUpRightIcon, CodeXmlIcon, IdCardIcon, MailIcon } from "lucide-react";
 
 const footerLinks = [
-  { label: "Email", href: "mailto:hello@example.com", icon: MailIcon },
+  { label: "Email", href: "mailto:virajnikam.connect@gmail.com", icon: MailIcon },
   { label: "GitHub", href: "https://github.com/", icon: CodeXmlIcon },
   { label: "LinkedIn", href: "https://www.linkedin.com/", icon: IdCardIcon },
 ];
