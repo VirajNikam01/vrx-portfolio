@@ -1,12 +1,13 @@
 import {
     boolean,
+    bigint,
+    bigserial,
     index,
     integer,
     pgTable,
     text,
     timestamp,
     unique,
-    uuid,
 } from "drizzle-orm/pg-core";
 
 import { jsonRecord, publishStatus } from "./shared";
@@ -14,7 +15,7 @@ import { jsonRecord, publishStatus } from "./shared";
 export const uiPages = pgTable(
     "ui_pages",
     {
-        id: uuid("id").defaultRandom().primaryKey(),
+        id: bigserial("id", { mode: "number" }).primaryKey(),
         key: text("key").notNull(),
         path: text("path").notNull(),
         title: text("title").notNull(),
@@ -39,8 +40,8 @@ export const uiPages = pgTable(
 export const uiSections = pgTable(
     "ui_sections",
     {
-        id: uuid("id").defaultRandom().primaryKey(),
-        pageId: uuid("page_id")
+        id: bigserial("id", { mode: "number" }).primaryKey(),
+        pageId: bigint("page_id", { mode: "number" })
             .notNull()
             .references(() => uiPages.id, { onDelete: "cascade" }),
         key: text("key").notNull(),

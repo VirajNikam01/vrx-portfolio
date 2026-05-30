@@ -1,6 +1,8 @@
 import { sql } from "drizzle-orm";
 import {
     boolean,
+    bigint,
+    bigserial,
     check,
     index,
     integer,
@@ -8,7 +10,6 @@ import {
     text,
     timestamp,
     unique,
-    uuid,
 } from "drizzle-orm/pg-core";
 
 import { featureFlagRuleType, jsonRecord } from "./shared";
@@ -16,7 +17,7 @@ import { featureFlagRuleType, jsonRecord } from "./shared";
 export const featureFlags = pgTable(
     "feature_flags",
     {
-        id: uuid("id").defaultRandom().primaryKey(),
+        id: bigserial("id", { mode: "number" }).primaryKey(),
         key: text("key").notNull(),
         name: text("name").notNull(),
         description: text("description"),
@@ -46,8 +47,8 @@ export const featureFlags = pgTable(
 export const featureFlagVariants = pgTable(
     "feature_flag_variants",
     {
-        id: uuid("id").defaultRandom().primaryKey(),
-        flagId: uuid("flag_id")
+        id: bigserial("id", { mode: "number" }).primaryKey(),
+        flagId: bigint("flag_id", { mode: "number" })
             .notNull()
             .references(() => featureFlags.id, { onDelete: "cascade" }),
         key: text("key").notNull(),
@@ -79,8 +80,8 @@ export const featureFlagVariants = pgTable(
 export const featureFlagRules = pgTable(
     "feature_flag_rules",
     {
-        id: uuid("id").defaultRandom().primaryKey(),
-        flagId: uuid("flag_id")
+        id: bigserial("id", { mode: "number" }).primaryKey(),
+        flagId: bigint("flag_id", { mode: "number" })
             .notNull()
             .references(() => featureFlags.id, { onDelete: "cascade" }),
         key: text("key").notNull(),

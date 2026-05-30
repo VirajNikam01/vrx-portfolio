@@ -35,7 +35,7 @@ function formatSource(source: InquirySubmissionType["source"]) {
 
 export async function sendInquiryNotification(
     inquiry: InquirySubmissionType & {
-        id: string;
+        id: number;
         createdAt: Date;
         resumeUrl?: string;
     },

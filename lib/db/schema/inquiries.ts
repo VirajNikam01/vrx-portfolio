@@ -1,7 +1,7 @@
-import { jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { bigserial, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const inquiries = pgTable("inquiries", {
-    id: uuid("id").defaultRandom().primaryKey(),
+    id: bigserial("id", { mode: "number" }).primaryKey(),
     source: text("source").notNull(),
     name: text("name").notNull(),
     email: text("email").notNull(),

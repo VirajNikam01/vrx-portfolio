@@ -77,7 +77,7 @@ describe("POST /api/inquiries", () => {
   it("stores the inquiry and sends a notification email", async () => {
     const createdAt = new Date("2026-05-25T12:00:00.000Z");
     createInquiryMock.mockResolvedValue({
-      id: "8ec11e62-43c5-4f18-a4be-fd0af402d6fd",
+      id: 1,
       source: "resume_download",
       name: "Viraj Nikam",
       email: "viraj@example.com",
@@ -108,7 +108,7 @@ describe("POST /api/inquiries", () => {
     expect(response.status).toBe(201);
     expect(await response.json()).toEqual({
       data: {
-        id: "8ec11e62-43c5-4f18-a4be-fd0af402d6fd",
+        id: 1,
         resumeUrl: "https://storage.example.com/signed-resume-url",
       },
     });
@@ -133,7 +133,7 @@ describe("POST /api/inquiries", () => {
       name: "Viraj Nikam",
       email: "viraj@example.com",
       reason: "I would like to review your resume for a frontend role.",
-      id: "8ec11e62-43c5-4f18-a4be-fd0af402d6fd",
+      id: 1,
       createdAt,
       resumeUrl: "https://storage.example.com/signed-resume-url",
     });

@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
     boolean,
+    bigserial,
     check,
     index,
     integer,
@@ -8,7 +9,6 @@ import {
     text,
     timestamp,
     unique,
-    uuid,
 } from "drizzle-orm/pg-core";
 
 import { jsonRecord } from "./shared";
@@ -16,7 +16,7 @@ import { jsonRecord } from "./shared";
 export const designConfigs = pgTable(
     "design_configs",
     {
-        id: uuid("id").defaultRandom().primaryKey(),
+        id: bigserial("id", { mode: "number" }).primaryKey(),
         key: text("key").notNull(),
         scope: text("scope").default("global").notNull(),
         name: text("name").notNull(),

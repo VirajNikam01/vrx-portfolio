@@ -41,7 +41,7 @@ export async function submitInquiry(values: InquirySubmissionType) {
 
     return response.json() as Promise<{
         data: {
-            id: string;
+            id: number;
             resumeUrl?: string;
         };
     }>;

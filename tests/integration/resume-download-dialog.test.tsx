@@ -16,7 +16,7 @@ describe("Resume download dialog", () => {
       ok: true,
       json: async () => ({
         data: {
-          id: "inquiry-id",
+          id: 1,
           resumeUrl: "https://storage.example.com/signed-resume-url",
         },
       }),
