@@ -1,32 +1,78 @@
 "use client";
 
-import { motion, Target, Transition } from "framer-motion";
-import { Fragment } from "react";
-import { useLandingPageContent } from "@/features/landing-page";
-import { getExperienceDurationLabel } from "@/features/work-experience";
+import { motion } from "framer-motion";
+import type { Target, Transition } from "framer-motion";
+import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/layout/site-footer";
-import type { LandingPageSectionType } from "@/features/landing-page";
-import { getLandingPageSectionRenderer } from "./section-registry";
+import { Introduction } from "@/features/introduction";
+import { useLandingPageContent } from "@/features/landing-page";
+import type {
+    LandingPageContentType,
+    LandingPageSectionType,
+} from "@/features/landing-page";
+import { getExperienceDurationLabel } from "@/features/work-experience";
+import { WorkExperience } from "@/features/work-experience/components";
 
 const CONTENT_INITIAL: Target = { opacity: 0, filter: "blur(12px)" };
 const CONTENT_ANIMATE: Target = { opacity: 1, filter: "blur(0px)" };
 const CONTENT_TRANSITION: Transition = { duration: 0.8, ease: "easeOut" };
 
-export function MainContent() {
-    const { data: landingPageContent } = useLandingPageContent();
+type WorkExperienceSectionProps = {
+    heading?: string;
+    description?: string;
+};
 
-    if (!landingPageContent) {
+export function MainContent() {
+    const { data: content } = useLandingPageContent();
+
+    if (!content) {
         return null;
     }
 
-    const { featureFlags, sections, workExperiences } = landingPageContent;
-    const experienceDurationLabel = getExperienceDurationLabel(workExperiences);
-    const enabledSections = sections
-        .filter((section) => isSectionEnabled(section, featureFlags))
-        .sort((firstSection, secondSection) => {
-            return firstSection.sortOrder - secondSection.sortOrder;
-        });
+    return (
+        <AnimatedContent>
+            <LandingPageSections content={content} />
+            <SiteFooter />
+        </AnimatedContent>
+    );
+}
 
+function LandingPageSections({ content }: { content: LandingPageContentType }) {
+    const introductionSection = getSection(content, "introduction");
+    const workExperienceSection = getSection(content, "workExperience");
+    const workExperienceProps =
+        getWorkExperienceSectionProps(workExperienceSection);
+    const experienceDurationLabel = getExperienceDurationLabel(
+        content.workExperiences,
+    );
+
+    return (
+        <>
+            <SectionGuard
+                section={introductionSection}
+                featureFlags={content.featureFlags}
+            >
+                <Introduction
+                    content={content.introduction}
+                    experienceDurationLabel={experienceDurationLabel}
+                />
+            </SectionGuard>
+
+            <SectionGuard
+                section={workExperienceSection}
+                featureFlags={content.featureFlags}
+            >
+                <WorkExperience
+                    experiences={content.workExperiences}
+                    heading={workExperienceProps.heading}
+                    description={workExperienceProps.description}
+                />
+            </SectionGuard>
+        </>
+    );
+}
+
+function AnimatedContent({ children }: { children: ReactNode }) {
     return (
         <motion.div
             key="content"
@@ -35,31 +81,47 @@ export function MainContent() {
             animate={CONTENT_ANIMATE}
             transition={CONTENT_TRANSITION}
         >
-            {enabledSections.map((section) => {
-                const renderSection = getLandingPageSectionRenderer(
-                    section.componentKey,
-                );
-
-                return renderSection ? (
-                    <Fragment key={section.key}>
-                        {renderSection({
-                            content: landingPageContent,
-                            experienceDurationLabel,
-                            props: section.props,
-                        })}
-                    </Fragment>
-                ) : null;
-            })}
-            <SiteFooter />
+            {children}
         </motion.div>
     );
 }
 
-function isSectionEnabled(
-    section: LandingPageSectionType,
-    featureFlags: Record<string, boolean>,
+function SectionGuard({
+    children,
+    fallback = null,
+    featureFlags,
+    section,
+}: {
+    children: ReactNode;
+    fallback?: ReactNode;
+    featureFlags: LandingPageContentType["featureFlags"];
+    section?: LandingPageSectionType;
+}) {
+    return canRenderSection(section, featureFlags) ? children : fallback;
+}
+
+function canRenderSection(
+    section: LandingPageSectionType | undefined,
+    featureFlags: LandingPageContentType["featureFlags"],
 ) {
+    if (!section?.isEnabled) {
+        return false;
+    }
+
     const featureFlagKey = section.visibilityRules.featureFlagKey;
 
-    return section.isEnabled && (!featureFlagKey || featureFlags[featureFlagKey]);
+    return !featureFlagKey || featureFlags[featureFlagKey];
+}
+
+function getSection(
+    content: LandingPageContentType,
+    sectionKey: LandingPageSectionType["key"],
+) {
+    return content.sections.find((section) => section.key === sectionKey);
+}
+
+function getWorkExperienceSectionProps(
+    section: LandingPageSectionType | undefined,
+) {
+    return (section?.props ?? {}) as WorkExperienceSectionProps;
 }
