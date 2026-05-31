@@ -12,6 +12,7 @@ import type {
 } from "@/features/landing-page";
 import { getExperienceDurationLabel } from "@/features/work-experience";
 import { WorkExperience } from "@/features/work-experience/components";
+import { cn } from "@/lib/utils";
 
 const CONTENT_INITIAL: Target = { opacity: 0, filter: "blur(12px)" };
 const CONTENT_ANIMATE: Target = { opacity: 1, filter: "blur(0px)" };
@@ -22,15 +23,21 @@ type WorkExperienceSectionProps = {
     description?: string;
 };
 
-export function MainContent() {
-    const { data: content } = useLandingPageContent();
+export function MainContent({
+    className,
+    initialContent,
+}: {
+    className?: string;
+    initialContent?: LandingPageContentType;
+}) {
+    const { data: content } = useLandingPageContent(initialContent);
 
     if (!content) {
         return null;
     }
 
     return (
-        <AnimatedContent>
+        <AnimatedContent className={className}>
             <LandingPageSections content={content} />
             <SiteFooter />
         </AnimatedContent>
@@ -72,11 +79,17 @@ function LandingPageSections({ content }: { content: LandingPageContentType }) {
     );
 }
 
-function AnimatedContent({ children }: { children: ReactNode }) {
+function AnimatedContent({
+    children,
+    className,
+}: {
+    children: ReactNode;
+    className?: string;
+}) {
     return (
         <motion.div
             key="content"
-            className="relative z-10"
+            className={cn("relative z-10", className)}
             initial={CONTENT_INITIAL}
             animate={CONTENT_ANIMATE}
             transition={CONTENT_TRANSITION}

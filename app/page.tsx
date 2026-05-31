@@ -1,30 +1,29 @@
-"use client";
+import { readLandingPageContent } from "@/features/landing-page/repository";
+import {
+    getPersonJsonLd,
+    getProfilePageJsonLd,
+    getWebsiteJsonLd,
+    serializeJsonLd,
+} from "@/config/seo";
+import { HomePageClient } from "@/components/pages/landing-page/home-page-client";
 
-import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
-import { SplashScreen } from "@/components/splash/splash-screen";
-import { MainContent } from "@/components/pages/landing-page/main-content";
-import Stars from "@/components/3d/Stars";
-import { SiteHeader } from "@/components/layout/site-header";
+export default async function Home() {
+    const content = await readLandingPageContent();
+    const jsonLd = [
+        getWebsiteJsonLd(),
+        getPersonJsonLd(content),
+        getProfilePageJsonLd(content),
+    ];
 
-export default function Home() {
-  const [isSplashDone, setIsSplashDone] = useState(false);
-
-  const handleSplashComplete = () => setIsSplashDone(true);
-
-  return (
-    <main className="relative min-h-dvh overflow-x-hidden">
-      <Stars />
-
-      {isSplashDone && <SiteHeader />}
-
-      <AnimatePresence mode="wait">
-        {!isSplashDone ? (
-          <SplashScreen onComplete={handleSplashComplete} />
-        ) : (
-          <MainContent />
-        )}
-      </AnimatePresence>
-    </main>
-  );
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: serializeJsonLd(jsonLd),
+                }}
+            />
+            <HomePageClient initialContent={content} />
+        </>
+    );
 }

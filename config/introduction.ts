@@ -10,7 +10,7 @@ export const introductionContent = {
         alt: "Viraj Nikam portrait",
     },
     statement: [
-        { text: "A passionate " },
+        { text: "I'm Viraj Nikam, a passionate " },
         { text: "Software Engineer", emphasis: "solid" },
         { text: " with " },
         { text: "", emphasis: "duration" },

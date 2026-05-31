@@ -76,9 +76,9 @@ export function SiteHeader() {
           aria-label="Viraj Nikam home"
         >
           <span className="sr-only">Viraj Nikam</span>
-          <h1 aria-hidden className="inline-flex overflow-hidden">
+          <span aria-hidden className="inline-flex overflow-hidden">
             {LOGO_TEXT}
-          </h1>
+          </span>
           <span
             aria-hidden
             className="ml-1 mt-1.5 inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_18px_var(--primary)]"

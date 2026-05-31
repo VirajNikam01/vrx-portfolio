@@ -56,9 +56,9 @@ export function WorkExperience({
             <div className="mx-auto w-full max-w-5xl">
                 <div className=" mb-2 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <div className=" max-w-2xl space-y-3">
-                        <h1 className="text-3xl font-semibold text-primary uppercase">
+                        <h2 className="text-3xl font-semibold text-primary uppercase">
                             {heading}
-                        </h1>
+                        </h2>
                         <p className="tracking-tight text-muted-foreground">
                             {description}
                         </p>

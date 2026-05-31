@@ -100,10 +100,11 @@ const landingPagePlaceholderContent = {
     ],
 } satisfies LandingPageContentType;
 
-export function useLandingPageContent() {
+export function useLandingPageContent(initialData?: LandingPageContentType) {
     return useQuery({
         queryKey: landingPageContentQueryKey,
         queryFn: getLandingPageContent,
+        initialData,
         placeholderData: landingPagePlaceholderContent,
     });
 }
