@@ -13,7 +13,7 @@ export function HomePageClient({
 }: {
     initialContent: LandingPageContentType;
 }) {
-    const [isSplashDone, setIsSplashDone] = useState(false);
+    const [isSplashDone, setIsSplashDone] = useState(true);
 
     const handleSplashComplete = () => setIsSplashDone(true);
 
