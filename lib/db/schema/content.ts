@@ -59,7 +59,6 @@ export const uiSections = pgTable(
         sortOrder: integer("sort_order").default(0).notNull(),
         status: publishStatus("status").default("draft").notNull(),
         props: jsonRecord("props").default({}).notNull(),
-        content: jsonRecord("content").default({}).notNull(),
         dataSource: jsonRecord("data_source").default({}).notNull(),
         visibilityRules: jsonRecord("visibility_rules").default({}).notNull(),
         designOverrides: jsonRecord("design_overrides").default({}).notNull(),

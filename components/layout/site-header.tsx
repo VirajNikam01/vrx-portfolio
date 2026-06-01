@@ -85,7 +85,7 @@ export function SiteHeader() {
           />
         </Link>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className=" hidden shrink-0 items-center gap-2">
           <PrimaryColorPicker />
           <ThemeToggle />
         </div>

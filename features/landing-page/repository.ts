@@ -1,6 +1,8 @@
 import { and, asc, eq } from "drizzle-orm";
 
 import { landingPageContent } from "@/config/landing-page";
+import { readIntroductionContent } from "@/features/introduction/repository";
+import { readWorkExperiences } from "@/features/work-experience/repository";
 import { getDb } from "@/lib/db/client";
 import {
     featureFlagRules,
@@ -49,33 +51,32 @@ async function readLandingPageContentFromDatabase() {
         return landingPageContent;
     }
 
-    const [sections, flags, rules, variants] = await Promise.all([
-        db
-            .select()
-            .from(uiSections)
-            .where(
-                and(
-                    eq(uiSections.pageId, page.id),
-                    eq(uiSections.status, PUBLISHED_STATUS),
-                    eq(uiSections.isEnabled, true),
-                ),
-            )
-            .orderBy(asc(uiSections.sortOrder)),
-        db.select().from(featureFlags),
-        db
-            .select()
-            .from(featureFlagRules)
-            .where(eq(featureFlagRules.isEnabled, true))
-            .orderBy(asc(featureFlagRules.priority)),
-        db
-            .select()
-            .from(featureFlagVariants)
-            .where(eq(featureFlagVariants.isEnabled, true)),
-    ]);
-
-    const sectionContent = new Map(
-        sections.map((section) => [section.key, section.content]),
-    );
+    const [sections, flags, rules, variants, introduction, workExperiences] =
+        await Promise.all([
+            db
+                .select()
+                .from(uiSections)
+                .where(
+                    and(
+                        eq(uiSections.pageId, page.id),
+                        eq(uiSections.status, PUBLISHED_STATUS),
+                        eq(uiSections.isEnabled, true),
+                    ),
+                )
+                .orderBy(asc(uiSections.sortOrder)),
+            db.select().from(featureFlags),
+            db
+                .select()
+                .from(featureFlagRules)
+                .where(eq(featureFlagRules.isEnabled, true))
+                .orderBy(asc(featureFlagRules.priority)),
+            db
+                .select()
+                .from(featureFlagVariants)
+                .where(eq(featureFlagVariants.isEnabled, true)),
+            readIntroductionContent(),
+            readWorkExperiences(),
+        ]);
 
     const content = {
         page: {
@@ -96,11 +97,8 @@ async function readLandingPageContentFromDatabase() {
             visibilityRules: asRecord(section.visibilityRules),
             designOverrides: asRecord(section.designOverrides),
         })),
-        introduction:
-            sectionContent.get("introduction") ?? landingPageContent.introduction,
-        workExperiences:
-            sectionContent.get("workExperience") ??
-            landingPageContent.workExperiences,
+        introduction,
+        workExperiences,
     };
 
     return landingPageContentSchema.parse(content);

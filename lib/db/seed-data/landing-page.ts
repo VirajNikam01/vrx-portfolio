@@ -30,13 +30,13 @@ export const landingPageSeedData = {
                     (section) => section.key === "introduction",
                 )?.props ?? {},
             ),
-            content: toJsonValue(landingPageContent.introduction),
             visibilityRules: toJsonValue({
                 featureFlagKey: "showIntroduction",
             }),
             designOverrides: toJsonValue({}),
             dataSource: toJsonValue({
-                type: "inline",
+                type: "canonical",
+                table: "introductions",
                 configKey: "introduction",
             }),
             metadata: toJsonValue({
@@ -56,13 +56,13 @@ export const landingPageSeedData = {
                     (section) => section.key === "workExperience",
                 )?.props ?? {},
             ),
-            content: toJsonValue(landingPageContent.workExperiences),
             visibilityRules: toJsonValue({
                 featureFlagKey: "showWorkExperience",
             }),
             designOverrides: toJsonValue({}),
             dataSource: toJsonValue({
-                type: "inline",
+                type: "canonical",
+                table: "work_experience_companies",
                 configKey: "workExperiences",
             }),
             metadata: toJsonValue({

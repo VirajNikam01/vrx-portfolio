@@ -9,7 +9,7 @@ export const workExperiences = [
     positions: [
       {
         id: "full-stack-developer",
-        title: "Team Lead",
+        title: "Software Engineer",
         category: "professional",
         startDate: "2025-03-27",
         employmentType: "Project Work",

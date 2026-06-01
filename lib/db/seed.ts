@@ -71,7 +71,6 @@ export async function seedCurrentUiContent() {
                         isEnabled: section.isEnabled,
                         sortOrder: section.sortOrder,
                         props: section.props,
-                        content: section.content,
                         dataSource: section.dataSource,
                         visibilityRules: section.visibilityRules,
                         designOverrides: section.designOverrides,

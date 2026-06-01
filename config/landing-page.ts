@@ -11,7 +11,7 @@ export const landingPageContent = {
     },
     featureFlags: {
         showIntroduction: true,
-        showWorkExperience: true,
+        showWorkExperience: false,
     },
     sections: [
         {
@@ -28,7 +28,7 @@ export const landingPageContent = {
         {
             key: "workExperience",
             componentKey: "WorkExperience",
-            isEnabled: true,
+            isEnabled: false,
             sortOrder: 20,
             props: {
                 heading: "Experience",

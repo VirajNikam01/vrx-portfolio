@@ -1,0 +1,1 @@
+ALTER TABLE "ui_sections" DROP COLUMN "content";
