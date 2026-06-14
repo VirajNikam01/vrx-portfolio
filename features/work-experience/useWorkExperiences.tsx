@@ -1,12 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { getWorkExperiences } from "./api";
-
-export const workExperienceQueryKey = ["work-experience"] as const;
+import { workExperiences } from "@/config/work-experience";
 
 export function useWorkExperiences() {
-    return useQuery({
-        queryKey: workExperienceQueryKey,
-        queryFn: getWorkExperiences,
-    });
+    return {
+        data: workExperiences,
+    };
 }

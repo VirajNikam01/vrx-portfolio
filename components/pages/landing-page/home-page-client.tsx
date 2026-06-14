@@ -9,9 +9,9 @@ import { MainContent } from "@/components/pages/landing-page/main-content";
 import type { LandingPageContentType } from "@/features/landing-page";
 
 export function HomePageClient({
-    initialContent,
+    content,
 }: {
-    initialContent: LandingPageContentType;
+    content: LandingPageContentType;
 }) {
     const [isSplashDone, setIsSplashDone] = useState(true);
 
@@ -22,7 +22,7 @@ export function HomePageClient({
             <Stars />
             {isSplashDone && <SiteHeader />}
 
-            <MainContent initialContent={initialContent} />
+            <MainContent content={content} />
 
             <AnimatePresence mode="wait">
                 {!isSplashDone && (

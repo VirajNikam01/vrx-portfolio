@@ -5,7 +5,6 @@ import type { Target, Transition } from "framer-motion";
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Introduction } from "@/features/introduction";
-import { useLandingPageContent } from "@/features/landing-page";
 import type {
     LandingPageContentType,
     LandingPageSectionType,
@@ -25,17 +24,11 @@ type WorkExperienceSectionProps = {
 
 export function MainContent({
     className,
-    initialContent,
+    content,
 }: {
     className?: string;
-    initialContent?: LandingPageContentType;
+    content: LandingPageContentType;
 }) {
-    const { data: content } = useLandingPageContent(initialContent);
-
-    if (!content) {
-        return null;
-    }
-
     return (
         <AnimatedContent className={className}>
             <LandingPageSections content={content} />

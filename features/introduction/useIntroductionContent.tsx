@@ -1,12 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { getIntroductionContent } from "./api";
-
-export const introductionContentQueryKey = ["introduction"] as const;
+import { introductionContent } from "@/config/introduction";
 
 export function useIntroductionContent() {
-    return useQuery({
-        queryKey: introductionContentQueryKey,
-        queryFn: getIntroductionContent,
-    });
+    return {
+        data: introductionContent,
+    };
 }

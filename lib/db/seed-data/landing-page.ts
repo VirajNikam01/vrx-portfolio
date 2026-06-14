@@ -1,5 +1,6 @@
 import { landingPageContent } from "@/config/landing-page";
-import type { JsonValue } from "@/lib/db/schema";
+
+type JsonValue = unknown;
 
 function toJsonValue(value: unknown): JsonValue {
     return JSON.parse(JSON.stringify(value)) as JsonValue;
