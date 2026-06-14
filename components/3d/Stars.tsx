@@ -1,13 +1,10 @@
+"use client";
+
 import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useMounted } from "@/hooks/use-mounted";
 import { useTheme } from "next-themes";
-import React, {
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 const cameraPosVector = new THREE.Vector3(0, 0, 200);

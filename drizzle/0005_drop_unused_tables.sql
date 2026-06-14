@@ -1,0 +1,20 @@
+DROP TABLE IF EXISTS "feature_flag_rules" CASCADE;
+DROP TABLE IF EXISTS "feature_flag_variants" CASCADE;
+DROP TABLE IF EXISTS "feature_flags" CASCADE;
+DROP TABLE IF EXISTS "work_experience_position_skills" CASCADE;
+DROP TABLE IF EXISTS "work_experience_position_descriptions" CASCADE;
+DROP TABLE IF EXISTS "work_experience_positions" CASCADE;
+DROP TABLE IF EXISTS "work_experience_companies" CASCADE;
+DROP TABLE IF EXISTS "introduction_actions" CASCADE;
+DROP TABLE IF EXISTS "introduction_statement_segments" CASCADE;
+DROP TABLE IF EXISTS "introductions" CASCADE;
+DROP TABLE IF EXISTS "ui_sections" CASCADE;
+DROP TABLE IF EXISTS "ui_pages" CASCADE;
+DROP TABLE IF EXISTS "design_configs" CASCADE;
+
+DROP TYPE IF EXISTS "public"."feature_flag_rule_type";
+DROP TYPE IF EXISTS "public"."publish_status";
+DROP TYPE IF EXISTS "public"."experience_position_category";
+DROP TYPE IF EXISTS "public"."experience_position_icon";
+DROP TYPE IF EXISTS "public"."introduction_action_kind";
+DROP TYPE IF EXISTS "public"."introduction_statement_emphasis";

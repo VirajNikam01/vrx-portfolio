@@ -27,15 +27,10 @@ type IntroductionMediaProps = {
     image: IntroductionImageType;
 };
 
-type IntroductionSummaryProps = {
-    headline: string;
-    intro: string;
-};
-
 const INTRODUCTION_IMAGE_SIZE = 112;
 
 const sectionClassName =
-    "flex min-h-dvh items-center justify-center px-5 pt-36 pb-16 sm:px-8 lg:pt-40";
+    "flex min-h-dvh items-center justify-center px-5 pt-32 pb-16 sm:px-8 lg:pt-40";
 
 const contentClassName =
     "mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7";
@@ -70,10 +65,6 @@ export function Introduction({
                 <IntroductionStatement
                     segments={content.statement}
                     experienceDurationLabel={experienceDurationLabel}
-                />
-                <IntroductionSummary
-                    headline={content.headline}
-                    intro={content.intro}
                 />
                 <IntroductionActions actions={content.actions} />
             </div>
@@ -130,14 +121,5 @@ function IntroductionStatementSegment({
         <span className={segmentClassNameByEmphasis[segment.emphasis]}>
             {text}
         </span>
-    );
-}
-
-function IntroductionSummary({ headline, intro }: IntroductionSummaryProps) {
-    return (
-        <div className="sr-only">
-            <p>{headline}</p>
-            <p>{intro}</p>
-        </div>
     );
 }

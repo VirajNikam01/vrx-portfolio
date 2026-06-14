@@ -1,4 +1,3 @@
-import { readLandingPageContent } from "@/features/landing-page/repository";
 import {
     getPersonJsonLd,
     getProfilePageJsonLd,
@@ -6,13 +5,13 @@ import {
     serializeJsonLd,
 } from "@/config/seo";
 import { HomePageClient } from "@/components/pages/landing-page/home-page-client";
+import { landingPageContent } from "@/config/landing-page";
 
 export default async function Home() {
-    const content = await readLandingPageContent();
     const jsonLd = [
         getWebsiteJsonLd(),
-        getPersonJsonLd(content),
-        getProfilePageJsonLd(content),
+        getPersonJsonLd(),
+        getProfilePageJsonLd(),
     ];
 
     return (
@@ -23,7 +22,7 @@ export default async function Home() {
                     __html: serializeJsonLd(jsonLd),
                 }}
             />
-            <HomePageClient initialContent={content} />
+            <HomePageClient content={landingPageContent} />
         </>
     );
 }

@@ -29,6 +29,27 @@
       "when": 1780335315168,
       "tag": "0003_boring_norrin_radd",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1781442768465,
+      "tag": "0004_single_content_config",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1781442768465,
+      "tag": "0005_drop_unused_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1781447308144,
+      "tag": "0006_trim_landing_page_content_config",
+      "breakpoints": true
     }
   ]
 }

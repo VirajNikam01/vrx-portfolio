@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     images: [getSiteUrl("/opengraph-image")],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/intro/vrx-image.jpg",
   },
 };
 

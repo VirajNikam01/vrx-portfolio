@@ -1,14 +1,14 @@
-import type { LandingPageContentType } from "@/features/landing-page";
+import { landingPageContent } from "@/config/landing-page";
 import { getExperienceDurationLabel } from "@/features/work-experience";
 
 export const seoConfig = {
     name: "Viraj Nikam",
     legalName: "Viraj Nikam",
     handle: "vrx",
-    title: "Viraj Nikam | Software Developer Portfolio",
+    title: "Viraj Nikam | Software Developer in India",
     shortTitle: "Viraj Nikam",
     description:
-        "Portfolio of Viraj Nikam, a frontend-focused software developer building polished, reliable, and scalable web and desktop applications with React, Next.js, TypeScript, Tailwind CSS, Tauri, PostgreSQL, and Three.js.",
+        "Viraj Nikam is a frontend-focused software developer building fast, SEO-friendly websites and polished product interfaces with React, Next.js, TypeScript, Tailwind CSS, Tauri, and PostgreSQL.",
     siteUrl:
         process.env.NEXT_PUBLIC_SITE_URL ??
         process.env.VERCEL_PROJECT_PRODUCTION_URL ??
@@ -18,15 +18,13 @@ export const seoConfig = {
     image: "/images/intro/vrx-image.jpg",
     keywords: [
         "Viraj Nikam",
-        "Viraj",
-        "vrx",
         "Viraj Nikam portfolio",
-        "Viraj portfolio",
         "Viraj Nikam software developer",
         "Viraj Nikam frontend developer",
-        "Viraj Nikam full-stack developer",
-        "frontend developer portfolio India",
-        "software developer portfolio India",
+        "Viraj Nikam React developer",
+        "Viraj Nikam Next.js developer",
+        "software developer in India",
+        "frontend developer in India",
         "React developer",
         "Next.js developer",
         "TypeScript developer",
@@ -35,8 +33,6 @@ export const seoConfig = {
         "PostgreSQL developer",
         "Drizzle ORM developer",
         "Three.js developer",
-        "Zybra Viraj Nikam",
-        "Artoon Solutions Viraj Nikam",
     ],
     sameAs: [] as string[],
 };
@@ -49,9 +45,9 @@ export function getSiteUrl(path = "/") {
     return new URL(path, baseUrl).toString();
 }
 
-export function getPersonJsonLd(content: LandingPageContentType) {
+export function getPersonJsonLd() {
     const experienceDuration = getExperienceDurationLabel(
-        content.workExperiences,
+        landingPageContent.workExperiences,
     );
 
     return {
@@ -81,9 +77,9 @@ export function getPersonJsonLd(content: LandingPageContentType) {
             "WebGL",
             "UI Architecture",
         ],
-        worksFor: getCurrentOrganizations(content),
-        alumniOf: getPastOrganizations(content),
-        hasOccupation: content.workExperiences.flatMap((experience) =>
+        worksFor: getCurrentOrganizations(),
+        alumniOf: getPastOrganizations(),
+        hasOccupation: landingPageContent.workExperiences.flatMap((experience) =>
             experience.positions.map((position) => ({
                 "@type": "Occupation",
                 name: position.title,
@@ -92,7 +88,6 @@ export function getPersonJsonLd(content: LandingPageContentType) {
                     name: "India",
                 },
                 skills: position.skills,
-                estimatedSalary: undefined,
                 description: [
                     `${position.title} at ${experience.companyName}`,
                     ...(position.description ?? []),
@@ -135,14 +130,14 @@ export function getWebsiteJsonLd() {
     };
 }
 
-export function getProfilePageJsonLd(content: LandingPageContentType) {
+export function getProfilePageJsonLd() {
     return {
         "@context": "https://schema.org",
         "@type": "ProfilePage",
         "@id": getSiteUrl("/#profile-page"),
         url: getSiteUrl("/"),
         name: seoConfig.title,
-        headline: content.introduction.headline,
+        headline: landingPageContent.introduction.headline,
         description: seoConfig.description,
         inLanguage: "en-IN",
         mainEntity: {
@@ -153,16 +148,24 @@ export function getProfilePageJsonLd(content: LandingPageContentType) {
                 "@type": "Thing",
                 name: "Software development portfolio",
             },
-            ...content.workExperiences.map((experience) => ({
-                "@type": "Organization",
-                name: experience.companyName,
-            })),
+            {
+                "@type": "Thing",
+                name: "Frontend development",
+            },
+            {
+                "@type": "Thing",
+                name: "Next.js portfolio",
+            },
         ],
     };
 }
 
-function getCurrentOrganizations(content: LandingPageContentType) {
-    return content.workExperiences
+export function serializeJsonLd(payload: unknown) {
+    return JSON.stringify(payload).replace(/</g, "\\u003c");
+}
+
+function getCurrentOrganizations() {
+    return landingPageContent.workExperiences
         .filter((experience) => experience.isCurrentEmployer)
         .map((experience) => ({
             "@type": "Organization",
@@ -170,15 +173,11 @@ function getCurrentOrganizations(content: LandingPageContentType) {
         }));
 }
 
-function getPastOrganizations(content: LandingPageContentType) {
-    return content.workExperiences
+function getPastOrganizations() {
+    return landingPageContent.workExperiences
         .filter((experience) => !experience.isCurrentEmployer)
         .map((experience) => ({
             "@type": "Organization",
             name: experience.companyName,
         }));
-}
-
-export function serializeJsonLd(payload: unknown) {
-    return JSON.stringify(payload).replace(/</g, "\\u003c");
 }
