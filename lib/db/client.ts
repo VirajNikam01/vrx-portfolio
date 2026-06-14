@@ -4,7 +4,7 @@ import postgres from "postgres";
 import * as schema from "./schema";
 
 let dbClient: ReturnType<typeof postgres> | undefined;
-let db: ReturnType<typeof drizzle<typeof schema>> | undefined;
+let database: ReturnType<typeof drizzle<typeof schema>> | undefined;
 
 export function getDb() {
     const databaseUrl = process.env.DATABASE_URL;
@@ -16,7 +16,9 @@ export function getDb() {
     dbClient ??= postgres(databaseUrl, {
         prepare: false,
     });
-    db ??= drizzle(dbClient, { schema });
+    database ??= drizzle(dbClient, { schema });
 
-    return db;
+    return database;
 }
+
+export default getDb();
