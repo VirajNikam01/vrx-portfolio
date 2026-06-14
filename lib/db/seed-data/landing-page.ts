@@ -9,11 +9,17 @@ function toJsonValue(value: unknown): JsonValue {
 export const landingPageSeedDataDate = new Date("2026-05-26T00:00:00.000Z");
 
 export const landingPageSeedData = {
-    key: landingPageContent.page.key,
-    path: landingPageContent.page.path,
-    title: landingPageContent.page.title,
+    key: "landing-page",
+    path: "/",
+    title: "Viraj Nikam Portfolio",
     status: "published" as const,
     schemaVersion: 1,
-    content: toJsonValue(landingPageContent),
+    content: toJsonValue({
+        introduction: landingPageContent.introduction,
+        workExperiences: landingPageContent.workExperiences,
+    }),
+    config: toJsonValue({
+        featureFlags: landingPageContent.featureFlags,
+    }),
     publishedAt: landingPageSeedDataDate,
 };
