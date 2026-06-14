@@ -11,7 +11,6 @@ const LOGO_TEXT = "Viraj Nikam";
 
 function useScrollState(threshold = 4) {
   const [scrollState, setScrollState] = useState({
-    activeSection: "top",
     hasScrolled: false,
     progress: 0,
   });
@@ -22,7 +21,6 @@ function useScrollState(threshold = 4) {
       const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
 
       setScrollState({
-        activeSection: getActiveSection(),
         hasScrolled: window.scrollY > threshold,
         progress,
       });
@@ -39,18 +37,6 @@ function useScrollState(threshold = 4) {
   return scrollState;
 }
 
-function getActiveSection() {
-  const experienceSection = document.getElementById("experience");
-
-  if (!experienceSection) {
-    return "top";
-  }
-
-  return window.scrollY >= experienceSection.offsetTop - 160
-    ? "experience"
-    : "top";
-}
-
 export function SiteHeader() {
   const { hasScrolled, progress } = useScrollState();
 
@@ -64,9 +50,9 @@ export function SiteHeader() {
 
       <div
         className={cn(
-          "mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 rounded-2xl border px-5 transition-all duration-300 sm:h-20 sm:px-8",
+          "mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 rounded-2xl border px-5 transition-colors duration-300 sm:h-20 sm:px-8",
           hasScrolled
-            ? "border-border/60 bg-background/65 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-2xl supports-[backdrop-filter]:bg-background/55 dark:border-white/10 dark:bg-zinc-900/70 dark:shadow-[0_18px_80px_rgba(0,0,0,0.38)]"
+            ? "border-border/60 bg-background/95 shadow-[0_18px_60px_rgba(0,0,0,0.12)] dark:border-white/10 dark:bg-zinc-900/95 dark:shadow-[0_18px_80px_rgba(0,0,0,0.38)]"
             : "border-transparent bg-transparent"
         )}
       >

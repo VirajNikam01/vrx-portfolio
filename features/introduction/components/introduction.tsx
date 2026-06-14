@@ -35,7 +35,7 @@ type IntroductionSummaryProps = {
 const INTRODUCTION_IMAGE_SIZE = 112;
 
 const sectionClassName =
-    "flex min-h-dvh items-center justify-center px-5 pt-36 pb-16 sm:px-8 lg:pt-40";
+    "flex min-h-dvh items-center justify-center px-5 pt-32 pb-16 sm:px-8 lg:pt-40";
 
 const contentClassName =
     "mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7";
@@ -135,9 +135,13 @@ function IntroductionStatementSegment({
 
 function IntroductionSummary({ headline, intro }: IntroductionSummaryProps) {
     return (
-        <div className="sr-only">
-            <p>{headline}</p>
-            <p>{intro}</p>
+        <div className="max-w-3xl space-y-3 text-balance">
+            <p className="text-lg font-semibold text-foreground sm:text-xl">
+                {headline}
+            </p>
+            <p className="text-base leading-7 text-muted-foreground sm:text-lg">
+                {intro}
+            </p>
         </div>
     );
 }

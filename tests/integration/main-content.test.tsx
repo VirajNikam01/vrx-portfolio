@@ -3,14 +3,6 @@ import { render, screen } from "@testing-library/react";
 import { MainContent } from "@/components/pages/landing-page/main-content";
 import { landingPageContent } from "@/config/landing-page";
 
-jest.mock("framer-motion", () => ({
-    motion: {
-        div: ({ children, ...props }: React.ComponentProps<"div">) => (
-            <div {...props}>{children}</div>
-        ),
-    },
-}));
-
 describe("MainContent integration", () => {
     it("renders the introduction, work experience timeline, and footer from provided content", () => {
         render(
@@ -33,7 +25,7 @@ describe("MainContent integration", () => {
         expect(
             screen.getByRole("heading", {
                 level: 1,
-                name: /A passionate Software Engineer/i,
+                name: /Viraj Nikam/i,
             }),
         ).toBeInTheDocument();
         expect(

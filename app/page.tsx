@@ -8,11 +8,10 @@ import { HomePageClient } from "@/components/pages/landing-page/home-page-client
 import { landingPageContent } from "@/config/landing-page";
 
 export default async function Home() {
-    const content = landingPageContent;
     const jsonLd = [
         getWebsiteJsonLd(),
-        getPersonJsonLd(content),
-        getProfilePageJsonLd(content),
+        getPersonJsonLd(),
+        getProfilePageJsonLd(),
     ];
 
     return (
@@ -23,7 +22,7 @@ export default async function Home() {
                     __html: serializeJsonLd(jsonLd),
                 }}
             />
-            <HomePageClient content={content} />
+            <HomePageClient content={landingPageContent} />
         </>
     );
 }

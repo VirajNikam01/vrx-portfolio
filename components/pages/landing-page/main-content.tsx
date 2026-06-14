@@ -1,8 +1,5 @@
-"use client";
-
-import { motion } from "framer-motion";
-import type { Target, Transition } from "framer-motion";
 import type { ReactNode } from "react";
+
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Introduction } from "@/features/introduction";
 import type {
@@ -12,10 +9,6 @@ import type {
 import { getExperienceDurationLabel } from "@/features/work-experience";
 import { WorkExperience } from "@/features/work-experience/components";
 import { cn } from "@/lib/utils";
-
-const CONTENT_INITIAL: Target = { opacity: 0, filter: "blur(12px)" };
-const CONTENT_ANIMATE: Target = { opacity: 1, filter: "blur(0px)" };
-const CONTENT_TRANSITION: Transition = { duration: 0.8, ease: "easeOut" };
 
 type WorkExperienceSectionProps = {
     heading?: string;
@@ -30,10 +23,10 @@ export function MainContent({
     content: LandingPageContentType;
 }) {
     return (
-        <AnimatedContent className={className}>
+        <div className={cn("relative z-10", className)}>
             <LandingPageSections content={content} />
             <SiteFooter />
-        </AnimatedContent>
+        </div>
     );
 }
 
@@ -69,26 +62,6 @@ function LandingPageSections({ content }: { content: LandingPageContentType }) {
                 />
             </SectionGuard>
         </>
-    );
-}
-
-function AnimatedContent({
-    children,
-    className,
-}: {
-    children: ReactNode;
-    className?: string;
-}) {
-    return (
-        <motion.div
-            key="content"
-            className={cn("relative z-10", className)}
-            initial={CONTENT_INITIAL}
-            animate={CONTENT_ANIMATE}
-            transition={CONTENT_TRANSITION}
-        >
-            {children}
-        </motion.div>
     );
 }
 
