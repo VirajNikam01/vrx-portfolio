@@ -7,7 +7,7 @@ import { PrimaryColorPicker } from "@/components/theme/primary-color-picker";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { cn } from "@/lib/utils";
 
-const LOGO_TEXT = "Viraj Nikam";
+const LOGO_TEXT = "VRJ";
 
 function useScrollState(threshold = 4) {
   const [scrollState, setScrollState] = useState({
@@ -52,7 +52,7 @@ export function SiteHeader() {
         className={cn(
           "mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 rounded-2xl border px-5 transition-colors duration-300 sm:h-20 sm:px-8",
           hasScrolled
-            ? "border-border/60 bg-background/95 shadow-[0_18px_60px_rgba(0,0,0,0.12)] dark:border-white/10 dark:bg-zinc-900/95 dark:shadow-[0_18px_80px_rgba(0,0,0,0.38)]"
+            ? "border-border/60 w-fit bg-background/95 shadow-[0_18px_60px_rgba(0,0,0,0.12)] dark:border-white/10 dark:bg-zinc-900/95 dark:shadow-[0_18px_80px_rgba(0,0,0,0.38)]"
             : "border-transparent bg-transparent"
         )}
       >
@@ -62,12 +62,12 @@ export function SiteHeader() {
           aria-label="Viraj Nikam home"
         >
           <span className="sr-only">Viraj Nikam</span>
-          <span aria-hidden className="inline-flex overflow-hidden">
-            {LOGO_TEXT}
+          <span aria-hidden className="inline-flex overflow-hidden italic">
+            {LOGO_TEXT} <span className="text-3xl italic font-normal">X</span>
           </span>
           <span
             aria-hidden
-            className="ml-1 mt-1.5 inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_18px_var(--primary)]"
+            className="ml-1.5 mt-1.5 inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_18px_var(--primary)]"
           />
         </Link>
 

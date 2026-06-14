@@ -1,7 +1,7 @@
 import type { IntroductionContentType } from "@/features/introduction";
 
 export const introductionContent = {
-    eyebrow: "Software Developer in India",
+    eyebrow: "Software Developer",
     headline: "I build polished, reliable web experiences that load fast and stay clear.",
     intro:
         "I'm Viraj Nikam, a frontend-focused developer who cares about clean architecture, thoughtful interaction design, and interfaces that feel fast, clear, and dependable in real use.",

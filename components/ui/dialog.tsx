@@ -111,6 +111,18 @@ function DialogDescription({
     );
 }
 
+function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
+    return (
+        <div
+            className={cn(
+                "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+                className,
+            )}
+            {...props}
+        />
+    );
+}
+
 export {
     Dialog,
     DialogClose,
@@ -119,4 +131,5 @@ export {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogFooter,
 };

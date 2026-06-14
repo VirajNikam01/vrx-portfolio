@@ -13,6 +13,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -65,7 +66,7 @@ export function ResumeDownloadDialog({
                 issues
                     ? null
                     : error.message ||
-                          "I couldn't submit your details right now. Please try again.",
+                    "I couldn't submit your details right now. Please try again.",
             );
             return;
         }
@@ -98,73 +99,77 @@ export function ResumeDownloadDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent className="border-primary/20 bg-popover/95 shadow-lg sm:max-w-xl">
-                <DialogHeader>
-                    <DialogTitle className="text-3xl font-bold text-primary">
+            <DialogContent className="flex h-[550px] w-full max-w-xl flex-col gap-0 overflow-hidden border-primary/20 bg-popover/95 p-0 shadow-lg">
+                <DialogHeader className="shrink-0 border-b border-primary/10 px-6 py-4">
+                    <DialogTitle className="text-2xl font-bold text-primary">
                         Download CV
                     </DialogTitle>
-                    <DialogDescription className="text-base leading-7 text-foreground">
+                    <DialogDescription className="text-[14px] leading-7 text-foreground">
                         Would you like to share a quick message before downloading my CV?
                     </DialogDescription>
                 </DialogHeader>
 
                 <form
-                    className="space-y-4"
+                    id="resume-download-form"
+                    className="flex flex-1 flex-col overflow-hidden"
                     onSubmit={form.handleSubmit(handleValidSubmit, () =>
                         setSubmissionError(null),
                     )}
                 >
-                    <FormField
-                        label="Full Name"
-                        error={form.formState.errors.name?.message}
-                    >
-                        <Input
-                            autoComplete="name"
-                            placeholder="Enter your full name here"
-                            className="h-12 border-primary/15 bg-muted/70 px-5 text-base placeholder:font-semibold placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25"
-                            aria-invalid={Boolean(form.formState.errors.name)}
-                            {...form.register("name")}
-                        />
-                    </FormField>
-
-                    <FormField
-                        label="Email Address"
-                        error={form.formState.errors.email?.message}
-                    >
-                        <Input
-                            type="email"
-                            autoComplete="email"
-                            placeholder="Enter your email address here"
-                            className="h-12 border-primary/15 bg-muted/70 px-5 text-base placeholder:font-semibold placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25"
-                            aria-invalid={Boolean(form.formState.errors.email)}
-                            {...form.register("email")}
-                        />
-                    </FormField>
-
-                    <FormField
-                        label="Message"
-                        error={form.formState.errors.reason?.message}
-                    >
-                        <Textarea
-                            aria-invalid={Boolean(form.formState.errors.reason)}
-                            placeholder="Please share your message or let me know why you'd like to download my CV."
-                            className="min-h-32 border-primary/15 bg-muted/70 px-5 py-3 text-base placeholder:font-semibold placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25"
-                            {...form.register("reason")}
-                        />
-                    </FormField>
-
-                    {submissionError && (
-                        <p
-                            className="text-sm font-medium text-destructive"
-                            role="alert"
+                    <div className="flex-1 space-y-4 overflow-y-auto px-6 py-4">
+                        <FormField
+                            label="Full Name"
+                            error={form.formState.errors.name?.message}
                         >
-                            {submissionError}
-                        </p>
-                    )}
+                            <Input
+                                autoComplete="name"
+                                placeholder="Enter your full name here"
+                                className="h-12 border-primary/15 bg-muted/70 px-2 text-[14px] placeholder:font-normal placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25 aria-invalid:border-primary aria-invalid:focus-visible:border-primary aria-invalid:focus-visible:ring-primary/25"
+                                aria-invalid={Boolean(form.formState.errors.name)}
+                                {...form.register("name")}
+                            />
+                        </FormField>
 
-                    <div className="flex justify-end">
+                        <FormField
+                            label="Email Address"
+                            error={form.formState.errors.email?.message}
+                        >
+                            <Input
+                                type="email"
+                                autoComplete="email"
+                                placeholder="Enter your email address here"
+                                className="h-12 border-primary/15 bg-muted/70 px-2 text-[14px] placeholder:font-normal placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25 aria-invalid:border-primary aria-invalid:focus-visible:border-primary aria-invalid:focus-visible:ring-primary/25"
+                                aria-invalid={Boolean(form.formState.errors.email)}
+                                {...form.register("email")}
+                            />
+                        </FormField>
+
+                        <FormField
+                            label="Message"
+                            error={form.formState.errors.reason?.message}
+                        >
+                            <Textarea
+                                aria-invalid={Boolean(form.formState.errors.reason)}
+                                placeholder="Please share your message or let me know why you'd like to download my CV."
+                                className="min-h-32 border-primary/15 bg-muted/70 px-2 text-[14px] placeholder:font-normal placeholder:text-foreground/55 focus-visible:border-primary focus-visible:ring-primary/25 aria-invalid:border-primary aria-invalid:focus-visible:border-primary aria-invalid:focus-visible:ring-primary/25"
+                                {...form.register("reason")}
+                            />
+                        </FormField>
+
+                        {submissionError && (
+                            <p
+                                className="text-sm font-medium text-primary"
+                                role="alert"
+                            >
+                                {submissionError}
+                            </p>
+                        )}
+                    </div>
+
+                    <DialogFooter className="shrink-0 border-t border-primary/10 px-6 py-4">
                         <Button
                             type="submit"
+                            form="resume-download-form"
                             className="px-3 py-1"
                             disabled={form.formState.isSubmitting}
                             onClick={() => setSubmissionError(null)}
@@ -174,7 +179,7 @@ export function ResumeDownloadDialog({
                                 : "Download CV"}{" "}
                             <DownloadIcon className="ml-2" />
                         </Button>
-                    </div>
+                    </DialogFooter>
                 </form>
             </DialogContent>
         </Dialog>
@@ -191,10 +196,13 @@ function FormField({
     label: string;
 }) {
     return (
-        <label className="grid gap-2 text-sm font-semibold text-foreground">
+        <label
+            className={`grid gap-2 text-sm font-semibold ${error ? "text-primary" : "text-foreground"
+                }`}
+        >
             <span>{label}</span>
             {children}
-            {error && <span className="text-xs text-destructive">{error}</span>}
+            {error && <span className="text-xs text-primary">{error}</span>}
         </label>
     );
 }
