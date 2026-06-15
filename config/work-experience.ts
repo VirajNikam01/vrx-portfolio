@@ -45,6 +45,7 @@ export const workExperiences = [
     id: "2",
     companyName: "Artoon Solutions",
     companyLogo: "/images/work-experience/artoon-logo.png",
+    isCurrentEmployer: false,
     positions: [
       {
         id: "software-development",
