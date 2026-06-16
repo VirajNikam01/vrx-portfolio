@@ -24,6 +24,7 @@ import {
 } from "../schema";
 import type { IntroductionResumeActionType } from "../types";
 import { DownloadIcon } from "lucide-react";
+import { useScrollIntoView } from "@/hooks/use-scroll-into-view";
 
 type ResumeDownloadDialogProps = {
     children: React.ReactNode;
@@ -44,6 +45,8 @@ export function ResumeDownloadDialog({
             reason: "",
         },
     });
+    const submissionErrorRef = useScrollIntoView(submissionError);
+
 
     function applyServerErrors(error: unknown) {
         if (error instanceof InquirySubmissionError) {
@@ -157,16 +160,13 @@ export function ResumeDownloadDialog({
                         </FormField>
 
                         {submissionError && (
-                            <p
-                                className="text-sm font-medium text-primary"
-                                role="alert"
-                            >
+                            <p ref={submissionErrorRef} role="alert" className="text-sm font-medium text-destructive pb-2">
                                 {submissionError}
                             </p>
                         )}
                     </div>
 
-                    <DialogFooter className="shrink-0 border-t border-primary/10 px-6 py-4">
+                    <DialogFooter className="shrink-0 border-t border-primary/10 px-6 py-2">
                         <Button
                             type="submit"
                             form="resume-download-form"

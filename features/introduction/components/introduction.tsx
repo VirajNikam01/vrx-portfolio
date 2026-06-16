@@ -30,7 +30,7 @@ type IntroductionMediaProps = {
 const INTRODUCTION_IMAGE_SIZE = 112;
 
 const sectionClassName =
-    "flex min-h-dvh items-center justify-center px-5 pt-32 pb-16 sm:px-8 lg:pt-40";
+    "flex min-h-dvh items-center justify-center px-5 pt-22 pb-16 sm:px-8 lg:pt-15";
 
 const contentClassName =
     "mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7";
