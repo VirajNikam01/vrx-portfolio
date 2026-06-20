@@ -1,3 +1,5 @@
+import axios from "@/config/axios";
+import { isAxiosError } from "axios";
 import type { InquirySubmissionType } from "./schema";
 
 type InquiryFieldErrors = Partial<
@@ -20,29 +22,24 @@ export class InquirySubmissionError extends Error {
 }
 
 export async function submitInquiry(values: InquirySubmissionType) {
-    const response = await fetch("/api/inquiries", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-    });
-
-    if (!response.ok) {
-        const payload = (await response
-            .json()
-            .catch(() => ({}))) as InquiryErrorResponse;
-
-        throw new InquirySubmissionError(
-            payload.error ?? "Unable to submit inquiry.",
-            payload.issues,
-        );
+    try {
+        console.log(values)
+        const response = await axios({
+            method: "POST",
+            url: "/inquiries",
+            data: values,
+        });
+        console.log(response.data)
+        return response.data as { data: { id: number; resumeUrl?: string } };
+    } catch (error: unknown) {
+        console.log(error)
+        if (isAxiosError(error)) {
+            const data = error?.response?.data as InquiryErrorResponse;
+            throw new InquirySubmissionError(
+                data?.error ?? "Something went wrong",
+                data?.issues,
+            );
+        }
+        throw new InquirySubmissionError("Something went wrong");
     }
-
-    return response.json() as Promise<{
-        data: {
-            id: number;
-            resumeUrl?: string;
-        };
-    }>;
 }

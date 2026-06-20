@@ -76,8 +76,12 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error("Failed to submit inquiry", error);
 
+        const message = error instanceof Error
+            ? error.message
+            : "Unable to submit inquiry right now.";
+
         return Response.json(
-            { error: "Unable to submit inquiry right now." },
+            { error: message },
             { status: 500 },
         );
     }
