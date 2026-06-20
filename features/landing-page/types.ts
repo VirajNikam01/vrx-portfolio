@@ -6,8 +6,19 @@ export type LandingPageFeatureFlagsType = {
     showWorkExperience: boolean;
 };
 
+export type MetaType = {
+    email: string;
+    github: {
+        url: string;
+    };
+    linkedin: {
+        url: string;
+    };
+};
+
 export type LandingPageContentType = {
     featureFlags: LandingPageFeatureFlagsType;
     introduction: IntroductionContentType;
     workExperiences: ExperienceItemType[];
+    meta: MetaType;
 };

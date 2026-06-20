@@ -43,4 +43,6 @@ export type ExperienceItemType = {
     positions: ExperiencePositionItemType[];
     /** Indicates if this is the user's current employer */
     isCurrentEmployer?: boolean;
+    /** Indicates if the experience item should be visible in the UI */
+    isVisible?: boolean;
 };

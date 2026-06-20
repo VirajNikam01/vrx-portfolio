@@ -30,7 +30,6 @@ features/work-experience/components/work-experience.tsx
 features/work-experience/types.ts
 features/work-experience/schema.ts
 features/work-experience/api.ts
-features/work-experience/useWorkExperiences.tsx
 ```
 
 Landing integration:
@@ -95,29 +94,6 @@ The query calls the API first. If the API request fails or returns an invalid pa
 
 ## Rendering setup
 
-The section is rendered inside `MainContent`:
-
-```tsx
-import { Introduction, useIntroductionContent } from "@/features/introduction";
-import { useWorkExperiences, WorkExperience } from "@/features/work-experience";
-
-export function MainContent() {
-  const { data: introductionContent } = useIntroductionContent();
-  const { data: workExperiences } = useWorkExperiences();
-
-  if (!introductionContent || !workExperiences) {
-    return null;
-  }
-
-  return (
-    <motion.div className="relative z-10">
-      <Introduction content={introductionContent} />
-      <WorkExperience experiences={workExperiences} />
-    </motion.div>
-  );
-}
-```
-
 The intro and the work experience section are part of the same animated content block. This keeps the splash transition clean because the whole landing content enters together after the splash exits.
 
 ## Background behavior
@@ -162,7 +138,7 @@ The stars become hidden when any parent or section paints an opaque background o
 This hides the stars:
 
 ```tsx
-className="bg-background"
+className = "bg-background";
 ```
 
 Why?
@@ -182,7 +158,7 @@ Why?
 So this:
 
 ```tsx
-className="bg-background"
+className = "bg-background";
 ```
 
 becomes a real white or dark background layer. If it is applied to the work experience section, it covers the fixed `Stars` canvas.
@@ -190,7 +166,7 @@ becomes a real white or dark background layer. If it is applied to the work expe
 This also hides stars locally:
 
 ```tsx
-last:before:bg-background
+last: before: bg - background;
 ```
 
 That creates a pseudo-element with an opaque background. Even if the main section is transparent, that pseudo-element paints a small block over the star field.
@@ -200,19 +176,19 @@ That creates a pseudo-element with an opaque background. Even if the main sectio
 Use this when the stars should be visible:
 
 ```tsx
-"relative border-y border-border/60 bg-transparent px-6 py-20"
+"relative border-y border-border/60 bg-transparent px-6 py-20";
 ```
 
 Avoid this in the section wrapper:
 
 ```tsx
-"bg-background"
+"bg-background";
 ```
 
 Avoid this in timeline patches:
 
 ```tsx
-"before:bg-background"
+"before:bg-background";
 ```
 
 ## Child element backgrounds
@@ -220,9 +196,9 @@ Avoid this in timeline patches:
 Small child backgrounds are still okay when they are intentional UI surfaces:
 
 ```tsx
-bg-muted
-bg-muted/50
-hover:before:bg-muted/50
+bg - muted;
+bg - muted / 50;
+hover: before: bg - muted / 50;
 ```
 
 These are used for icons, skill pills, and hover states. They do not cover the whole section, so the stars remain visible around the content.
@@ -230,8 +206,8 @@ These are used for icons, skill pills, and hover states. They do not cover the w
 If the design should be even more glass-like, these child fills can be reduced:
 
 ```tsx
-bg-muted/30
-hover:before:bg-muted/30
+bg - muted / 30;
+hover: before: bg - muted / 30;
 ```
 
 ## Mental model
