@@ -1,12 +1,31 @@
+import { useLandingPageContent } from "@/features/landing-page";
 import { ArrowUpRightIcon, CodeXmlIcon, IdCardIcon, MailIcon } from "lucide-react";
 
-const footerLinks = [
-  { label: "Email", href: "mailto:virajnikam.connect@gmail.com", icon: MailIcon },
-  { label: "GitHub", href: "https://github.com/", icon: CodeXmlIcon },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: IdCardIcon },
-];
+
 
 export function SiteFooter() {
+  const currentYear = new Date().getFullYear();
+  const { data: landingPageContent } = useLandingPageContent();
+  const meta = landingPageContent.data.meta;
+  const footerLinks = [
+    {
+      label: "Email",
+      href: `mailto:${meta.email}`,
+      icon: MailIcon,
+    },
+    {
+      label: "LinkedIn",
+      href: meta.linkedin.url,
+      icon: IdCardIcon,
+    },
+    {
+      label: "GitHub",
+      href: meta.github.url,
+      icon: CodeXmlIcon,
+    },
+  ];
+
+
   return (
     <footer className="relative z-10 border-t border-border/60 px-6 py-12">
       <div className="mx-auto grid w-full max-w-5xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
@@ -30,8 +49,7 @@ export function SiteFooter() {
       </div>
 
       <div className="mx-auto mt-10 flex w-full max-w-5xl flex-col gap-2 border-t border-border/50 pt-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>&copy; {new Date().getFullYear()} Viraj Nikam. All rights reserved.</p>
-        <p>virajnikam.in</p>
+        <p>&copy; {currentYear} Viraj Nikam. All rights reserved.</p>
       </div>
     </footer>
   );
