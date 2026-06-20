@@ -11,9 +11,10 @@ export function useLandingPageContent() {
         queryKey: queryKeys.landingPageContent,
         queryFn: landingPageAction.fetchLandingPageContent,
         /*
-        ** we are prefetching teh request data, so there will be no role of placeholder
+        ** we are prefetching teh request data, so there will be no role of placeholder,
+           but need to keep for building next build During prerender/SSR
         */
-        // placeholderData: landingPageContent,
+        placeholderData: { data: landingPageContent },
         staleTime: Infinity,
         gcTime: Infinity,
     })

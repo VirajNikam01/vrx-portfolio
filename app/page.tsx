@@ -9,6 +9,7 @@ import { landingPageContent } from "@/config/landing-page";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/data/query-keys";
 import { landingPageAction } from "@/actions/landing-page";
+import { makeQueryClient } from "@/config/query-client";
 
 export default async function Home() {
     const jsonLd = [
@@ -17,7 +18,7 @@ export default async function Home() {
         getProfilePageJsonLd(),
     ];
 
-    const queryClient = new QueryClient();
+    const queryClient = makeQueryClient();
 
     await queryClient.prefetchQuery({
         queryKey: queryKeys.landingPageContent,

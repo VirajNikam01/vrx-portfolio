@@ -8,3 +8,17 @@ export const queryClient = new QueryClient({
         },
     },
 });
+
+export const makeQueryClient = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: false,
+                retry: false,
+            },
+        },
+    });
+
+    return queryClient;
+
+}

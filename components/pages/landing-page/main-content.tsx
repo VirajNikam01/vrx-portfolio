@@ -7,6 +7,10 @@ import { WorkExperience } from "@/features/work-experience/components";
 import { cn } from "@/lib/utils";
 
 export function MainContent() {
+    const { data: landingPageContent } = useLandingPageContent();
+    if (!landingPageContent?.data) {
+        return null;
+    }
 
     return (
         <div className={cn("relative z-10")}>
