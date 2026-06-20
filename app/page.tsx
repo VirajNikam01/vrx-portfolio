@@ -23,11 +23,9 @@ export default async function Home() {
 
     await queryClient.prefetchQuery({
         queryKey: queryKeys.landingPageContent,
-        /*
-        ** Direct db call, No HTTP layer because vercels vercel blocks preview on branches except main
-        */
-        queryFn: readLandingPageContent, //landingPageAction.fetchLandingPageContent,
+        queryFn: landingPageAction.fetchLandingPageContent,
         staleTime: Infinity,
+        gcTime: Infinity,
     });
 
     return (

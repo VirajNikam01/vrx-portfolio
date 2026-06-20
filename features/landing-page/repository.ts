@@ -12,6 +12,7 @@ export async function readLandingPageContent(): Promise<LandingPageContentType> 
             .where(eq(contentConfigs.key, "landing-page"))
             .limit(1);
 
+        if (!result) return landingPageContent;
         return result.content as LandingPageContentType;
     } catch (error) {
         return landingPageContent;
