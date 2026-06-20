@@ -5,12 +5,12 @@ import {
     serializeJsonLd,
 } from "@/config/seo";
 import { HomePageClient } from "@/components/pages/landing-page/home-page-client";
-import { landingPageContent } from "@/config/landing-page";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/data/query-keys";
-import { landingPageAction } from "@/actions/landing-page";
-import { makeQueryClient } from "@/config/query-client";
-import { readLandingPageContent } from "@/features/landing-page/repository";
+// import { landingPageContent } from "@/config/landing-page";
+// import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+// import { queryKeys } from "@/data/query-keys";
+// import { landingPageAction } from "@/actions/landing-page";
+// import { makeQueryClient } from "@/config/query-client";
+// import { readLandingPageContent } from "@/features/landing-page/repository";
 
 export default async function Home() {
     const jsonLd = [
@@ -19,14 +19,14 @@ export default async function Home() {
         getProfilePageJsonLd(),
     ];
 
-    const queryClient = makeQueryClient();
+    // const queryClient = makeQueryClient();
 
-    await queryClient.prefetchQuery({
-        queryKey: queryKeys.landingPageContent,
-        queryFn: landingPageAction.fetchLandingPageContent,
-        staleTime: Infinity,
-        gcTime: Infinity,
-    });
+    // await queryClient.prefetchQuery({
+    //     queryKey: queryKeys.landingPageContent,
+    //     queryFn: landingPageAction.fetchLandingPageContent,
+    //     staleTime: Infinity,
+    //     gcTime: Infinity,
+    // });
 
     return (
         <>
@@ -36,9 +36,9 @@ export default async function Home() {
                     __html: serializeJsonLd(jsonLd),
                 }}
             />
-            <HydrationBoundary state={dehydrate(queryClient)}>
-                <HomePageClient />
-            </HydrationBoundary>
+            {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
+            <HomePageClient />
+            {/* </HydrationBoundary> */}
         </>
     );
 }
