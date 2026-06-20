@@ -4,6 +4,9 @@ import { landingPageContent } from "@/config/landing-page";
 async function fetchLandingPageContent() {
     try {
         const response = await axios.get("/content/landing-page");
+        console.log("landing page result:", response.data);
+
+        if (!response) return landingPageContent;
         return response.data;
     } catch (error) {
         /* 
