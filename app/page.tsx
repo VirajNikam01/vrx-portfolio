@@ -10,6 +10,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { queryKeys } from "@/data/query-keys";
 import { landingPageAction } from "@/actions/landing-page";
 import { makeQueryClient } from "@/config/query-client";
+import { readLandingPageContent } from "@/features/landing-page/repository";
 
 export default async function Home() {
     const jsonLd = [
@@ -22,7 +23,10 @@ export default async function Home() {
 
     await queryClient.prefetchQuery({
         queryKey: queryKeys.landingPageContent,
-        queryFn: landingPageAction.fetchLandingPageContent,
+        /*
+        ** Direct db call, No HTTP layer because vercels vercel blocks preview on branches except main
+        */
+        queryFn: readLandingPageContent, //landingPageAction.fetchLandingPageContent,
         staleTime: Infinity,
     });
 
