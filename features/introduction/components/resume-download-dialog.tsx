@@ -82,6 +82,7 @@ export function ResumeDownloadDialog({
     async function handleValidSubmit(values: ResumeDownloadRequestType) {
         setSubmissionError(null);
 
+        console.log(values)
         try {
             const response = await submitInquiry({
                 ...values,
