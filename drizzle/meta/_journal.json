@@ -50,6 +50,13 @@
       "when": 1781447308144,
       "tag": "0006_trim_landing_page_content_config",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1782559540939,
+      "tag": "0007_elite_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }
