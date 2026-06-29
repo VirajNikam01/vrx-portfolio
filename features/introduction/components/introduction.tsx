@@ -6,6 +6,7 @@ import type {
     IntroductionStatementSegmentType,
 } from "../types";
 import { IntroductionActions } from "./introduction-actions";
+import { cn } from "@/lib/utils";
 
 type IntroductionProps = {
     content: IntroductionContentType;
@@ -114,11 +115,11 @@ function IntroductionStatementSegment({
     const text = getSegmentText(segment, experienceDurationLabel);
 
     if (!segment.emphasis) {
-        return text;
+        return <span className="text-2xl leading-tight">{text}</span>;
     }
 
     return (
-        <span className={segmentClassNameByEmphasis[segment.emphasis]}>
+        <span className={cn(segmentClassNameByEmphasis[segment.emphasis], "text-2xl leading-tight")}>
             {text}
         </span>
     );

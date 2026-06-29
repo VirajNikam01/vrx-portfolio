@@ -1,9 +1,6 @@
 import { landingPageContent } from "@/config/landing-page";
-import type { LandingPageContentType } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { landingPageAction } from "@/actions/landing-page";
-import { error } from "console";
-import { queryClient } from "@/config/query-client";
 import { queryKeys } from "@/data/query-keys";
 
 export function useLandingPageContent() {

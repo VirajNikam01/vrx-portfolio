@@ -8,8 +8,6 @@ import {
     // sendResumeDownloadEmail,
 } from "@/lib/email/inquiry-notifications";
 
-export const runtime = "nodejs";
-
 export async function POST(request: Request) {
     const payload = await request.json().catch(() => null);
     const parsedPayload = inquirySubmissionSchema.safeParse(payload);
