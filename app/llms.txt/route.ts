@@ -2,8 +2,6 @@ import { landingPageContent } from "@/config/landing-page";
 import { getExperienceDurationLabel } from "@/features/work-experience";
 import { getSiteUrl, seoConfig } from "@/config/seo";
 
-export const dynamic = "force-static";
-
 export function GET() {
     const duration = getExperienceDurationLabel(
         landingPageContent.workExperiences,

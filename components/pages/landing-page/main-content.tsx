@@ -1,5 +1,5 @@
-import { landingPageAction } from "@/actions/landing-page";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { BlogSection } from "@/features/blog/components/blog-section";
 import { Introduction } from "@/features/introduction";
 import { useLandingPageContent, type LandingPageContentType } from "@/features/landing-page";
 import { ExperienceItemType, getExperienceDurationLabel } from "@/features/work-experience";
@@ -8,21 +8,28 @@ import { cn } from "@/lib/utils";
 
 export function MainContent() {
     const { data: landingPageContent } = useLandingPageContent();
-    if (!landingPageContent?.data) {
+    const content =
+        landingPageContent && "data" in landingPageContent
+            ? landingPageContent.data
+            : landingPageContent;
+
+    if (!content) {
         return null;
     }
 
     return (
         <div className={cn("relative z-10")}>
-            <LandingPageSections />
+            <LandingPageSections content={content} />
             <SiteFooter />
         </div>
     );
 }
 
-function LandingPageSections() {
-    const { data: landingPageContent } = useLandingPageContent();
-    const content = landingPageContent.data;
+function LandingPageSections({
+    content,
+}: {
+    content: LandingPageContentType;
+}) {
     const allowedVisibleExperiences = content.workExperiences.filter(
         (experience: ExperienceItemType) => experience.isVisible,
     );
@@ -38,12 +45,15 @@ function LandingPageSections() {
                     experienceDurationLabel={experienceDurationLabel}
                 />
             )}
-
+            {content.featureFlags.showBlog && <BlogSection />
+            }
             {content.featureFlags.showWorkExperience && (
                 <WorkExperience
                     experiences={allowedVisibleExperiences}
                 />
             )}
+
+
         </>
     );
 }

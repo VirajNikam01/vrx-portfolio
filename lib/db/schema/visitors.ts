@@ -2,6 +2,7 @@ import { pgTable, text, timestamp, smallint, real, boolean } from "drizzle-orm/p
 
 export const visitors = pgTable("visitors", {
     fingerprintHash: text("fingerprint_hash").primaryKey(),
+    label: text("label"),
     // device
     screen: text("screen"),
     platform: text("platform"),

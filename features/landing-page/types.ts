@@ -4,6 +4,7 @@ import type { ExperienceItemType } from "@/features/work-experience";
 export type LandingPageFeatureFlagsType = {
     showIntroduction: boolean;
     showWorkExperience: boolean;
+    showBlog: boolean
 };
 
 export type MetaType = {

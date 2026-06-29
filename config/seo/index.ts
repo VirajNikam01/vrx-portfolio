@@ -1,10 +1,11 @@
 import { landingPageContent } from "@/config/landing-page";
 import { getExperienceDurationLabel } from "@/features/work-experience";
+import { cacheLife } from "next/cache";
 
 export const seoConfig = {
     name: "Viraj Nikam",
     legalName: "Viraj Nikam",
-    handle: "vrx",
+    handle: "virajnikam",
     title: "Viraj Nikam | Software Developer in India",
     shortTitle: "Viraj Nikam",
     description:
@@ -18,11 +19,15 @@ export const seoConfig = {
     image: "/images/intro/vrx-image.jpg",
     keywords: [
         "Viraj Nikam",
+        "Viraj",
         "Viraj Nikam portfolio",
+        "Viraj portfolio",
         "Viraj Nikam software developer",
         "Viraj Nikam frontend developer",
         "Viraj Nikam React developer",
         "Viraj Nikam Next.js developer",
+        "VRX",
+        "VRX portfolio",
         "software developer in India",
         "frontend developer in India",
         "React developer",
@@ -34,7 +39,7 @@ export const seoConfig = {
         "Drizzle ORM developer",
         "Three.js developer",
     ],
-    sameAs: [] as string[],
+    sameAs: ["https://www.linkedin.com/in/virajnikam"],
 };
 
 export function getSiteUrl(path = "/") {
@@ -45,7 +50,7 @@ export function getSiteUrl(path = "/") {
     return new URL(path, baseUrl).toString();
 }
 
-export function getPersonJsonLd() {
+export async function getPersonJsonLd() {
     const experienceDuration = getExperienceDurationLabel(
         landingPageContent.workExperiences,
     );
@@ -55,7 +60,7 @@ export function getPersonJsonLd() {
         "@type": "Person",
         "@id": getSiteUrl("/#viraj-nikam"),
         name: seoConfig.name,
-        alternateName: [seoConfig.handle, "Viraj"],
+        alternateName: [seoConfig.handle, "Viraj", "VRX"],
         url: getSiteUrl("/"),
         image: getSiteUrl(seoConfig.image),
         email: `mailto:${seoConfig.email}`,
@@ -117,12 +122,15 @@ export function getWebsiteJsonLd() {
         "@id": getSiteUrl("/#website"),
         name: seoConfig.title,
         alternateName: [
+            "Viraj",
+            "Viraj Nikam",
             "Viraj Nikam Portfolio",
             "Viraj Portfolio",
             "VRX Portfolio",
         ],
         url: getSiteUrl("/"),
         description: seoConfig.description,
+        sameAs: seoConfig.sameAs,
         inLanguage: "en-IN",
         publisher: {
             "@id": getSiteUrl("/#viraj-nikam"),
@@ -130,7 +138,7 @@ export function getWebsiteJsonLd() {
     };
 }
 
-export function getProfilePageJsonLd() {
+export async function getProfilePageJsonLd() {
     return {
         "@context": "https://schema.org",
         "@type": "ProfilePage",

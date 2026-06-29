@@ -71,9 +71,6 @@ export const metadata: Metadata = {
     description: seoConfig.description,
     images: [getSiteUrl("/opengraph-image")],
   },
-  icons: {
-    icon: "/images/intro/vrx-image.jpg",
-  },
 };
 
 export const viewport: Viewport = {
