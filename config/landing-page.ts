@@ -7,6 +7,7 @@ export const landingPageContent = {
     featureFlags: {
         showIntroduction: true,
         showWorkExperience: true,
+        showBlog: true
     },
     introduction: introductionContent,
     workExperiences,
