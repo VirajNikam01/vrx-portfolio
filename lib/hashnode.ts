@@ -14,9 +14,6 @@ export type BlogPost = {
 };
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-    "use cache";
-    cacheLife("hours");
-
     try {
         const feed = await parser.parseURL(
             "https://blog.virajnikam.in/rss.xml",

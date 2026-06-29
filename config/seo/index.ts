@@ -51,9 +51,6 @@ export function getSiteUrl(path = "/") {
 }
 
 export async function getPersonJsonLd() {
-    "use cache";
-    cacheLife("days");
-
     const experienceDuration = getExperienceDurationLabel(
         landingPageContent.workExperiences,
     );
@@ -142,9 +139,6 @@ export function getWebsiteJsonLd() {
 }
 
 export async function getProfilePageJsonLd() {
-    "use cache";
-    cacheLife("days");
-
     return {
         "@context": "https://schema.org",
         "@type": "ProfilePage",
