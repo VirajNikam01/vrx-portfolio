@@ -6,7 +6,6 @@ import type {
     IntroductionStatementSegmentType,
 } from "../types";
 import { IntroductionActions } from "./introduction-actions";
-import { cn } from "@/lib/utils";
 
 type IntroductionProps = {
     content: IntroductionContentType;
@@ -82,7 +81,7 @@ function IntroductionMedia({ eyebrow, image }: IntroductionMediaProps) {
                 alt={image.alt}
                 width={INTRODUCTION_IMAGE_SIZE}
                 height={INTRODUCTION_IMAGE_SIZE}
-                className="size-28 rounded-full border border-primary/20 object-cover shadow-lg shadow-primary/10"
+                className="size-28 rounded-full md:rounded-none border border-primary/20 object-cover shadow-lg shadow-primary/10"
             />
             <p className="text-sm font-semibold tracking-wide text-primary uppercase">
                 {eyebrow}
@@ -115,11 +114,11 @@ function IntroductionStatementSegment({
     const text = getSegmentText(segment, experienceDurationLabel);
 
     if (!segment.emphasis) {
-        return <span className="text-2xl leading-tight">{text}</span>;
+        return text;
     }
 
     return (
-        <span className={cn(segmentClassNameByEmphasis[segment.emphasis], "text-2xl leading-tight")}>
+        <span className={segmentClassNameByEmphasis[segment.emphasis]}>
             {text}
         </span>
     );
