@@ -2,6 +2,7 @@ import { POST } from "@/app/api/inquiries/route";
 import { validateInquiryEmail } from "@/features/inquiries/email-validation";
 import { createInquiry } from "@/features/inquiries/repository";
 import { createResumeSignedUrl } from "@/features/resume/storage";
+import { visitorsRepository } from "@/features/visitors";
 import {
   sendInquiryNotification,
   sendResumeDownloadEmail,
@@ -13,6 +14,12 @@ jest.mock("@/features/inquiries/email-validation", () => ({
 
 jest.mock("@/features/inquiries/repository", () => ({
   createInquiry: jest.fn(),
+}));
+
+jest.mock("@/features/visitors", () => ({
+  visitorsRepository: {
+    upsert: jest.fn(),
+  },
 }));
 
 jest.mock("@/lib/email/inquiry-notifications", () => ({
@@ -27,6 +34,7 @@ jest.mock("@/features/resume/storage", () => ({
 const createInquiryMock = jest.mocked(createInquiry);
 const createResumeSignedUrlMock = jest.mocked(createResumeSignedUrl);
 const validateInquiryEmailMock = jest.mocked(validateInquiryEmail);
+const visitorsRepositoryMock = jest.mocked(visitorsRepository);
 const sendInquiryNotificationMock = jest.mocked(sendInquiryNotification);
 const sendResumeDownloadEmailMock = jest.mocked(sendResumeDownloadEmail);
 
@@ -70,6 +78,7 @@ describe("POST /api/inquiries", () => {
     createResumeSignedUrlMock.mockResolvedValue("https://storage.example.com/signed-resume-url");
     validateInquiryEmailMock.mockReset();
     validateInquiryEmailMock.mockResolvedValue({ valid: true });
+    visitorsRepositoryMock.upsert.mockReset();
     sendInquiryNotificationMock.mockReset();
     sendResumeDownloadEmailMock.mockReset();
   });
@@ -79,6 +88,7 @@ describe("POST /api/inquiries", () => {
     createInquiryMock.mockResolvedValue({
       id: 1,
       source: "resume_download",
+      visitorId: "visitor-123",
       name: "Viraj Nikam",
       email: "viraj@example.com",
       reason: "I would like to review your resume for a frontend role.",
@@ -95,6 +105,7 @@ describe("POST /api/inquiries", () => {
           reason: "I would like to review your resume for a frontend role.",
         },
         {
+          "x-client-fp": "visitor-123",
           "user-agent": "Mozilla/5.0 Test Browser",
           referer: "https://virajnikam.in/",
           "accept-language": "en-US,en;q=0.9",
@@ -114,6 +125,7 @@ describe("POST /api/inquiries", () => {
     });
     expect(createInquiryMock).toHaveBeenCalledWith({
       source: "resume_download",
+      visitorId: "visitor-123",
       name: "Viraj Nikam",
       email: "viraj@example.com",
       reason: "I would like to review your resume for a frontend role.",
@@ -121,11 +133,15 @@ describe("POST /api/inquiries", () => {
         userAgent: "Mozilla/5.0 Test Browser",
         referer: "https://virajnikam.in/",
         acceptLanguage: "en-US,en;q=0.9",
+        fingerprintHash: "visitor-123",
         country: "IN",
         region: "MH",
         city: "Mumbai",
         resumeSignedUrlCreated: true,
       },
+    });
+    expect(visitorsRepositoryMock.upsert).toHaveBeenCalledWith({
+      fingerprintHash: "visitor-123",
     });
     expect(validateInquiryEmailMock).toHaveBeenCalledWith("viraj@example.com");
     expect(sendInquiryNotificationMock).toHaveBeenCalledWith({

@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, smallint, real, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, smallint, real, boolean, integer } from "drizzle-orm/pg-core";
 
 export const visitors = pgTable("visitors", {
     fingerprintHash: text("fingerprint_hash").primaryKey(),
@@ -23,4 +23,5 @@ export const visitors = pgTable("visitors", {
     // timestamps
     firstSeenAt: timestamp("first_seen_at").defaultNow().notNull(),
     lastSeenAt: timestamp("last_seen_at").defaultNow().notNull(),
+    visitCount: integer("visit_count").default(1).notNull(),
 });
