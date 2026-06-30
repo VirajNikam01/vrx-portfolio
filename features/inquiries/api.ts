@@ -3,7 +3,7 @@ import { isAxiosError } from "axios";
 import type { InquirySubmissionType } from "./schema";
 
 type InquiryFieldErrors = Partial<
-    Record<keyof InquirySubmissionType, string[]>
+    Record<keyof InquirySubmissionType | "visitorId", string[]>
 >;
 
 type InquiryErrorResponse = {
@@ -23,16 +23,13 @@ export class InquirySubmissionError extends Error {
 
 export async function submitInquiry(values: InquirySubmissionType) {
     try {
-        console.log(values)
         const response = await axios({
             method: "POST",
             url: "/inquiries",
             data: values,
         });
-        console.log(response.data)
         return response.data as { data: { id: number; resumeUrl?: string } };
     } catch (error: unknown) {
-        console.log(error)
         if (isAxiosError(error)) {
             const data = error?.response?.data as InquiryErrorResponse;
             throw new InquirySubmissionError(

@@ -4,22 +4,9 @@ import { MainContent } from "@/components/pages/landing-page/main-content";
 import { landingPageContent } from "@/config/landing-page";
 
 describe("MainContent integration", () => {
-    it("renders the introduction, work experience timeline, and footer from provided content", () => {
+    it("renders the introduction, Blog, work experience timeline, and footer from provided content", () => {
         render(
-            <MainContent
-                content={{
-                    ...landingPageContent,
-                    featureFlags: {
-                        ...landingPageContent.featureFlags,
-                        showWorkExperience: true,
-                    },
-                    sections: landingPageContent.sections.map((section) =>
-                        section.key === "workExperience"
-                            ? { ...section, isEnabled: true }
-                            : section,
-                    ),
-                }}
-            />,
+            <MainContent />,
         );
 
         expect(
@@ -42,11 +29,7 @@ describe("MainContent integration", () => {
 
     it("does not render sections disabled by feature flags", () => {
         render(
-            <MainContent
-                content={{
-                    ...landingPageContent,
-                }}
-            />,
+            <MainContent />,
         );
 
         expect(

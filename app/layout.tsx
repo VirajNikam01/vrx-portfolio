@@ -61,7 +61,7 @@ export const metadata: Metadata = {
         url: getSiteUrl("/opengraph-image"),
         width: 1200,
         height: 630,
-        alt: "Viraj Nikam software developer portfolio",
+        alt: "Viraj Nikam",
       },
     ],
   },

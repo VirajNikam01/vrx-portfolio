@@ -2,6 +2,7 @@ import { createInquiry } from "@/features/inquiries/repository";
 import { collectInquiryRequestMetadata } from "@/features/inquiries/request-metadata";
 import { validateInquiryEmail } from "@/features/inquiries/email-validation";
 import { inquirySubmissionSchema } from "@/features/inquiries/schema";
+import { visitorsRepository } from "@/features/visitors";
 import { createResumeSignedUrl } from "@/features/resume/storage";
 import {
     sendInquiryNotification,
@@ -37,6 +38,26 @@ export async function POST(request: Request) {
             );
         }
 
+        const visitorId =
+            request.headers.get("x-client-fp")?.trim() ||
+            request.headers.get("x-fingerprint")?.trim();
+
+        if (!visitorId) {
+            return Response.json(
+                {
+                    error: "Visitor identity is missing.",
+                    issues: {
+                        visitorId: ["Unable to identify the visitor for this inquiry."],
+                    },
+                },
+                { status: 400 },
+            );
+        }
+
+        await visitorsRepository.upsert({
+            fingerprintHash: visitorId,
+        });
+
         const resumeUrl =
             parsedPayload.data.source === "resume_download"
                 ? await createResumeSignedUrl()
@@ -44,6 +65,7 @@ export async function POST(request: Request) {
 
         const inquiry = await createInquiry({
             ...parsedPayload.data,
+            visitorId,
             metadata: {
                 ...collectInquiryRequestMetadata(request),
                 ...(resumeUrl ? { resumeSignedUrlCreated: true } : {}),
