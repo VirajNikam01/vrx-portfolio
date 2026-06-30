@@ -6,7 +6,7 @@ export const seoConfig = {
     name: "Viraj Nikam",
     legalName: "Viraj Nikam",
     handle: "virajnikam",
-    title: "Viraj Nikam | Software Developer in India",
+    title: "Viraj Nikam | Software Engineer",
     shortTitle: "Viraj Nikam",
     description:
         "Viraj Nikam is a frontend-focused software developer building fast, SEO-friendly websites and polished product interfaces with React, Next.js, TypeScript, Tailwind CSS, Tauri, and PostgreSQL.",
