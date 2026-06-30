@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getClientFingerprintHash } from "@/lib/fingerprint";
+import { getOrCreateVisitorId } from "@/lib/fingerprint";
 
 const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api",
@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
-    config.headers["x-client-fp"] = await getClientFingerprintHash();
+    config.headers["x-client-fp"] = getOrCreateVisitorId();
     return config;
 });
 

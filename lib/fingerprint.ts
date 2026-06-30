@@ -1,4 +1,3 @@
-// lib/fingerprint.ts
 
 export function getOrCreateVisitorId(): string {
     const key = "_vid";
