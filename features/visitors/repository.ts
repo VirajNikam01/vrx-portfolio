@@ -1,41 +1,54 @@
 import { visitors } from "@/lib/db/schema";
 import db from "@/lib/db/client";
 import { eq, sql } from "drizzle-orm";
-import { InferInsertModel } from "drizzle-orm";
+import type { InferInsertModel } from "drizzle-orm";
 
 type NewVisitor = InferInsertModel<typeof visitors>;
+type VisitorAttributes = Omit<NewVisitor, "fingerprintHash">;
 
-const getByFingerprintHash = async (fingerprintHash: string) => {
+async function getByFingerprintHash(fingerprintHash: string) {
     const [visitor] = await db
         .select()
         .from(visitors)
         .where(eq(visitors.fingerprintHash, fingerprintHash));
 
     return visitor ?? null;
-};
+}
 
-const upsert = async (visitor: NewVisitor) => {
-    const now = new Date();
-    const { fingerprintHash, ...visitorValues } = visitor;
+async function upsert(visitor: NewVisitor) {
+    const { fingerprintHash, ...visitorAttributes } = visitor;
+    const seenAt = new Date();
 
     await db
         .insert(visitors)
-        .values({
-            fingerprintHash,
-            ...visitorValues,
-            firstSeenAt: now,
-            lastSeenAt: now,
-            visitCount: 1,
-        })
+        .values(_buildNewVisitorRecord(fingerprintHash, visitorAttributes, seenAt))
         .onConflictDoUpdate({
             target: visitors.fingerprintHash,
-            set: {
-                ...visitorValues,
-                lastSeenAt: now,
-                visitCount: sql`${visitors.visitCount} + 1`,
-            },
+            set: _buildVisitorRefresh(visitorAttributes, seenAt),
         });
-};
+}
+
+function _buildNewVisitorRecord(
+    fingerprintHash: string,
+    visitorAttributes: VisitorAttributes,
+    seenAt: Date,
+) {
+    return {
+        fingerprintHash,
+        ...visitorAttributes,
+        firstSeenAt: seenAt,
+        lastSeenAt: seenAt,
+        visitCount: 1,
+    };
+}
+
+function _buildVisitorRefresh(visitorAttributes: VisitorAttributes, seenAt: Date) {
+    return {
+        ...visitorAttributes,
+        lastSeenAt: seenAt,
+        visitCount: sql`${visitors.visitCount} + 1`,
+    };
+}
 
 export const visitorsRepository = {
     getByFingerprintHash,
