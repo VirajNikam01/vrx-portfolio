@@ -1,7 +1,6 @@
 import "server-only";
 
 import Parser from "rss-parser";
-import { cacheLife } from "next/cache";
 
 const parser = new Parser();
 

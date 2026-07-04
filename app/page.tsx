@@ -5,28 +5,15 @@ import {
     serializeJsonLd,
 } from "@/config/seo";
 import { HomePageClient } from "@/components/pages/landing-page/home-page-client";
-// import { landingPageContent } from "@/config/landing-page";
-// import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-// import { queryKeys } from "@/data/query-keys";
-// import { landingPageAction } from "@/actions/landing-page";
-// import { makeQueryClient } from "@/config/query-client";
-// import { readLandingPageContent } from "@/features/landing-page/repository";
+import { defaultBlogPosts } from "@/config/blog";
 
-export default async function Home() {
+export default function Home() {
     const jsonLd = [
         getWebsiteJsonLd(),
         getPersonJsonLd(),
         getProfilePageJsonLd(),
+        getBlogPostsJsonLd(defaultBlogPosts),
     ];
-
-    // const queryClient = makeQueryClient();
-
-    // await queryClient.prefetchQuery({
-    //     queryKey: queryKeys.landingPageContent,
-    //     queryFn: landingPageAction.fetchLandingPageContent,
-    //     staleTime: Infinity,
-    //     gcTime: Infinity,
-    // });
 
     return (
         <>
@@ -36,9 +23,25 @@ export default async function Home() {
                     __html: serializeJsonLd(jsonLd),
                 }}
             />
-            {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
             <HomePageClient />
-            {/* </HydrationBoundary> */}
         </>
     );
+}
+
+function getBlogPostsJsonLd(posts: typeof defaultBlogPosts) {
+    return {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "@id": "https://virajnikam.in/#featured-blog-posts",
+        name: "Featured writing",
+        itemListOrder: "http://schema.org/ItemListOrderDescending",
+        numberOfItems: posts.length,
+        itemListElement: posts.map((post, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: post.url,
+            name: post.title,
+            description: post.brief,
+        })),
+    };
 }

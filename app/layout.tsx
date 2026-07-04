@@ -28,11 +28,9 @@ export const metadata: Metadata = {
     template: `%s | ${seoConfig.name}`,
   },
   description: seoConfig.description,
-  keywords: seoConfig.keywords,
   authors: [{ name: seoConfig.name, url: getSiteUrl("/") }],
   creator: seoConfig.name,
   publisher: seoConfig.name,
-  category: "portfolio",
   alternates: {
     canonical: getSiteUrl("/"),
   },

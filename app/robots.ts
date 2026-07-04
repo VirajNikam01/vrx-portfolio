@@ -11,6 +11,5 @@ export default function robots(): MetadataRoute.Robots {
             },
         ],
         sitemap: getSiteUrl("/sitemap.xml"),
-        host: getSiteUrl("/"),
     };
 }

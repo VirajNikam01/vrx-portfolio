@@ -41,7 +41,21 @@ describe("experience duration helpers", () => {
       ]),
     ];
 
-    expect(getExperienceDurationLabel(experiences)).toBe("5 months");
+    expect(getExperienceDurationLabel(experiences)).toBe("4 months");
+  });
+
+  it("counts exact month boundaries for active positions", () => {
+    expect(
+      getPositionDurationLabel(
+        {
+          id: "current",
+          title: "Current Role",
+          category: "professional",
+          startDate: "2025-05-28",
+        },
+        new Date("2025-06-28T00:00:00")
+      )
+    ).toBe("1 month");
   });
 
   it("formats active positions using the supplied current date", () => {
@@ -55,7 +69,7 @@ describe("experience duration helpers", () => {
         },
         new Date("2026-02-15T00:00:00")
       )
-    ).toBe("1.3 year");
+    ).toBe("1 year 2 months");
   });
   it("uses Present for open-ended position periods", () => {
     expect(
@@ -65,6 +79,6 @@ describe("experience duration helpers", () => {
         category: "professional",
         startDate: "2024-12-01",
       })
-    ).toBe("Dec 2024 - Present");
+    ).toBe("1 December 2024 - Present");
   });
 });

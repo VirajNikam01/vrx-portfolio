@@ -1,6 +1,5 @@
 import { landingPageContent } from "@/config/landing-page";
 import { getExperienceDurationLabel } from "@/features/work-experience";
-import { cacheLife } from "next/cache";
 
 export const seoConfig = {
     name: "Viraj Nikam",
@@ -17,28 +16,6 @@ export const seoConfig = {
     email: "virajnikam.connect@gmail.com",
     locale: "en_IN",
     image: "/images/intro/vrx-image.jpg",
-    keywords: [
-        "Viraj Nikam",
-        "Viraj",
-        "Viraj Nikam portfolio",
-        "Viraj portfolio",
-        "Viraj Nikam software developer",
-        "Viraj Nikam frontend developer",
-        "Viraj Nikam React developer",
-        "Viraj Nikam Next.js developer",
-        "VRX",
-        "VRX portfolio",
-        "software developer in India",
-        "frontend developer in India",
-        "React developer",
-        "Next.js developer",
-        "TypeScript developer",
-        "Tailwind CSS developer",
-        "Tauri developer",
-        "PostgreSQL developer",
-        "Drizzle ORM developer",
-        "Three.js developer",
-    ],
     sameAs: ["https://www.linkedin.com/in/virajnikam"],
 };
 

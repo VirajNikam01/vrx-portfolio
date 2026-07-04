@@ -6,17 +6,10 @@ import { ArrowUpRightIcon, CalendarDaysIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { BlogPostType } from "../types";
 import { cn } from "@/lib/utils";
 import { useBlogPosts } from "../useBlogPosts";
 import { formatPublishedDate } from "../utils";
-
-
-type BlogPost = {
-    url: string;
-    title: string;
-    brief: string | null;
-    publishedAt: string | null;
-};
 
 type BlogSectionProps = {
     className?: string;
@@ -57,7 +50,7 @@ function SectionHeader({ heading, description }: Pick<BlogSectionProps, "heading
     );
 }
 
-function PostRow({ post, index }: { post: BlogPost; index: number }) {
+function PostRow({ post, index }: { post: BlogPostType; index: number }) {
     return (
         <>
             <li>
@@ -94,7 +87,7 @@ function PostRow({ post, index }: { post: BlogPost; index: number }) {
     );
 }
 
-function PostList({ posts }: { posts: BlogPost[] }) {
+function PostList({ posts }: { posts: BlogPostType[] }) {
     return (
         <ul className="divide-y-0">
             <Separator />
