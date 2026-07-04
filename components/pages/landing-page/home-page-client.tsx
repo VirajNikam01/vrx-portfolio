@@ -22,7 +22,7 @@ const StarsBackground = dynamic(
 export function HomePageClient() {
     const visitorMutation = useVisitorMutation();
     useEffect(() => {
-        const visitorData = collectClientFingerprint()
+        const visitorData = collectClientFingerprint();
         visitorMutation.mutate(visitorData);
     }, []);
 

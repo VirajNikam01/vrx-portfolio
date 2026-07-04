@@ -45,15 +45,14 @@ function LandingPageSections({
                     experienceDurationLabel={experienceDurationLabel}
                 />
             )}
-            {content.featureFlags.showBlog && <BlogSection />
-            }
+            {content.featureFlags.showBlog && (
+                <BlogSection />
+            )}
             {content.featureFlags.showWorkExperience && (
                 <WorkExperience
                     experiences={allowedVisibleExperiences}
                 />
             )}
-
-
         </>
     );
 }
