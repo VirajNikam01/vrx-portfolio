@@ -5,10 +5,17 @@ type DateRange = {
     end: Date;
 };
 
+type MonthDayDuration = {
+    totalMonths: number;
+    days: number;
+};
+
 const MONTHS_PER_YEAR = 12;
+const DAY_ROLLOVER_THRESHOLD = 30;
 const PROFESSIONAL_POSITION_CATEGORY = "professional";
-const MONTH_YEAR_FORMATTER = new Intl.DateTimeFormat("en", {
-    month: "short",
+const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "long",
     year: "numeric",
 });
 
@@ -16,28 +23,33 @@ export function getExperienceDurationLabel(
     experiences: ExperienceItemType[],
     currentDate = new Date()
 ) {
-    const totalMonths = countExperienceMonths(experiences, currentDate);
+    const totalDuration = countExperienceDuration(experiences, currentDate);
 
-    return formatMonthCount(totalMonths);
+    return formatDuration(totalDuration);
 }
 
 export function getPositionDurationLabel(
     position: ExperiencePositionItemType,
     currentDate = new Date()
 ) {
-    return formatMonthCount(countMonths(toDateRange(position, currentDate)));
+    return formatDuration(getMonthDayDiff(toDateRange(position, currentDate)));
 }
 
 export function getPositionPeriodLabel(position: ExperiencePositionItemType) {
-    const startLabel = formatMonthYear(position.startDate);
+    const startLabel = formatFullDate(position.startDate);
     const endLabel = position.endDate
-        ? formatMonthYear(position.endDate)
+        ? formatFullDate(position.endDate)
         : "Present";
 
     return `${startLabel} - ${endLabel}`;
 }
 
-function formatMonthCount(totalMonths: number) {
+function formatDuration({ totalMonths, days }: MonthDayDuration) {
+    if (totalMonths <= 0) {
+        const dayCount = Math.max(days, 1);
+        return `${dayCount} ${dayCount === 1 ? "day" : "days"}`;
+    }
+
     if (totalMonths < MONTHS_PER_YEAR) {
         return `${totalMonths} ${totalMonths === 1 ? "month" : "months"}`;
     }
@@ -49,20 +61,36 @@ function formatMonthCount(totalMonths: number) {
         return `${years} ${years === 1 ? "year" : "years"}`;
     }
 
-    return `${years}.${months} ${years === 1 ? "year" : "years"}`;
+    return `${years}.${months} ${years <= 1 ? "year" : "years"
+        }`;
 }
 
-function countExperienceMonths(
+function countExperienceDuration(
     experiences: ExperienceItemType[],
     currentDate: Date
-) {
+): MonthDayDuration {
     const ranges = getExperienceRanges(experiences, currentDate);
     const mergedRanges = mergeRanges(ranges);
 
-    return mergedRanges.reduce(
-        (totalMonths, range) => totalMonths + countMonths(range),
-        0
+    return mergedRanges.reduce<MonthDayDuration>(
+        (total, range) => addDurations(total, getMonthDayDiff(range)),
+        { totalMonths: 0, days: 0 }
     );
+}
+
+function addDurations(
+    first: MonthDayDuration,
+    second: MonthDayDuration
+): MonthDayDuration {
+    let totalMonths = first.totalMonths + second.totalMonths;
+    let days = first.days + second.days;
+
+    if (days >= DAY_ROLLOVER_THRESHOLD) {
+        totalMonths += 1;
+        days -= DAY_ROLLOVER_THRESHOLD;
+    }
+
+    return { totalMonths, days };
 }
 
 function getExperienceRanges(
@@ -96,8 +124,8 @@ function parseDate(value: string) {
     return new Date(`${value}T00:00:00`);
 }
 
-function formatMonthYear(value: string) {
-    return MONTH_YEAR_FORMATTER.format(parseDate(value));
+function formatFullDate(value: string) {
+    return FULL_DATE_FORMATTER.format(parseDate(value));
 }
 
 function mergeRanges(ranges: DateRange[]) {
@@ -117,11 +145,24 @@ function maxDate(firstDate: Date, secondDate: Date) {
     return firstDate > secondDate ? firstDate : secondDate;
 }
 
-function countMonths(range: DateRange) {
-    const startYear = range.start.getFullYear();
-    const startMonth = range.start.getMonth();
-    const endYear = range.end.getFullYear();
-    const endMonth = range.end.getMonth();
+function getMonthDayDiff({ start, end }: DateRange): MonthDayDuration {
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    let days = end.getDate() - start.getDate();
 
-    return (endYear - startYear) * MONTHS_PER_YEAR + endMonth - startMonth + 1;
+    if (days < 0) {
+        months -= 1;
+        days += getDaysInMonthBefore(end);
+    }
+
+    if (months < 0) {
+        years -= 1;
+        months += MONTHS_PER_YEAR;
+    }
+
+    return { totalMonths: years * MONTHS_PER_YEAR + months, days };
+}
+
+function getDaysInMonthBefore(date: Date) {
+    return new Date(date.getFullYear(), date.getMonth(), 0).getDate();
 }
