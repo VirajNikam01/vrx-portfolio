@@ -156,6 +156,64 @@ describe("POST /api/inquiries", () => {
     expect(sendResumeDownloadEmailMock).not.toHaveBeenCalled();
   });
 
+  it("stores contact_me inquiries without creating a resume URL", async () => {
+    const createdAt = new Date("2026-05-25T13:00:00.000Z");
+    createInquiryMock.mockResolvedValue({
+      id: 2,
+      source: "contact_me",
+      visitorId: "visitor-456",
+      name: "Asha Shah",
+      email: "asha@example.com",
+      reason: "I would like to discuss a dashboard project with you.",
+      metadata: null,
+      createdAt,
+    });
+
+    const response = await POST(
+      createJsonRequest(
+        {
+          source: "contact_me",
+          name: "Asha Shah",
+          email: "asha@example.com",
+          reason: "I would like to discuss a dashboard project with you.",
+        },
+        {
+          "x-client-fp": "visitor-456",
+          "user-agent": "Mozilla/5.0 Test Browser",
+        },
+      ),
+    );
+
+    expect(response.status).toBe(201);
+    expect(await response.json()).toEqual({
+      data: {
+        id: 2,
+      },
+    });
+    expect(createResumeSignedUrlMock).not.toHaveBeenCalled();
+    expect(createInquiryMock).toHaveBeenCalledWith({
+      source: "contact_me",
+      visitorId: "visitor-456",
+      name: "Asha Shah",
+      email: "asha@example.com",
+      reason: "I would like to discuss a dashboard project with you.",
+      metadata: {
+        userAgent: "Mozilla/5.0 Test Browser",
+        fingerprintHash: "visitor-456",
+      },
+    });
+    expect(sendInquiryNotificationMock).toHaveBeenCalledWith({
+      source: "contact_me",
+      name: "Asha Shah",
+      email: "asha@example.com",
+      reason: "I would like to discuss a dashboard project with you.",
+      id: 2,
+      createdAt,
+      resumeUrl: undefined,
+    });
+    expect(sendResumeDownloadEmailMock).not.toHaveBeenCalled();
+  });
+
   it("returns validation errors for invalid submissions", async () => {
     const response = await POST(
       createJsonRequest({

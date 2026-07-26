@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const inquirySourceSchema = z.enum([
     "resume_download",
+    "contact_me",
     "collaboration",
     "hiring_contact",
     "general_contact",
@@ -19,3 +20,9 @@ export const inquirySubmissionSchema = z.object({
 
 export type InquirySourceType = z.infer<typeof inquirySourceSchema>;
 export type InquirySubmissionType = z.infer<typeof inquirySubmissionSchema>;
+
+export const inquiryRequestSchema = inquirySubmissionSchema.omit({
+    source: true,
+});
+
+export type InquiryRequestType = z.infer<typeof inquiryRequestSchema>;
