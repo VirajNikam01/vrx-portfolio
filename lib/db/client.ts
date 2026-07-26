@@ -8,6 +8,8 @@ let database: ReturnType<typeof drizzle<typeof schema>> | undefined;
 export function getDb() {
     const databaseUrl = process.env.DATABASE_URL;
 
+    console.log("databaseUrl", databaseUrl);
+
     if (!databaseUrl) {
         throw new Error("DATABASE_URL is required to connect to the database.");
     }

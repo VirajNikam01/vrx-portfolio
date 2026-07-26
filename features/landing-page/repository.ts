@@ -15,6 +15,7 @@ export async function readLandingPageContent(): Promise<LandingPageContentType> 
         if (!result) return landingPageContent;
         return result.content as LandingPageContentType;
     } catch (error) {
+        console.log("Failed to get Content:", error)
         return landingPageContent;
     };
 }
