@@ -23,7 +23,7 @@ export function IntroductionActions({ actions }: IntroductionActionsProps) {
                 variant="outline"
                 className="h-12 min-w-60 gap-3 rounded-xl border-border/80 bg-background px-7 text-base font-semibold text-primary hover:bg-primary/10 hover:text-primary dark:border-white/25 dark:bg-transparent"
             >
-                <a href={actions.connect.href}>
+                <a href="#contact">
                     {actions.connect.label}
                     <MessageSquareTextIcon />
                 </a>

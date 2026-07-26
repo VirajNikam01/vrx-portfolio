@@ -68,7 +68,10 @@ async function submitInquiry(request: Request, submission: InquirySubmissionType
     //     await sendResumeDownloadEmail({ email: submission.email, name: submission.name, resumeUrl });
     // }
 
-    return Response.json({ data: { id: inquiry.id, resumeUrl } }, { status: 201 });
+    return Response.json(
+        { data: { id: inquiry.id, ...(resumeUrl ? { resumeUrl } : {}) } },
+        { status: 201 },
+    );
 }
 
 async function readJsonBody(request: Request): Promise<unknown> {
@@ -77,9 +80,18 @@ async function readJsonBody(request: Request): Promise<unknown> {
 
 
 async function createResumeUrlIfRequested(submission: InquirySubmissionType) {
-    return submission.source === "resume_download"
-        ? createResumeSignedUrl()
-        : undefined;
+    switch (submission.source) {
+        case "resume_download":
+            return createResumeSignedUrl();
+        case "contact_me":
+        case "collaboration":
+        case "hiring_contact":
+        case "general_contact":
+            return undefined;
+    }
+
+    const exhaustiveSource: never = submission.source;
+    return exhaustiveSource;
 }
 
 function buildInquiryMetadata(request: Request, resumeUrl: string | undefined) {

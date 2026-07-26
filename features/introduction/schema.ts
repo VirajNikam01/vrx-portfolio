@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { inquirySubmissionSchema } from "@/features/inquiries/schema";
+import { inquiryRequestSchema } from "@/features/inquiries/schema";
 
 const introductionLinkActionSchema = z.object({
     label: z.string(),
@@ -41,9 +41,7 @@ export const introductionContentResponseSchema = z.union([
     }),
 ]);
 
-export const resumeDownloadRequestSchema = inquirySubmissionSchema.omit({
-    source: true,
-});
+export const resumeDownloadRequestSchema = inquiryRequestSchema;
 
 export type ResumeDownloadRequestType = z.infer<
     typeof resumeDownloadRequestSchema

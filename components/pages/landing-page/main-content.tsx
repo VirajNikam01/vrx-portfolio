@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/layout/site-footer";
 import { BlogSection } from "@/features/blog/components/blog-section";
+import { ContactSection } from "@/features/contact";
 import { Introduction } from "@/features/introduction";
 import { useLandingPageContent, type LandingPageContentType } from "@/features/landing-page";
 import { ExperienceItemType, getExperienceDurationLabel } from "@/features/work-experience";
@@ -53,6 +54,7 @@ function LandingPageSections({
                     experiences={allowedVisibleExperiences}
                 />
             )}
+            <ContactSection />
         </>
     );
 }
