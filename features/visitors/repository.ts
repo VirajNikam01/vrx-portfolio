@@ -1,5 +1,5 @@
 import { visitors } from "@/lib/db/schema";
-import db from "@/lib/db/client";
+import { getDb } from "@/lib/db/client";
 import { eq, sql } from "drizzle-orm";
 import type { InferInsertModel } from "drizzle-orm";
 
@@ -7,7 +7,7 @@ type NewVisitor = InferInsertModel<typeof visitors>;
 type VisitorAttributes = Omit<NewVisitor, "fingerprintHash">;
 
 async function getByFingerprintHash(fingerprintHash: string) {
-    const [visitor] = await db
+    const [visitor] = await getDb()
         .select()
         .from(visitors)
         .where(eq(visitors.fingerprintHash, fingerprintHash));
@@ -19,7 +19,7 @@ async function upsert(visitor: NewVisitor) {
     const { fingerprintHash, ...visitorAttributes } = visitor;
     const seenAt = new Date();
 
-    await db
+    await getDb()
         .insert(visitors)
         .values(_buildNewVisitorRecord(fingerprintHash, visitorAttributes, seenAt))
         .onConflictDoUpdate({

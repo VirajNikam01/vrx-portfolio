@@ -1,6 +1,5 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-
 import * as schema from "./schema";
 
 let dbClient: ReturnType<typeof postgres> | undefined;
@@ -20,5 +19,3 @@ export function getDb() {
 
     return database;
 }
-
-export default getDb();
