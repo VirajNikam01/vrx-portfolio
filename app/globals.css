@@ -139,46 +139,18 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-html[data-primary="violet"] {
-  --primary-50: oklch(0.969 0.016 293.756);
-  --primary-100: oklch(0.943 0.029 294.588);
-  --primary-200: oklch(0.894 0.057 293.283);
-  --primary-300: oklch(0.811 0.111 293.571);
-  --primary-400: oklch(0.702 0.183 293.541);
-  --primary-500: oklch(0.606 0.25 292.717);
-  --primary-600: oklch(0.541 0.281 293.009);
-  --primary-700: oklch(0.491 0.27 292.581);
-  --primary-800: oklch(0.432 0.232 292.759);
-  --primary-900: oklch(0.38 0.189 293.745);
-  --primary-950: oklch(0.283 0.141 291.089);
-}
-
-html[data-primary="red"] {
-  --primary-50: oklch(0.971 0.013 17.38);
-  --primary-100: oklch(0.936 0.032 17.717);
-  --primary-200: oklch(0.885 0.062 18.334);
-  --primary-300: oklch(0.808 0.114 19.571);
-  --primary-400: oklch(0.704 0.191 22.216);
-  --primary-500: oklch(0.637 0.237 25.331);
-  --primary-600: oklch(0.577 0.245 27.325);
-  --primary-700: oklch(0.505 0.213 27.518);
-  --primary-800: oklch(0.444 0.177 26.899);
-  --primary-900: oklch(0.396 0.141 25.723);
-  --primary-950: oklch(0.258 0.092 26.042);
-}
-
-html[data-primary="pink"] {
-  --primary-50: oklch(0.977 0.017 333);
-  --primary-100: oklch(0.948 0.036 332.5);
-  --primary-200: oklch(0.899 0.072 332);
-  --primary-300: oklch(0.823 0.133 331.5);
-  --primary-400: oklch(0.72 0.204 331);
-  --primary-500: oklch(0.637 0.256 332);
-  --primary-600: oklch(0.558 0.244 333);
-  --primary-700: oklch(0.491 0.215 333.5);
-  --primary-800: oklch(0.432 0.178 334);
-  --primary-900: oklch(0.381 0.142 334.5);
-  --primary-950: oklch(0.271 0.098 335);
+html[data-primary="green"] {
+  --primary-50: oklch(0.974 0.02 128);
+  --primary-100: oklch(0.946 0.041 127.6);
+  --primary-200: oklch(0.895 0.077 127.4);
+  --primary-300: oklch(0.818 0.132 127.8);
+  --primary-400: oklch(0.731 0.179 128.2);
+  --primary-500: oklch(0.66 0.205 129);
+  --primary-600: oklch(0.58 0.21 130);
+  --primary-700: oklch(0.5 0.18 131);
+  --primary-800: oklch(0.44 0.148 132);
+  --primary-900: oklch(0.39 0.118 133);
+  --primary-950: oklch(0.265 0.08 134);
 }
 
 @layer base {
