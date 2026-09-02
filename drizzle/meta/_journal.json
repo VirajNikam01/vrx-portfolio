@@ -57,6 +57,13 @@
       "when": 1782559540939,
       "tag": "0007_elite_cassandra_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1787471063027,
+      "tag": "0008_chief_morlun",
+      "breakpoints": true
     }
   ]
 }

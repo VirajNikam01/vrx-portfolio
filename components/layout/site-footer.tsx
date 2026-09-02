@@ -1,3 +1,5 @@
+"use client";
+
 import { useLandingPageContent } from "@/features/landing-page";
 import { ArrowUpRightIcon, CodeXmlIcon, IdCardIcon, MailIcon } from "lucide-react";
 

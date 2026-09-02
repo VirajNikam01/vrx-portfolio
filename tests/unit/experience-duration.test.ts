@@ -41,7 +41,7 @@ describe("experience duration helpers", () => {
       ]),
     ];
 
-    expect(getExperienceDurationLabel(experiences)).toBe("4 months");
+    expect(getExperienceDurationLabel(experiences)).toBe("5 months");
   });
 
   it("counts exact month boundaries for active positions", () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRightIcon, CalendarDaysIcon } from "lucide-react";
+import { ArrowUpRightIcon, ArrowRightIcon, CalendarDaysIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -15,11 +15,15 @@ type BlogSectionProps = {
     className?: string;
     heading?: string;
     description?: string;
+    /** Max number of posts to display. Defaults to 2. Pass Infinity for all. */
+    limit?: number;
+    /** If provided and there are more posts than limit, show a "Show more" button linking here. */
+    showMoreHref?: string;
 };
 
 
 const BLOG_URL = "https://blog.virajnikam.in";
-const VISIBLE_POST_COUNT = 4;
+const DEFAULT_LIMIT = 2;
 
 
 
@@ -98,11 +102,11 @@ function PostList({ posts }: { posts: BlogPostType[] }) {
     );
 }
 
-function PostListSkeleton() {
+function PostListSkeleton({ count }: { count: number }) {
     return (
         <ul className="divide-y-0">
             <Separator />
-            {Array.from({ length: VISIBLE_POST_COUNT }).map((_, i) => (
+            {Array.from({ length: count }).map((_, i) => (
                 <>
                     <li key={i} className="flex gap-8 py-6">
                         <Skeleton className="h-4 w-5 shrink-0" />
@@ -141,10 +145,13 @@ function EmptyState() {
 export function BlogSection({
     className,
     heading = "Latest Writing",
-    description = "Selected notes, experiments, and longer-form thinking.",
+    description = "Things I've learned, from experience",
+    limit,
+    showMoreHref,
 }: BlogSectionProps) {
     const { data: posts = [], isLoading } = useBlogPosts();
-    const visiblePosts = posts.slice(0, VISIBLE_POST_COUNT);
+    const visiblePosts = limit !== undefined ? posts.slice(0, limit) : posts;
+    const hasMore = limit !== undefined && posts.length > limit;
 
     return (
         <section id="blog" className={cn("px-6 py-20", className)}>
@@ -152,11 +159,28 @@ export function BlogSection({
                 <SectionHeader heading={heading} description={description} />
 
                 {isLoading ? (
-                    <PostListSkeleton />
+                    <PostListSkeleton count={limit ?? 4} />
                 ) : visiblePosts.length > 0 ? (
                     <PostList posts={visiblePosts} />
                 ) : (
                     <EmptyState />
+                )}
+
+                {/* Show more button */}
+                {!isLoading && hasMore && showMoreHref && (
+                    <div className="mt-8 flex justify-center">
+                        <Button
+                            asChild
+                            variant="outline"
+                            size="sm"
+                            className="gap-1.5 text-sm"
+                        >
+                            <Link href={showMoreHref}>
+                                Show more
+                                <ArrowRightIcon className="size-3.5" />
+                            </Link>
+                        </Button>
+                    </div>
                 )}
             </div>
         </section>

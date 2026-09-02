@@ -1,3 +1,4 @@
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,7 +10,7 @@ export function useBlogPosts() {
     return useQuery({
         queryKey: queryKeys.blogPosts,
         queryFn: blogAction.fetchBlogPosts,
-        initialData: defaultBlogPosts,
+        placeholderData: defaultBlogPosts,
         staleTime: Infinity,
         gcTime: Infinity,
     });
