@@ -1,4 +1,4 @@
-import type { BlogPostType } from "@/features/blog";
+import type { BlogPostType } from "@/features/blog/types";
 
 export const defaultBlogPosts = [
     {

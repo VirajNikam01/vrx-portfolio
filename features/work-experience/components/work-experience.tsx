@@ -36,7 +36,7 @@ const iconMap = {
 
 export function WorkExperience({
     className,
-    description = "Work that shaped the craft. A concise timeline of practical engineering, UI work, and the technologies used along the way.",
+    description = "A timeline of the engineering that got me here, and the tools I used along the way.",
     experiences,
     heading = "Experience",
 }: {

@@ -57,7 +57,7 @@ export function SiteHeader() {
         )}
       >
         <Link
-          href="#top"
+          href="/"
           className="group/logo inline-flex min-w-0 items-center text-xl font-bold tracking-tight text-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50 sm:text-2xl"
           aria-label="Viraj Nikam home"
         >

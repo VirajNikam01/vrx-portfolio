@@ -7,10 +7,12 @@ export const landingPageContent = {
     featureFlags: {
         showIntroduction: true,
         showWorkExperience: true,
-        showBlog: true
+        showBlog: true,
+        showRecommendations: true,
     },
     introduction: introductionContent,
     workExperiences,
+    recommendations: [],
     meta: {
         email: "virajnikam.contact@gmail.com",
         github: {

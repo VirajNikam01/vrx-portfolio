@@ -1,3 +1,5 @@
+"use client";
+
 import { SiteFooter } from "@/components/layout/site-footer";
 import { BlogSection } from "@/features/blog/components/blog-section";
 import { ContactSection } from "@/features/contact";
@@ -47,13 +49,16 @@ function LandingPageSections({
                 />
             )}
             {content.featureFlags.showBlog && (
-                <BlogSection />
+                <BlogSection limit={2} showMoreHref="/blogs" />
             )}
             {content.featureFlags.showWorkExperience && (
                 <WorkExperience
                     experiences={allowedVisibleExperiences}
                 />
             )}
+            {/* {content.featureFlags.showRecommendations && (
+                <RecommendationsPreview items={content.recommendations} />
+            )} */}
             <ContactSection />
         </>
     );
