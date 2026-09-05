@@ -6,9 +6,14 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { readRecommendationBySlug, readRecommendations } from "@/features/recommendations/repository";
+import {
+    readRecommendationBySlug,
+    readRecommendations,
+    readTopicsByRecommendationId,
+} from "@/features/recommendations/repository";
 import { RecommendationCard } from "@/features/recommendations/components/recommendation-card";
 import { RecommendationNotes } from "@/features/recommendations/components/recommendation-notes";
+import { TopicList } from "@/features/recommendations/components/topic-list";
 import { cn } from "@/lib/utils";
 
 type Props = PageProps<"/recommendations/[slug]">;
@@ -70,6 +75,8 @@ export default async function RecommendationDetailPage({ params }: Props) {
         notFound();
     }
 
+    const topics = await readTopicsByRecommendationId(item.id);
+
     // Fetch related items (same category, exclude current)
     const allItems = await readRecommendations();
     const related = allItems
@@ -103,8 +110,6 @@ export default async function RecommendationDetailPage({ params }: Props) {
                             )}
 
                             <div className="space-y-3">
-
-
                                 <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                                     {item.title}
                                 </h1>
@@ -130,8 +135,10 @@ export default async function RecommendationDetailPage({ params }: Props) {
                             </div>
                         </div>
 
-                        {/* Notes */}
-                        {item.notes ? (
+                        {/* Topics or Legacy Notes */}
+                        {topics.length > 0 ? (
+                            <TopicList recommendationSlug={item.slug} topics={topics} />
+                        ) : item.notes ? (
                             <div className="rounded-xl border border-border/60 bg-background/60 p-6 backdrop-blur-sm">
                                 <RecommendationNotes notes={item.notes} />
                             </div>
