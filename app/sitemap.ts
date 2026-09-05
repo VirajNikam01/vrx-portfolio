@@ -1,7 +1,10 @@
 import type { MetadataRoute } from "next";
 
 import { getSiteUrl } from "@/config/seo";
-import { readRecommendations } from "@/features/recommendations/repository";
+import {
+    readAllTopicSlugs,
+    readRecommendations,
+} from "@/features/recommendations/repository";
 
 type SitemapEntry = {
     url: string;
@@ -23,7 +26,7 @@ const staticSitemapEntries: SitemapEntry[] = [
     {
         url: "/recommendations",
         changeFrequency: "monthly",
-        priority: 0.8,
+        priority: 0.9,
     },
     {
         url: "/installation",
@@ -43,24 +46,35 @@ const staticSitemapEntries: SitemapEntry[] = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    // Dynamic recommendation detail pages (only those with notes)
     let recommendationEntries: SitemapEntry[] = [];
+    let topicEntries: SitemapEntry[] = [];
+
     try {
         const items = await readRecommendations();
-        recommendationEntries = items
-            .filter((item) => item.notes !== null)
-            .map((item) => ({
-                url: `/recommendations/${item.slug}`,
-                changeFrequency: "monthly" as const,
-                priority: 0.7,
-            }));
+        recommendationEntries = items.map((item) => ({
+            url: `/recommendations/${item.slug}`,
+            changeFrequency: "monthly" as const,
+            priority: 0.8,
+        }));
+
+        const topicPairs = await readAllTopicSlugs();
+        topicEntries = topicPairs.map((pair) => ({
+            url: `/recommendations/${pair.recommendationSlug}/${pair.topicSlug}`,
+            changeFrequency: "monthly" as const,
+            priority: 0.7,
+        }));
     } catch {
         // DB may not be available at build time — degrade gracefully
     }
 
-    return [...staticSitemapEntries, ...recommendationEntries].map((entry) => ({
+    return [
+        ...staticSitemapEntries,
+        ...recommendationEntries,
+        ...topicEntries,
+    ].map((entry) => ({
         url: getSiteUrl(entry.url),
         changeFrequency: entry.changeFrequency,
         priority: entry.priority,
     }));
 }
+
