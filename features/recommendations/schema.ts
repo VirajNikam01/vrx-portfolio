@@ -30,3 +30,22 @@ export const recommendationsResponseSchema = z.object({
 export const recommendationDetailResponseSchema = z.object({
     data: recommendationItemSchema,
 });
+
+export const recommendationTopicItemSchema = z.object({
+    id: z.number(),
+    recommendationId: z.number(),
+    slug: z.string(),
+    title: z.string(),
+    sortOrder: z.number(),
+    content: z.string(),
+    isPublished: z.boolean(),
+});
+
+export const recommendationTopicsResponseSchema = z.object({
+    data: z.array(recommendationTopicItemSchema),
+});
+
+export const recommendationTopicDetailResponseSchema = z.object({
+    data: recommendationTopicItemSchema,
+});
+

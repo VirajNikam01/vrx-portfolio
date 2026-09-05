@@ -6,9 +6,14 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { readRecommendationBySlug, readRecommendations } from "@/features/recommendations/repository";
+import {
+    readRecommendationBySlug,
+    readRecommendations,
+    readTopicsByRecommendationId,
+} from "@/features/recommendations/repository";
 import { RecommendationCard } from "@/features/recommendations/components/recommendation-card";
 import { RecommendationNotes } from "@/features/recommendations/components/recommendation-notes";
+import { TopicList } from "@/features/recommendations/components/topic-list";
 import { cn } from "@/lib/utils";
 
 type Props = PageProps<"/recommendations/[slug]">;
@@ -18,15 +23,46 @@ export async function generateStaticParams() {
     return items.map((item) => ({ slug: item.slug }));
 }
 
+import { getSiteUrl, serializeJsonLd } from "@/config/seo";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const item = await readRecommendationBySlug(slug);
     if (!item) return {};
+
+    const url = getSiteUrl(`/recommendations/${item.slug}`);
+
     return {
-        title: `${item.title} — Recommendations — Viraj Nikam`,
+        title: `${item.title} — Notes & Summary — Viraj Nikam`,
         description: item.description,
+        keywords: [
+            item.title,
+            `${item.title} notes`,
+            `${item.title} summary`,
+            `${item.author}`,
+            "Book Notes",
+            "Viraj Nikam Recommendations",
+        ],
+        alternates: {
+            canonical: url,
+        },
+        openGraph: {
+            title: `${item.title} — Notes & Summary`,
+            description: item.description,
+            url,
+            siteName: "Viraj Nikam",
+            type: "article",
+            images: item.coverImageUrl ? [{ url: item.coverImageUrl }] : [],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: `${item.title} — Notes & Summary`,
+            description: item.description,
+            images: item.coverImageUrl ? [item.coverImageUrl] : [],
+        },
     };
 }
+
 
 const categoryColors: Record<string, string> = {
     tech: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
@@ -70,16 +106,40 @@ export default async function RecommendationDetailPage({ params }: Props) {
         notFound();
     }
 
+    const topics = await readTopicsByRecommendationId(item.id);
+
     // Fetch related items (same category, exclude current)
     const allItems = await readRecommendations();
     const related = allItems
         .filter((r) => r.slug !== item.slug && r.category === item.category)
         .slice(0, 3);
 
-    const TypeIcon = item.type === "book" ? BookOpenIcon : GraduationCapIcon;
+    const itemJsonLd = {
+        "@context": "https://schema.org",
+        "@type": item.type === "book" ? "Book" : "Course",
+        name: item.title,
+        author: {
+            "@type": "Person",
+            name: item.author,
+        },
+        description: item.description,
+        url: getSiteUrl(`/recommendations/${item.slug}`),
+        ...(item.coverImageUrl ? { image: item.coverImageUrl } : {}),
+        hasPart: topics.map((t) => ({
+            "@type": "WebPage",
+            name: t.title,
+            url: getSiteUrl(`/recommendations/${item.slug}/${t.slug}`),
+        })),
+    };
 
     return (
         <main className="relative min-h-dvh bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.12),_transparent_38%),linear-gradient(to_bottom,_rgba(255,255,255,0.96),_rgba(255,255,255,1))] dark:bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.18),_transparent_32%),linear-gradient(to_bottom,_rgba(9,9,11,0.96),_rgba(9,9,11,1))]">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: serializeJsonLd(itemJsonLd),
+                }}
+            />
             <SiteHeader />
             <div className="relative z-10">
                 <article className="px-6 py-20">
@@ -103,8 +163,6 @@ export default async function RecommendationDetailPage({ params }: Props) {
                             )}
 
                             <div className="space-y-3">
-
-
                                 <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                                     {item.title}
                                 </h1>
@@ -130,8 +188,10 @@ export default async function RecommendationDetailPage({ params }: Props) {
                             </div>
                         </div>
 
-                        {/* Notes */}
-                        {item.notes ? (
+                        {/* Topics or Legacy Notes */}
+                        {topics.length > 0 ? (
+                            <TopicList recommendationSlug={item.slug} topics={topics} />
+                        ) : item.notes ? (
                             <div className="rounded-xl border border-border/60 bg-background/60 p-6 backdrop-blur-sm">
                                 <RecommendationNotes notes={item.notes} />
                             </div>
