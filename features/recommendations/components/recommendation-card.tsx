@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRightIcon, BookOpenIcon, GraduationCapIcon } from "lucide-react";
+import { ArrowUpRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { RecommendationItem } from "../types";
 
@@ -10,18 +9,6 @@ type RecommendationCardProps = {
     className?: string;
 };
 
-const categoryLabels: Record<string, string> = {
-    tech: "Tech",
-    philosophy: "Philosophy",
-    other: "Other",
-};
-
-const categoryColors: Record<string, string> = {
-    tech: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-    philosophy:
-        "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-    other: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
-};
 
 function LetterAvatar({ title }: { title: string }) {
     const initial = title.trim()[0]?.toUpperCase() ?? "?";
@@ -47,7 +34,6 @@ function LetterAvatar({ title }: { title: string }) {
 }
 
 export function RecommendationCard({ item, className }: RecommendationCardProps) {
-    const TypeIcon = item.type === "book" ? BookOpenIcon : GraduationCapIcon;
 
     return (
         <div
@@ -82,31 +68,13 @@ export function RecommendationCard({ item, className }: RecommendationCardProps)
 
             {/* Actions */}
             <div className="flex flex-wrap items-center gap-2">
-                {item.notes && (
-                    <Button asChild size="sm" variant="default" className="h-8 gap-1 text-xs">
-                        <Link href={`/recommendations/${item.slug}`}>
-                            View notes
-                            <ArrowUpRightIcon className="size-3" />
-                        </Link>
-                    </Button>
-                )}
-                {item.externalUrl && (
-                    <Button
-                        asChild
-                        size="sm"
-                        variant="ghost"
-                        className="h-8 gap-1 text-xs"
-                    >
-                        <Link
-                            href={item.externalUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {item.type === "book" ? "Get book" : "Enroll"}
-                            <ArrowUpRightIcon className="size-3" />
-                        </Link>
-                    </Button>
-                )}
+
+                <Button asChild size="sm" variant="default" className="h-8 gap-1 text-xs">
+                    <Link href={`/recommendations/${item.slug}`}>
+                        View notes
+                        <ArrowUpRightIcon className="size-3" />
+                    </Link>
+                </Button>
             </div>
         </div>
     );
