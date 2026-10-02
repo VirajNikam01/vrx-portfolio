@@ -16,7 +16,7 @@ export const introductionContent = {
         { text: "", emphasis: "duration" },
         { text: " of experience building " },
         { text: "web and desktop applications", emphasis: "accent" },
-        { text: " using React, Next.js, Tauri, and Tailwind CSS." },
+        { text: " using Next.js, Node & Tauri." },
     ],
     actions: {
         connect: {
