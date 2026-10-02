@@ -154,7 +154,7 @@ export function BlogSection({
     const hasMore = limit !== undefined && posts.length > limit;
 
     return (
-        <section id="blog" className={cn("px-6 py-20", className)}>
+        <section id="blog" className={cn("px-6 sm:py-20", className)}>
             <div className="mx-auto w-full max-w-5xl">
                 <SectionHeader heading={heading} description={description} />
 
