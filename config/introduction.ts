@@ -4,18 +4,18 @@ export const introductionContent = {
     eyebrow: "Software Developer",
     headline: "I build polished, reliable web experiences that load fast and stay clear.",
     intro:
-        "I'm Viraj Nikam, a frontend-focused developer who cares about clean architecture, thoughtful interaction design, and interfaces that feel fast, clear, and dependable in real use.",
+        "a frontend-focused developer who cares about clean architecture, thoughtful interaction design, and interfaces that feel fast, clear, and dependable in real use.",
     image: {
-        src: "/images/intro/vrx-image.jpg",
+        src: "/images/intro/vrx-image.png",
         alt: "Viraj Nikam portrait",
     },
     statement: [
-        { text: "I'm Viraj Nikam, a passionate " },
+        { text: "A passionate " },
         { text: "Software Engineer", emphasis: "solid" },
         { text: " with " },
         { text: "", emphasis: "duration" },
         { text: " of experience building " },
-        { text: "clean, reliable & scalable web/desktop applications", emphasis: "accent" },
+        { text: "web and desktop applications", emphasis: "accent" },
         { text: " using React, Next.js, Tauri, and Tailwind CSS." },
     ],
     actions: {

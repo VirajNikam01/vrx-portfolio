@@ -1,23 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AppProviders } from "@/providers/app-providers";
 import { getSiteUrl, seoConfig } from "@/config/seo";
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-
-// const montserrat = Montserrat({
-//   subsets: ['latin'],
-//   weight: ['400', '500', '600', '700'],
-//   variable: '--font-montserrat',
-// })
-
-// const poppins = Poppins({
-//   subsets: ['latin'],
-//   weight: ['400', '500', '600', '700'],
-//   variable: '--font-sans',
-// })
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl("/")),
@@ -85,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", "font-sans", inter.variable)}
+      className={cn("h-full", "antialiased", "font-sans", poppins.variable)}
       suppressHydrationWarning
     >
       <body className="relative min-h-dvh overflow-x-hidden bg-background text-foreground">

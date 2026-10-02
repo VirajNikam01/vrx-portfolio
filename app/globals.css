@@ -66,6 +66,12 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --font-size-h1: 2.75rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.5rem;
+  --font-size-h4: 1.25rem;
+  --font-size-body: 1rem;
+  --font-size-label: 0.875rem;
 }
 
 :root {
@@ -183,10 +189,29 @@ html[data-primary="green"] {
   }
   html {
     @apply font-sans;
+    font-size: 20px;
+    line-height: 1.5;
+    text-rendering: geometricPrecision;
     scrollbar-color: var(--primary) var(--background);
     scrollbar-width: thin;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+@media (max-width: 425px) {
+  html {
+    font-size: 13px;
   }
 }

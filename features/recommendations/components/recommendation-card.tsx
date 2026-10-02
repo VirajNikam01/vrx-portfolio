@@ -65,17 +65,6 @@ export function RecommendationCard({ item, className }: RecommendationCardProps)
             <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
                 {item.description}
             </p>
-
-            {/* Actions */}
-            <div className="flex flex-wrap items-center gap-2">
-
-                <Button asChild size="sm" variant="default" className="h-8 gap-1 text-xs">
-                    <Link href={`/recommendations/${item.slug}`}>
-                        View notes
-                        <ArrowUpRightIcon className="size-3" />
-                    </Link>
-                </Button>
-            </div>
         </div>
     );
 }
