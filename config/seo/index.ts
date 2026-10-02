@@ -15,7 +15,7 @@ export const seoConfig = {
         "https://virajnikam.in",
     email: "virajnikam.connect@gmail.com",
     locale: "en_IN",
-    image: "/images/intro/vrx-image.jpg",
+    image: "/images/intro/vrx-image.png",
     sameAs: ["https://www.linkedin.com/in/virajnikam"],
 };
 

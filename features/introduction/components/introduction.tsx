@@ -6,6 +6,7 @@ import type {
     IntroductionStatementSegmentType,
 } from "../types";
 import { IntroductionActions } from "./introduction-actions";
+import { cn } from "@/lib/utils";
 
 type IntroductionProps = {
     content: IntroductionContentType;
@@ -30,10 +31,10 @@ type IntroductionMediaProps = {
 const INTRODUCTION_IMAGE_SIZE = 112;
 
 const sectionClassName =
-    "flex min-h-dvh items-center justify-center px-5 pt-22 pb-16 sm:px-8 lg:pt-15";
+    "flex min-h-dvh flex-col px-6 pt-28 pb-20 sm:pt-32";
 
 const contentClassName =
-    "mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7";
+    "mx-auto flex w-full max-w-5xl flex-col align-center justify-center gap-6 text-left sm:gap-7";
 
 const segmentClassNameByEmphasis = {
     solid:
@@ -73,20 +74,18 @@ export function Introduction({
 }
 
 function IntroductionMedia({ eyebrow, image }: IntroductionMediaProps) {
+    console.log("image.src", image.src)
     return (
-        <div className="flex flex-col items-center gap-3">
-            <Image
+        <span className="w-full flex items-center justify-center">
+            < Image
                 priority
                 src={image.src}
                 alt={image.alt}
                 width={INTRODUCTION_IMAGE_SIZE}
                 height={INTRODUCTION_IMAGE_SIZE}
-                className="size-28 rounded-full md:rounded-none border border-primary/20 object-cover shadow-lg shadow-primary/10"
+                className="size-54 border-b border-primary object-cover"
             />
-            <p className="text-sm font-semibold tracking-wide text-primary uppercase">
-                {eyebrow}
-            </p>
-        </div>
+        </span >
     );
 }
 
@@ -95,7 +94,7 @@ function IntroductionStatement({
     segments,
 }: IntroductionStatementProps) {
     return (
-        <h1 className="max-w-5xl text-xl leading-tight font-medium text-balance text-foreground sm:text-2xl lg:text-[1.75rem]">
+        <h1 className="w-full text-base leading-relaxed font-medium text-center text-foreground sm:text-lg lg:text-xl">
             {segments.map((segment, index) => (
                 <IntroductionStatementSegment
                     key={`${segment.emphasis ?? "plain"}-${segment.text}-${index}`}
@@ -114,11 +113,11 @@ function IntroductionStatementSegment({
     const text = getSegmentText(segment, experienceDurationLabel);
 
     if (!segment.emphasis) {
-        return text;
+        return <span>{text}</span>;
     }
 
     return (
-        <span className={segmentClassNameByEmphasis[segment.emphasis]}>
+        <span className={cn(segmentClassNameByEmphasis[segment.emphasis])}>
             {text}
         </span>
     );
