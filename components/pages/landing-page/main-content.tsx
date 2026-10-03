@@ -5,6 +5,8 @@ import { BlogSection } from "@/features/blog/components/blog-section";
 import { ContactSection } from "@/features/contact";
 import { Introduction } from "@/features/introduction";
 import { useLandingPageContent, type LandingPageContentType } from "@/features/landing-page";
+import { SkillsSection } from "@/features/skills/components";
+import { FunProjectsSection } from "@/features/fun-projects/components";
 import { RecommendationsPreview } from "@/features/recommendations/components/recommendations-preview";
 import { ExperienceItemType, getExperienceDurationLabel } from "@/features/work-experience";
 import { WorkExperience } from "@/features/work-experience/components";
@@ -52,10 +54,16 @@ function LandingPageSections({
             {content.featureFlags.showBlog && (
                 <BlogSection limit={4} showMoreHref="/blogs" />
             )}
+            {content.featureFlags.showSkills && (
+                <SkillsSection skills={content.skills} />
+            )}
             {content.featureFlags.showWorkExperience && (
                 <WorkExperience
                     experiences={allowedVisibleExperiences}
                 />
+            )}
+            {content.featureFlags.showFunProjects && (
+                <FunProjectsSection projects={content.funProjects} />
             )}
             {content.featureFlags.showRecommendations && (
                 <RecommendationsPreview items={content.recommendations} />
