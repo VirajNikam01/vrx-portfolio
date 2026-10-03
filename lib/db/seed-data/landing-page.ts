@@ -17,6 +17,8 @@ export const landingPageSeedData = {
     content: toJsonValue({
         introduction: landingPageContent.introduction,
         workExperiences: landingPageContent.workExperiences,
+        skills: landingPageContent.skills,
+        funProjects: landingPageContent.funProjects,
     }),
     config: toJsonValue({
         featureFlags: landingPageContent.featureFlags,

@@ -17,8 +17,8 @@ const experiencePositionSchema = z.object({
     id: z.string(),
     title: z.string(),
     category: experiencePositionCategorySchema,
-    startDate: z.iso.date(),
-    endDate: z.iso.date().optional(),
+    startDate: z.string(),
+    endDate: z.string().optional(),
     employmentType: z.string().optional(),
     description: z.array(z.string().min(1)).optional(),
     icon: experiencePositionIconSchema.optional(),
@@ -32,6 +32,7 @@ export const workExperienceSchema = z.object({
     companyLogo: z.string().optional(),
     positions: z.array(experiencePositionSchema),
     isCurrentEmployer: z.boolean().optional(),
+    isVisible: z.boolean().optional(),
 });
 
 export const workExperiencesSchema = z.array(workExperienceSchema);
