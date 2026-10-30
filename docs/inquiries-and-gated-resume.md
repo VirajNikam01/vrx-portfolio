@@ -16,7 +16,7 @@ The resume download dialog posts to `POST /api/inquiries` with:
 }
 ```
 
-The route handler:
+The handler and inquiry service:
 
 1. Validates the request body with Zod.
 2. Rejects disposable or unreachable email domains.
@@ -28,22 +28,23 @@ The route handler:
 7. The browser opens the signed CV URL.
 
 Requester CV emails are intentionally disabled for now in
-`app/api/inquiries/route.ts`. The helper still exists in
-`lib/email/inquiry-notifications.ts` so it can be restored later.
+`backend/services/inquiries.ts`. The helper still exists in
+`backend/services/notifications.ts` so it can be restored later.
 
 ## Important Files
 
-- `app/api/inquiries/route.ts`: Next.js route handler for inquiry submissions.
-- `features/inquiries/schema.ts`: request validation schema and allowed sources.
-- `features/inquiries/email-validation.ts`: disposable-domain and MX checks.
-- `features/inquiries/disposable-email-domains.ts`: maintained disposable list.
-- `features/inquiries/repository.ts`: Drizzle insert helper.
-- `features/inquiries/api.ts`: browser-side submit helper and typed errors.
-- `features/resume/storage.ts`: Supabase Storage signed CV URL creation.
-- `lib/db/client.ts`: Drizzle/Postgres singleton client.
-- `lib/db/schema.ts`: Drizzle table definitions.
-- `lib/email/inquiry-notifications.ts`: Resend email helpers.
-- `lib/supabase/server.ts`: server-only Supabase service-role client.
+- `app/api/inquiries/route.ts`: request parsing, shape validation, service calls, and HTTP responses.
+- `backend/services/inquiries.ts`: inquiry workflow and service orchestration.
+- `shared/contracts/inquiries-schema.ts`: request validation schema and allowed sources.
+- `backend/validation/inquiry-email.ts`: disposable-domain and MX checks.
+- `backend/validation/disposable-email-domains.ts`: maintained disposable list.
+- `backend/repository/inquiries.ts`: Drizzle insert helper.
+- `lib/api/inquiries.ts`: browser-side submit helper and typed errors.
+- `backend/integrations/storage/resume.ts`: Supabase Storage signed CV URL creation.
+- `backend/db/client.ts`: Drizzle/Postgres singleton client.
+- `backend/db/schema.ts`: Drizzle table definitions.
+- `backend/services/notifications.ts`: Resend email helpers.
+- `backend/integrations/storage/supabase.ts`: server-only Supabase service-role client.
 - `drizzle/`: generated SQL migrations and Drizzle metadata.
 
 ## Environment Variables
@@ -78,7 +79,7 @@ Install dependencies are already present:
 - `postgres`
 - `drizzle-kit`
 
-Generate a migration from `lib/db/schema.ts`:
+Generate a migration from `backend/db/schema.ts`:
 
 ```bash
 npm run db:generate
@@ -180,7 +181,7 @@ that do not send them.
 
 ## Server Error UX
 
-`features/inquiries/api.ts` preserves server field errors from responses like:
+`lib/api/inquiries.ts` preserves server field errors from responses like:
 
 ```json
 {
@@ -197,7 +198,7 @@ messages appear below the correct field.
 ## Adding Future Forms
 
 Reuse `POST /api/inquiries` for future forms. Supported `source` values live in
-`features/inquiries/schema.ts`:
+`shared/contracts/inquiries-schema.ts`:
 
 - `resume_download`
 - `collaboration`

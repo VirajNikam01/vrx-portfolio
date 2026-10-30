@@ -1,6 +1,6 @@
 "use client";
 
-import { RecommendationsGrid } from "@/features/recommendations/components/recommendations-grid";
+import { RecommendationsGrid } from "@/app/recommendations/components/organisms/recommendations-grid";
 
 export function RecommendationsPageClient() {
     return <RecommendationsGrid />;

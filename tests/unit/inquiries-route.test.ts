@@ -1,42 +1,38 @@
 import { POST } from "@/app/api/inquiries/route";
-import { validateInquiryEmail } from "@/features/inquiries/email-validation";
-import { createInquiry } from "@/features/inquiries/repository";
-import { createResumeSignedUrl } from "@/features/resume/storage";
-import { visitorsRepository } from "@/features/visitors";
-import {
-  sendInquiryNotification,
-  sendResumeDownloadEmail,
-} from "@/lib/email/inquiry-notifications";
+import { validateInquiryEmail } from "@/backend/validation/inquiry-email";
+import { inquiriesRepository } from "@/backend/repository/inquiries";
+import { createResumeSignedUrl } from "@/backend/integrations/storage/resume";
+import { visitorsService } from "@/backend/services/visitors";
+import { notificationsService } from "@/backend/services/notifications";
 
-jest.mock("@/features/inquiries/email-validation", () => ({
+jest.mock("@/backend/validation/inquiry-email", () => ({
   validateInquiryEmail: jest.fn(),
 }));
 
-jest.mock("@/features/inquiries/repository", () => ({
-  createInquiry: jest.fn(),
+jest.mock("@/backend/repository/inquiries", () => ({
+  inquiriesRepository: { createInquiry: jest.fn() },
 }));
 
-jest.mock("@/features/visitors", () => ({
-  visitorsRepository: {
-    upsert: jest.fn(),
+jest.mock("@/backend/services/visitors", () => ({
+  visitorsService: {
+    ensureVisitor: jest.fn(),
   },
 }));
 
-jest.mock("@/lib/email/inquiry-notifications", () => ({
-  sendInquiryNotification: jest.fn(),
-  sendResumeDownloadEmail: jest.fn(),
+jest.mock("@/backend/services/notifications", () => ({
+  notificationsService: { sendInquiryNotification: jest.fn(), sendResumeDownloadEmail: jest.fn() },
 }));
 
-jest.mock("@/features/resume/storage", () => ({
+jest.mock("@/backend/integrations/storage/resume", () => ({
   createResumeSignedUrl: jest.fn(),
 }));
 
-const createInquiryMock = jest.mocked(createInquiry);
+const createInquiryMock = jest.mocked(inquiriesRepository.createInquiry);
 const createResumeSignedUrlMock = jest.mocked(createResumeSignedUrl);
 const validateInquiryEmailMock = jest.mocked(validateInquiryEmail);
-const visitorsRepositoryMock = jest.mocked(visitorsRepository);
-const sendInquiryNotificationMock = jest.mocked(sendInquiryNotification);
-const sendResumeDownloadEmailMock = jest.mocked(sendResumeDownloadEmail);
+const visitorsServiceMock = jest.mocked(visitorsService);
+const sendInquiryNotificationMock = jest.mocked(notificationsService.sendInquiryNotification);
+const sendResumeDownloadEmailMock = jest.mocked(notificationsService.sendResumeDownloadEmail);
 
 class JsonResponseMock {
   status: number;
@@ -78,7 +74,7 @@ describe("POST /api/inquiries", () => {
     createResumeSignedUrlMock.mockResolvedValue("https://storage.example.com/signed-resume-url");
     validateInquiryEmailMock.mockReset();
     validateInquiryEmailMock.mockResolvedValue({ valid: true });
-    visitorsRepositoryMock.upsert.mockReset();
+    visitorsServiceMock.ensureVisitor.mockReset();
     sendInquiryNotificationMock.mockReset();
     sendResumeDownloadEmailMock.mockReset();
   });
@@ -117,7 +113,8 @@ describe("POST /api/inquiries", () => {
     );
 
     expect(response.status).toBe(201);
-    expect(await response.json()).toEqual({
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({
       data: {
         id: 1,
         resumeUrl: "https://storage.example.com/signed-resume-url",
@@ -140,9 +137,7 @@ describe("POST /api/inquiries", () => {
         resumeSignedUrlCreated: true,
       },
     });
-    expect(visitorsRepositoryMock.upsert).toHaveBeenCalledWith({
-      fingerprintHash: "visitor-123",
-    });
+    expect(visitorsServiceMock.ensureVisitor).toHaveBeenCalledWith("visitor-123");
     expect(validateInquiryEmailMock).toHaveBeenCalledWith("viraj@example.com");
     expect(sendInquiryNotificationMock).toHaveBeenCalledWith({
       source: "resume_download",
@@ -185,7 +180,8 @@ describe("POST /api/inquiries", () => {
     );
 
     expect(response.status).toBe(201);
-    expect(await response.json()).toEqual({
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({
       data: {
         id: 2,
       },
@@ -246,7 +242,8 @@ describe("POST /api/inquiries", () => {
     );
 
     expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({
       error: "Invalid email address.",
       issues: {
         email: ["Please use a non-temporary email address."],
@@ -255,5 +252,50 @@ describe("POST /api/inquiries", () => {
     expect(createInquiryMock).not.toHaveBeenCalled();
     expect(sendInquiryNotificationMock).not.toHaveBeenCalled();
     expect(sendResumeDownloadEmailMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects missing visitor identity before performing any side effects", async () => {
+    const response = await POST(createJsonRequest({
+      source: "contact_me", name: "Asha Shah", email: "asha@example.com",
+      reason: "I would like to discuss a project with you.",
+    }));
+    expect(response.status).toBe(400);
+    const responseBody = await response.json();
+    expect(responseBody).toEqual({
+      error: "Visitor identity is missing.",
+      issues: { visitorId: ["Unable to identify the visitor for this inquiry."] },
+    });
+    expect(visitorsServiceMock.ensureVisitor).not.toHaveBeenCalled();
+    expect(createInquiryMock).not.toHaveBeenCalled();
+  });
+
+  it("treats malformed JSON as an invalid submission", async () => {
+    const response = await POST({ json: async () => { throw new Error("Invalid JSON"); } } as unknown as Request);
+    expect(response.status).toBe(400);
+    expect(validateInquiryEmailMock).not.toHaveBeenCalled();
+  });
+
+  it("preserves side-effect order and returns an error if notification fails after persistence", async () => {
+    const order: string[] = [];
+    validateInquiryEmailMock.mockImplementation(async () => { order.push("validate"); return { valid: true }; });
+    visitorsServiceMock.ensureVisitor.mockImplementation(async () => { order.push("visitor"); });
+    createResumeSignedUrlMock.mockImplementation(async () => { order.push("resume"); return "https://example.com/resume"; });
+    createInquiryMock.mockImplementation(async values => {
+      order.push("inquiry");
+      return { ...values, id: 3, visitorId: values.visitorId ?? null, metadata: values.metadata ?? null, createdAt: new Date() };
+    });
+    sendInquiryNotificationMock.mockImplementation(async () => { order.push("notification"); throw new Error("Notification failed"); });
+    const log = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const response = await POST(createJsonRequest({
+        source: "resume_download", name: "Asha Shah", email: "asha@example.com",
+        reason: "I would like to review your frontend experience.",
+      }, { "x-client-fp": "visitor" }));
+      expect(response.status).toBe(500);
+      const responseBody = await response.json();
+      expect(responseBody).toEqual({ error: "Notification failed" });
+      expect(order).toEqual(["validate", "visitor", "resume", "inquiry", "notification"]);
+      expect(createInquiryMock).toHaveBeenCalledTimes(1);
+    } finally { log.mockRestore(); }
   });
 });

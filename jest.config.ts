@@ -8,6 +8,7 @@ const createJestConfig = nextJest({
 const config: Config = {
   coverageProvider: "v8",
   moduleNameMapper: {
+    "^server-only$": "<rootDir>/tests/server-only-mock.ts",
     "^@/(.*)$": "<rootDir>/$1",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],

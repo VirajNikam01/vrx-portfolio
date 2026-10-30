@@ -1,6 +1,6 @@
-import { skillsSchema } from "@/features/skills/schema";
-import { funProjectsSchema } from "@/features/fun-projects/schema";
-import { landingPageContentSchema } from "@/features/landing-page/schema";
+import { skillsSchema } from "@/shared/contracts/skills-schema";
+import { funProjectsSchema } from "@/shared/contracts/fun-projects-schema";
+import { landingPageContentSchema } from "@/shared/contracts/landing-page-schema";
 import { defaultSkills } from "@/config/skills";
 import { defaultFunProjects } from "@/config/fun-projects";
 import { landingPageContent } from "@/config/landing-page";

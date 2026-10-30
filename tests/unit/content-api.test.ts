@@ -1,9 +1,9 @@
 import { landingPageContent } from "@/config/landing-page";
 import { introductionContent } from "@/config/introduction";
 import { workExperiences } from "@/config/work-experience";
-import { getLandingPageContent } from "@/features/landing-page/api";
-import { getIntroductionContent } from "@/features/introduction/api";
-import { getWorkExperiences } from "@/features/work-experience/api";
+import { getLandingPageContent } from "@/lib/api/landing-page";
+import { getIntroductionContent } from "@/lib/api/introduction";
+import { getWorkExperiences } from "@/lib/api/work-experience";
 
 describe("content adapters", () => {
     it("returns the local landing page content", async () => {

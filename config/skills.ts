@@ -1,4 +1,4 @@
-import type { SkillItemType } from "@/features/skills";
+import type { SkillItemType } from "@/shared/contracts/skills";
 
 export const defaultSkills: SkillItemType[] = [
     // Core & Languages

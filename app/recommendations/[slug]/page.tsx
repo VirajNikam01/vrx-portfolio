@@ -1,66 +1,37 @@
+import { recommendationsService } from "@/backend/services/recommendations";
+import { recommendationTopicsService } from "@/backend/services/recommendation-topics";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeftIcon, ArrowUpRightIcon, BookOpenIcon, GraduationCapIcon } from "lucide-react";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-    readRecommendationBySlug,
-    readRecommendations,
-    readTopicsByRecommendationId,
-} from "@/features/recommendations/repository";
-import { RecommendationCard } from "@/features/recommendations/components/recommendation-card";
-import { RecommendationNotes } from "@/features/recommendations/components/recommendation-notes";
-import { TopicList } from "@/features/recommendations/components/topic-list";
+import { SiteHeader } from "@/app/components/organisms/site-header";
+import { SiteFooter } from "@/app/components/organisms/site-footer";
+import { Button } from "@/app/components/atoms/button";
+import { Badge } from "@/app/components/atoms/badge";
+
+import { RecommendationCard } from "@/app/recommendations/components/molecules/recommendation-card";
+import { RecommendationNotes } from "@/app/recommendations/components/organisms/recommendation-notes";
+import { TopicList } from "@/app/recommendations/components/organisms/topic-list";
 import { cn } from "@/lib/utils";
+
+import { JsonLd } from "@/app/components/atoms/json-ld";
+import { getRecommendationMetadata } from "@/lib/seo/metadata";
+import { getRecommendationJsonLd } from "@/lib/seo/structured-data";
 
 type Props = PageProps<"/recommendations/[slug]">;
 
 export async function generateStaticParams() {
-    const items = await readRecommendations();
+    const items = await recommendationsService.readRecommendations();
     return items.map((item) => ({ slug: item.slug }));
 }
 
-import { getSiteUrl, serializeJsonLd } from "@/config/seo";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
-    const item = await readRecommendationBySlug(slug);
+    const item = await recommendationsService.readRecommendationBySlug(slug);
     if (!item) return {};
 
-    const url = getSiteUrl(`/recommendations/${item.slug}`);
-
-    return {
-        title: `${item.title} — Notes & Summary — Viraj Nikam`,
-        description: item.description,
-        keywords: [
-            item.title,
-            `${item.title} notes`,
-            `${item.title} summary`,
-            `${item.author}`,
-            "Book Notes",
-            "Viraj Nikam Recommendations",
-        ],
-        alternates: {
-            canonical: url,
-        },
-        openGraph: {
-            title: `${item.title} — Notes & Summary`,
-            description: item.description,
-            url,
-            siteName: "Viraj Nikam",
-            type: "article",
-            images: item.coverImageUrl ? [{ url: item.coverImageUrl }] : [],
-        },
-        twitter: {
-            card: "summary_large_image",
-            title: `${item.title} — Notes & Summary`,
-            description: item.description,
-            images: item.coverImageUrl ? [item.coverImageUrl] : [],
-        },
-    };
+    return getRecommendationMetadata(item);
 }
 
 
@@ -100,46 +71,22 @@ function LetterAvatar({ title }: { title: string }) {
 
 export default async function RecommendationDetailPage({ params }: Props) {
     const { slug } = await params;
-    const item = await readRecommendationBySlug(slug);
+    const item = await recommendationsService.readRecommendationBySlug(slug);
 
     if (!item) {
         notFound();
     }
 
-    const topics = await readTopicsByRecommendationId(item.id);
+    const topics = await recommendationTopicsService.readTopicsByRecommendationId(item.id);
 
     // Fetch related items (same category, exclude current)
-    const allItems = await readRecommendations();
-    const related = allItems
-        .filter((r) => r.slug !== item.slug && r.category === item.category)
-        .slice(0, 3);
+    const related = await recommendationsService.readRelatedRecommendations(item.slug, item.category);
 
-    const itemJsonLd = {
-        "@context": "https://schema.org",
-        "@type": item.type === "book" ? "Book" : "Course",
-        name: item.title,
-        author: {
-            "@type": "Person",
-            name: item.author,
-        },
-        description: item.description,
-        url: getSiteUrl(`/recommendations/${item.slug}`),
-        ...(item.coverImageUrl ? { image: item.coverImageUrl } : {}),
-        hasPart: topics.map((t) => ({
-            "@type": "WebPage",
-            name: t.title,
-            url: getSiteUrl(`/recommendations/${item.slug}/${t.slug}`),
-        })),
-    };
+    const structuredData = getRecommendationJsonLd(item, topics);
 
     return (
         <main className="relative min-h-dvh bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.12),_transparent_38%),linear-gradient(to_bottom,_rgba(255,255,255,0.96),_rgba(255,255,255,1))] dark:bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.18),_transparent_32%),linear-gradient(to_bottom,_rgba(9,9,11,0.96),_rgba(9,9,11,1))]">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: serializeJsonLd(itemJsonLd),
-                }}
-            />
+            <JsonLd data={structuredData} />
             <SiteHeader />
             <div className="relative z-10">
                 <article className="px-6 py-20">

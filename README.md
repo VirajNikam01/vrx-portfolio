@@ -18,6 +18,25 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Inquiry Submissions
 
+Backend business logic lives in `backend/services/` and accesses only owned table
+repositories in `backend/repository/`. HTTP handlers live directly in
+`app/api/**/route.ts`. UI is colocated in `app/components/`,
+`app/blogs/components/`, and `app/recommendations/components/`;
+browser clients live in `lib/api/`, hooks in `hooks/`, and shared DTOs and schemas
+in `shared/contracts/`.
+
+UI is organized into atoms, molecules, and organisms. Page composition stays
+beside its route. See [component organization](docs/component-organization.md)
+for placement examples and dependency rules.
+
+SEO settings live in `config/seo.ts`; metadata, structured data, and crawler
+helpers live in `lib/seo/`. See [SEO organization](docs/seo-organization.md)
+for responsibilities, cleanup details, and validation.
+
+Run `npm run check:architecture` to check table ownership, frontend/backend
+boundaries, and service dependency cycles. These checks also run before linting.
+See [the architecture PRD](docs/backend-frontend-separation-prd.md) for the rules.
+
 The resume download form posts to `/api/inquiries`. The same endpoint can be reused by future collaboration, hiring, and contact forms by changing the `source` field.
 
 See [docs/inquiries-and-gated-resume.md](docs/inquiries-and-gated-resume.md)

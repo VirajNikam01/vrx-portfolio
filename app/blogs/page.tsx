@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { BlogsPageClient } from "./blogs-page-client";
+import { blogsMetadata } from "@/lib/seo/metadata";
+import { SiteHeader } from "@/app/components/organisms/site-header";
+import { SiteFooter } from "@/app/components/organisms/site-footer";
+import { BlogsPageClient } from "@/app/blogs/blogs-page-client";
 
-export const metadata: Metadata = {
-    title: "Blog — Viraj Nikam",
-    description: "Selected notes, experiments, and longer-form thinking from Viraj Nikam.",
-};
+export const metadata = blogsMetadata;
 
 export default function BlogsPage() {
     return (

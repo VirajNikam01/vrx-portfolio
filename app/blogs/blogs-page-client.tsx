@@ -1,6 +1,6 @@
 "use client";
 
-import { BlogSection } from "@/features/blog/components/blog-section";
+import { BlogSection } from "@/app/blogs/components/organisms/blog-section";
 
 export function BlogsPageClient() {
     return (

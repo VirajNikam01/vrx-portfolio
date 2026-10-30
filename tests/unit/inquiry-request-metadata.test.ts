@@ -1,4 +1,4 @@
-import { collectInquiryRequestMetadata } from "@/features/inquiries/request-metadata";
+import { collectInquiryRequestMetadata } from "@/app/api/inquiries/request-metadata";
 
 function createRequest(headers: Record<string, string>) {
   return {

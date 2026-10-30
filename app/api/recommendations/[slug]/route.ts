@@ -1,4 +1,5 @@
-import { readRecommendationBySlug } from "@/features/recommendations/repository";
+import "server-only";
+import { recommendationsService } from "@/backend/services/recommendations";
 import type { NextRequest } from "next/server";
 
 export async function GET(
@@ -6,7 +7,7 @@ export async function GET(
     ctx: RouteContext<"/api/recommendations/[slug]">,
 ) {
     const { slug } = await ctx.params;
-    const item = await readRecommendationBySlug(slug);
+    const item = await recommendationsService.readRecommendationBySlug(slug);
 
     if (!item) {
         return Response.json({ error: "Not found" }, { status: 404 });

@@ -1,4 +1,4 @@
-import type { FunProjectItemType } from "@/features/fun-projects";
+import type { FunProjectItemType } from "@/shared/contracts/fun-projects";
 
 export const defaultFunProjects: FunProjectItemType[] = [
     {

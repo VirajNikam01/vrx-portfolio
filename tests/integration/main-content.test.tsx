@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import { MainContent } from "@/components/pages/landing-page/main-content";
+import { MainContent } from "@/app/main-content";
 import { landingPageContent } from "@/config/landing-page";
 import { AppProviders } from "@/providers/app-providers";
 

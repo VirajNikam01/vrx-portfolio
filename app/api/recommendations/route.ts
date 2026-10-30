@@ -1,4 +1,5 @@
-import { readRecommendations, readFeaturedRecommendations } from "@/features/recommendations/repository";
+import "server-only";
+import { recommendationsService } from "@/backend/services/recommendations";
 import type { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -6,8 +7,8 @@ export async function GET(request: NextRequest) {
     const featured = searchParams.get("featured") === "true";
 
     const items = featured
-        ? await readFeaturedRecommendations()
-        : await readRecommendations();
+        ? await recommendationsService.readFeaturedRecommendations()
+        : await recommendationsService.readRecommendations();
 
     return Response.json({ data: items });
 }

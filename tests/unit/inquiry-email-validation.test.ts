@@ -3,7 +3,7 @@ import { resolveMx } from "node:dns/promises";
 import {
   isDisposableEmailDomain,
   validateInquiryEmail,
-} from "@/features/inquiries/email-validation";
+} from "@/backend/validation/inquiry-email";
 
 jest.mock("node:dns/promises", () => ({
   resolveMx: jest.fn(),

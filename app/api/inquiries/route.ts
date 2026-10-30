@@ -1,115 +1,27 @@
-import { createInquiry } from "@/features/inquiries/repository";
-import { collectInquiryRequestMetadata } from "@/features/inquiries/request-metadata";
-import { validateInquiryEmail } from "@/features/inquiries/email-validation";
-import { inquirySubmissionSchema, type InquirySubmissionType } from "@/features/inquiries/schema";
-import { visitorsRepository } from "@/features/visitors";
-import { createResumeSignedUrl } from "@/features/resume/storage";
-import {
-    sendInquiryNotification,
-    // sendResumeDownloadEmail,
-} from "@/lib/email/inquiry-notifications";
-
-const VISITOR_ID_HEADER = "x-client-fp";
+import "server-only";
+import { inquirySubmissionSchema } from "@/shared/contracts/inquiries-schema";
+import { inquiriesService } from "@/backend/services/inquiries";
+import { ValidationError } from "@/backend/errors/validation-error";
+import { collectInquiryRequestMetadata } from "./request-metadata";
 
 export async function POST(request: Request) {
-    const payload = await readJsonBody(request);
-    const parsedPayload = inquirySubmissionSchema.safeParse(payload);
-
-    if (!parsedPayload.success) {
-        return validationErrorResponse(
-            "Invalid inquiry submission.",
-            parsedPayload.error.flatten().fieldErrors,
-        );
+    const payload = await request.json().catch(() => null);
+    const parsed = inquirySubmissionSchema.safeParse(payload);
+    if (!parsed.success) {
+        return Response.json({ error: "Invalid inquiry submission.", issues: parsed.error.flatten().fieldErrors }, { status: 400 });
     }
-
     try {
-        return await submitInquiry(request, parsedPayload.data);
+        const data = await inquiriesService.submit(parsed.data, {
+            visitorId: request.headers.get("x-client-fp")?.trim(),
+            metadata: collectInquiryRequestMetadata(request),
+        });
+        return Response.json({ data }, { status: 201 });
     } catch (error) {
+        if (error instanceof ValidationError) {
+            return Response.json({ error: error.message, issues: error.issues }, { status: 400 });
+        }
         console.error("Failed to submit inquiry", error);
-        return serverErrorResponse(error);
+        const message = error instanceof Error ? error.message : "Unable to submit inquiry right now.";
+        return Response.json({ error: message }, { status: 500 });
     }
-}
-
-async function submitInquiry(request: Request, submission: InquirySubmissionType) {
-    const emailValidation = await validateInquiryEmail(submission.email);
-    if (!emailValidation.valid) {
-        return validationErrorResponse("Invalid email address.", {
-            email: [emailValidation.message ?? "This email address could not be validated."],
-        });
-    }
-
-    const visitorId = request.headers.get(VISITOR_ID_HEADER)?.trim();
-    if (!visitorId) {
-        return validationErrorResponse("Visitor identity is missing.", {
-            visitorId: ["Unable to identify the visitor for this inquiry."],
-        });
-    }
-
-    await visitorsRepository.upsert({ fingerprintHash: visitorId });
-
-    const resumeUrl = await createResumeUrlIfRequested(submission);
-
-    const inquiry = await createInquiry({
-        ...submission,
-        visitorId,
-        metadata: buildInquiryMetadata(request, resumeUrl),
-    });
-
-    await sendInquiryNotification({
-        ...submission,
-        id: inquiry.id,
-        createdAt: inquiry.createdAt,
-        resumeUrl,
-    });
-
-    // Requester email is intentionally disabled — the browser opens the
-    // signed preview URL immediately after a successful submission.
-    // if (resumeUrl) {
-    //     await sendResumeDownloadEmail({ email: submission.email, name: submission.name, resumeUrl });
-    // }
-
-    return Response.json(
-        { data: { id: inquiry.id, ...(resumeUrl ? { resumeUrl } : {}) } },
-        { status: 201 },
-    );
-}
-
-async function readJsonBody(request: Request): Promise<unknown> {
-    return request.json().catch(() => null);
-}
-
-
-async function createResumeUrlIfRequested(submission: InquirySubmissionType) {
-    switch (submission.source) {
-        case "resume_download":
-            return createResumeSignedUrl();
-        case "contact_me":
-        case "collaboration":
-        case "hiring_contact":
-        case "general_contact":
-            return undefined;
-    }
-
-    const exhaustiveSource: never = submission.source;
-    return exhaustiveSource;
-}
-
-function buildInquiryMetadata(request: Request, resumeUrl: string | undefined) {
-    return {
-        ...collectInquiryRequestMetadata(request),
-        ...(resumeUrl ? { resumeSignedUrlCreated: true } : {}),
-    };
-}
-
-function validationErrorResponse(
-    error: string,
-    issues: Record<string, string[] | undefined>,
-) {
-    return Response.json({ error, issues }, { status: 400 });
-}
-
-function serverErrorResponse(error: unknown) {
-    const message =
-        error instanceof Error ? error.message : "Unable to submit inquiry right now.";
-    return Response.json({ error: message }, { status: 500 });
 }
