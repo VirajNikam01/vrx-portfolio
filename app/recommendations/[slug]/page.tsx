@@ -1,18 +1,17 @@
+import { InitialAvatar } from "@/app/components/atoms/initial-avatar";
 import { recommendationsService } from "@/backend/services/recommendations";
 import { recommendationTopicsService } from "@/backend/services/recommendation-topics";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeftIcon, ArrowUpRightIcon, BookOpenIcon, GraduationCapIcon } from "lucide-react";
-import { SiteHeader } from "@/app/components/organisms/site-header";
-import { SiteFooter } from "@/app/components/organisms/site-footer";
+import { ArrowUpRightIcon } from "lucide-react";
+import { SiteHeader } from "@/app/components/organisms/layout/site-header";
+import { SiteFooter } from "@/app/components/organisms/layout/site-footer";
 import { Button } from "@/app/components/atoms/button";
-import { Badge } from "@/app/components/atoms/badge";
 
 import { RecommendationCard } from "@/app/recommendations/components/molecules/recommendation-card";
 import { RecommendationNotes } from "@/app/recommendations/components/organisms/recommendation-notes";
 import { TopicList } from "@/app/recommendations/components/organisms/topic-list";
-import { cn } from "@/lib/utils";
 
 import { JsonLd } from "@/app/components/atoms/json-ld";
 import { getRecommendationMetadata } from "@/lib/seo/metadata";
@@ -25,48 +24,12 @@ export async function generateStaticParams() {
     return items.map((item) => ({ slug: item.slug }));
 }
 
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const item = await recommendationsService.readRecommendationBySlug(slug);
     if (!item) return {};
 
     return getRecommendationMetadata(item);
-}
-
-
-const categoryColors: Record<string, string> = {
-    tech: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-    philosophy: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-    other: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
-};
-
-const categoryLabels: Record<string, string> = {
-    tech: "Tech",
-    philosophy: "Philosophy",
-    other: "Other",
-};
-
-function LetterAvatar({ title }: { title: string }) {
-    const initial = title.trim()[0]?.toUpperCase() ?? "?";
-    const colors = [
-        "from-blue-500 to-indigo-600",
-        "from-purple-500 to-pink-600",
-        "from-emerald-500 to-teal-600",
-        "from-orange-500 to-amber-600",
-        "from-rose-500 to-red-600",
-    ];
-    const color = colors[title.charCodeAt(0) % colors.length];
-    return (
-        <div
-            className={cn(
-                "flex h-28 w-20 items-center justify-center rounded-xl bg-gradient-to-br text-4xl font-bold text-white shadow-md",
-                color,
-            )}
-        >
-            {initial}
-        </div>
-    );
 }
 
 export default async function RecommendationDetailPage({ params }: Props) {
@@ -106,7 +69,7 @@ export default async function RecommendationDetailPage({ params }: Props) {
                                     className="h-32 w-24 shrink-0 rounded-xl object-cover shadow-md"
                                 />
                             ) : (
-                                <LetterAvatar title={item.title} />
+                                <InitialAvatar title={item.title} className="h-28 w-20 rounded-xl text-4xl shadow-md" />
                             )}
 
                             <div className="space-y-3">

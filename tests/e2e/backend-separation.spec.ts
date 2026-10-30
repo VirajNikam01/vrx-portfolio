@@ -13,6 +13,7 @@ test("homepage renders and recommendations navigation works", async ({ page }) =
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Software Engineer");
     await expect(page.getByRole("heading", { name: "Experience", exact: true })).toBeVisible();
+    await expect(page.locator("body")).toHaveCSS("font-family", /Poppins/i);
     await page.locator("#recommendations").getByRole("link", { name: "See all" }).click();
     await expect(page).toHaveURL(/\/recommendations$/);
     await expect(page.getByRole("heading", { name: "Recommendations", exact: true })).toBeVisible();

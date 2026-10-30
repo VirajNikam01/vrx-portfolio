@@ -12,10 +12,10 @@ const ownership = {
     recommendation_topics: ["recommendation-topics", "recommendation-topics"],
 };
 
-const componentLevels = { atoms: 0, molecules: 1, organisms: 2 };
+const componentLevels = { atoms: 0, molecules: 1, organisms: 2, pages: 3 };
 
 function componentLevel(file) {
-    const level = file.match(/^app\/(?:.*\/)?components\/(atoms|molecules|organisms)\//)?.[1];
+    const level = file.match(/^app\/(?:.*\/)?components\/(atoms|molecules|organisms|pages)\//)?.[1];
     return level === undefined ? undefined : componentLevels[level];
 }
 
@@ -53,6 +53,9 @@ export function checkArchitecture(sources) {
     }
     for (const [file, source] of sources) {
         if (file.startsWith("features/") || file.startsWith("components/") || file.startsWith("backend/handlers/")) errors.push(`${file}: use route-local components and API handlers`);
+        if (!file.startsWith("backend/repository/") && !/^[a-z0-9]+(?:[.-][a-z0-9]+)*\.(?:tsx?|jsx?|mjs)$/.test(path.posix.basename(file))) {
+            errors.push(`${file}: source filenames must use kebab-case`);
+        }
         const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true);
         const imports = [];
         function add(specifier, typeOnly = false) {
@@ -142,7 +145,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     else console.log("Architecture checks passed: table ownership, import boundaries, and service dependencies.");
     if (process.argv.includes("--self-test")) {
         for (const [file, source, expected] of [
-            ["app/components/atoms/invalid.tsx", 'import "@/app/components/molecules/theme-toggle";', "higher UI layer"],
+            ["app/components/atoms/invalid.tsx", 'import "@/app/components/molecules/theme/theme-toggle";', "higher UI layer"],
+            ["app/components/pages/invalidClient.tsx", 'export {};', "kebab-case"],
+            ["app/components/organisms/invalid.tsx", 'import "@/app/components/pages/home/home-page";', "higher UI layer"],
             ["app/recommendations/components/molecules/invalid.tsx", 'import "@/app/recommendations/components/organisms/topic-detail";', "higher UI layer"],
             ["backend/handlers/obsolete.ts", 'import "server-only";', "use route-local"],
             ["features/obsolete.ts", 'export {};', "use route-local"],

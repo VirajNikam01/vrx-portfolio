@@ -1,9 +1,9 @@
-import axios from "@/config/axios";
+import { apiClient } from "@/lib/api/client";
 import type { RecommendationItem } from "@/shared/contracts/recommendations";
 
 async function fetchRecommendations(): Promise<RecommendationItem[]> {
     try {
-        const response = await axios.get<{ data: RecommendationItem[] }>(
+        const response = await apiClient.get<{ data: RecommendationItem[] }>(
             "/recommendations",
         );
         if (!response.data?.data) return [];
@@ -16,7 +16,7 @@ async function fetchRecommendations(): Promise<RecommendationItem[]> {
 
 async function fetchFeaturedRecommendations(): Promise<RecommendationItem[]> {
     try {
-        const response = await axios.get<{ data: RecommendationItem[] }>(
+        const response = await apiClient.get<{ data: RecommendationItem[] }>(
             "/recommendations?featured=true",
         );
         if (!response.data?.data) return [];
@@ -31,7 +31,7 @@ async function fetchRecommendationBySlug(
     slug: string,
 ): Promise<RecommendationItem | null> {
     try {
-        const response = await axios.get<{ data: RecommendationItem }>(
+        const response = await apiClient.get<{ data: RecommendationItem }>(
             `/recommendations/${slug}`,
         );
         return response.data?.data ?? null;
@@ -41,7 +41,7 @@ async function fetchRecommendationBySlug(
     }
 }
 
-export const recommendationsAction = {
+export const recommendationsApi = {
     fetchRecommendations,
     fetchFeaturedRecommendations,
     fetchRecommendationBySlug,

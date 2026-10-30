@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { PrimaryColorPicker } from "@/app/components/molecules/primary-color-picker";
-import { ThemeToggle } from "@/app/components/molecules/theme-toggle";
+import { PrimaryColorPicker } from "@/app/components/molecules/theme/primary-color-picker";
+import { ThemeToggle } from "@/app/components/molecules/theme/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const LOGO_TEXT = "VRJ";

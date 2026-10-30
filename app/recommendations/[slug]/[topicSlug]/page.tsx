@@ -2,8 +2,8 @@ import { recommendationsService } from "@/backend/services/recommendations";
 import { recommendationTopicsService } from "@/backend/services/recommendation-topics";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { SiteHeader } from "@/app/components/organisms/site-header";
-import { SiteFooter } from "@/app/components/organisms/site-footer";
+import { SiteHeader } from "@/app/components/organisms/layout/site-header";
+import { SiteFooter } from "@/app/components/organisms/layout/site-footer";
 
 import { TopicDetail } from "@/app/recommendations/components/organisms/topic-detail";
 

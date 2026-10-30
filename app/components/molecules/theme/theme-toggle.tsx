@@ -9,7 +9,7 @@ import { META_THEME_COLORS } from "@/config/site";
 import { useMounted } from "@/hooks/use-mounted";
 import { useMetaColor } from "@/hooks/theme/use-meta-color";
 import { useSound } from "@/hooks/theme/use-sound";
-import { useThemeTransition } from "@/hooks/theme/use-theme-transaction";
+import { useThemeTransition } from "@/hooks/theme/use-theme-transition";
 
 import { MoonIcon } from "@/app/components/atoms/icons/moon";
 import { SunMediumIcon } from "@/app/components/atoms/icons/sun-medium";

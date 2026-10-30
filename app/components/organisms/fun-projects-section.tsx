@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { RocketIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { FunProjectCategory, FunProjectItemType } from "@/shared/contracts/fun-projects";
+import type { FunProjectItemType } from "@/shared/contracts/fun-projects";
 import { FunProjectCard } from "@/app/components/molecules/fun-project-card";
 
 type FunProjectsSectionProps = {
@@ -13,25 +11,14 @@ type FunProjectsSectionProps = {
     className?: string;
 };
 
-const categories: ("All" | FunProjectCategory)[] = [
-    "All",
-    "Web Application",
-    "Desktop Application"
-];
-
 export function FunProjectsSection({
     projects = [],
     heading = "Fun Learning Projects",
     description = "Projects built while learning, experimenting, and working with different technologies",
     className,
 }: FunProjectsSectionProps) {
-    const [selectedCategory, setSelectedCategory] = useState<"All" | FunProjectCategory>("All");
 
     const visibleProjects = projects.filter((p) => p.isVisible);
-    const filteredProjects =
-        selectedCategory === "All"
-            ? visibleProjects
-            : visibleProjects.filter((p) => p.category === selectedCategory);
 
     if (visibleProjects.length === 0) return null;
 
@@ -56,47 +43,9 @@ export function FunProjectsSection({
                     </div>
                 </div>
 
-                {/* Category Filter Tabs */}
-                {/* <div className="flex flex-wrap gap-2 border-b border-border/60 pb-4">
-                    {categories.map((category) => {
-                        const isSelected = selectedCategory === category;
-                        const count =
-                            category === "All"
-                                ? visibleProjects.length
-                                : visibleProjects.filter((p) => p.category === category).length;
-
-                        if (count === 0 && category !== "All") return null;
-
-                        return (
-                            <button
-                                key={category}
-                                onClick={() => setSelectedCategory(category)}
-                                className={cn(
-                                    "inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors select-none",
-                                    isSelected
-                                        ? "bg-primary text-primary-foreground shadow-sm"
-                                        : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
-                                )}
-                            >
-                                <span>{category}</span>
-                                <span
-                                    className={cn(
-                                        "rounded-full px-1.5 py-0.2 text-[10px]",
-                                        isSelected
-                                            ? "bg-primary-foreground/20 text-primary-foreground"
-                                            : "bg-background text-muted-foreground"
-                                    )}
-                                >
-                                    {count}
-                                </span>
-                            </button>
-                        );
-                    })}
-                </div> */}
-
                 {/* Projects Grid */}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {filteredProjects.map((project) => (
+                    {visibleProjects.map((project) => (
                         <FunProjectCard key={project.id} project={project} />
                     ))}
                 </div>

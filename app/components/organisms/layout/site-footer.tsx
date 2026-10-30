@@ -1,6 +1,6 @@
 "use client";
 
-import { useLandingPageContent } from "@/hooks/landing-page/useLandingPageContent";
+import { useLandingPageContent } from "@/hooks/landing-page/use-landing-page-content";
 import { ArrowUpRightIcon, CodeXmlIcon, IdCardIcon, MailIcon } from "lucide-react";
 
 

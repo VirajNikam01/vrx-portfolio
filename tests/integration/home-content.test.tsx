@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 
-import { MainContent } from "@/app/main-content";
+import { HomeContent } from "@/app/components/pages/home/home-content";
 import { landingPageContent } from "@/config/landing-page";
 import { AppProviders } from "@/providers/app-providers";
 
-describe("MainContent integration", () => {
+describe("HomeContent integration", () => {
     it("renders the introduction, Blog, work experience timeline, and footer from provided content", () => {
         render(
             <AppProviders>
-                <MainContent />
+                <HomeContent />
             </AppProviders>,
         );
 
@@ -33,7 +33,7 @@ describe("MainContent integration", () => {
     it("does not render sections disabled by feature flags", () => {
         render(
             <AppProviders>
-                <MainContent />
+                <HomeContent />
             </AppProviders>,
         );
 

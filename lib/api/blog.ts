@@ -15,6 +15,6 @@ export async function fetchBlogPosts(): Promise<BlogPostType[]> {
     return payload.data ?? [];
 }
 
-export const blogAction = {
+export const blogApi = {
     fetchBlogPosts,
 };

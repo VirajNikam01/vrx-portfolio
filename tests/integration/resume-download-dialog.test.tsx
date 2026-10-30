@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { IntroductionActions } from "@/app/components/organisms/introduction-actions";
+import { IntroductionActions } from "@/app/components/organisms/introduction/introduction-actions";
 import { introductionContent } from "@/config/introduction";
 
 describe("Resume download dialog", () => {

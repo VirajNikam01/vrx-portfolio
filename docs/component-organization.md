@@ -1,35 +1,43 @@
 # Component organization
 
-UI uses a lightweight Atomic Design structure inside the App Router.
+UI uses Atomic Design inside the App Router. Shared components are grouped by
+level, and related components share a domain folder when that improves navigation.
 
 ```text
 app/
   components/
     atoms/
       icons/
+      initial-avatar.tsx
       button.tsx
       input.tsx
-      badge.tsx
       ...
     molecules/
-      theme-toggle.tsx
+      theme/
+        theme-toggle.tsx
+        primary-color-picker.tsx
       skill-card.tsx
       fun-project-card.tsx
-      ...
     organisms/
-      site-header.tsx
-      site-footer.tsx
+      layout/
+        site-header.tsx
+        site-footer.tsx
+      introduction/
+        introduction.tsx
+        introduction-actions.tsx
+        resume-download-dialog.tsx
+      stars-background.tsx
       inquiry-form.tsx
-      introduction.tsx
+      skills-section.tsx
       ...
-  home-page-client.tsx
-  main-content.tsx
-  page.tsx
+    pages/
+      home/
+        home-page.tsx
+        home-content.tsx
+  styles/
+    globals.css
   blogs/
-    components/
-      organisms/
-        blog-section.tsx
-    blogs-page-client.tsx
+    components/organisms/blog-section.tsx
     page.tsx
   recommendations/
     components/
@@ -42,57 +50,76 @@ app/
         recommendation-notes.tsx
         topic-list.tsx
         topic-detail.tsx
-    recommendations-page-client.tsx
     page.tsx
     [slug]/...
+  layout.tsx
+  page.tsx
 ```
 
 ## Choosing a level
 
-- Atoms are the existing UI primitives and animated icons. The Dialog, Tooltip,
-  and Collapsible modules remain intact as primitive APIs; their Radix wrappers
-  are not split into extra files just to satisfy a category.
-- Molecules combine primitives into focused cards and controls, such as a skill
-  card, recommendation card, theme toggle, or notes code block.
-- Organisms assemble larger sections and workflows, such as a header, inquiry
-  form, resume dialog, introduction, skills section, or topic detail. Introduction
-  actions belong here because they include the resume dialog workflow.
-- Page composition belongs beside the route's `page.tsx`, including client entry
-  components. The homepage's `main-content.tsx` assembles its sections.
+- Atoms are UI primitives and icons. Dialog, Tooltip, and Collapsible remain intact
+  as primitive APIs rather than being split into extra wrapper files.
+- Molecules combine primitives into focused cards and controls.
+- Organisms assemble larger sections and workflows. Introduction actions belong
+  here because they contain the resume dialog workflow.
+- Pages compose organisms into a complete screen. The homepage lives in
+  `app/components/pages/home/`; `app/page.tsx` remains the Next.js route entry.
+  Blog and recommendation routes render their existing organisms directly rather
+  than using wrappers that add no logic.
 
-Shared and homepage UI lives under `app/components/`. Blog and recommendation
-components stay with their routes even when the homepage reuses them. A route
-does not need empty atoms or molecules folders when it has no such components.
+Blog and recommendation components stay with their routes even when the homepage
+reuses them. There is no separate elements folder, and no empty level folders.
+Introduce templates only when an actual reusable page layout emerges.
 
-There is no separate `elements` folder because it would overlap with atoms.
-Templates can be introduced when a reusable page layout actually emerges.
+## Naming and placement
 
-## Dependencies and naming
+- Source filenames use kebab-case, such as `home-page.tsx`,
+  `stars-background.tsx`, and `use-blog-posts.ts`.
+- React component symbols use PascalCase; functions and hooks use camelCase.
+- Component names describe their UI responsibility. The `"use client"` directive
+  expresses the rendering boundary; do not add a `-client` suffix automatically.
+- Files containing no JSX use `.ts`; React view files use `.tsx`.
+- Preserve framework filenames such as `page.tsx`, `layout.tsx`, `route.ts`,
+  `sitemap.ts`, `robots.ts`, and `manifest.ts`.
+- Repository filenames are an explicit exception: they match physical table names
+  exactly, including underscores. Generated migration names are also preserved.
+- Keep direct imports; do not add barrel files or one-component wrapper folders
+  only to add another layer. Related groups such as layout, theme, and introduction
+  have their own folders.
 
-Atoms may use other atoms. Molecules may use atoms and other molecules.
-Organisms may use any of these levels. Lower levels must not import higher levels;
-`npm run check:architecture` checks this across both shared and route-specific UI.
-Backend ownership and frontend/server boundary checks remain active.
+Hooks live in `hooks/<domain>/`. Browser clients live in `lib/api/` and share
+`apiClient` from `lib/api/client.ts`; exported domain groups use the `Api`
+suffix. Shared contracts remain in `shared/contracts/`. Flat configuration and
+query-key modules replace directories that previously contained only an index file.
 
-Keep descriptive component names and direct imports. Do not add wrapper components
-or barrel files only to create another Atomic Design level. Hooks remain in
-`hooks/`, browser API clients in `lib/api/`, and contracts in `shared/contracts/`.
+The component generator points to `app/components/atoms` and
+`app/styles/globals.css`. New compound UI should be placed in its appropriate
+higher level after generation.
 
-The component generator's `ui` alias points to `app/components/atoms`. Review new
-composite components and place them in molecules or organisms when appropriate.
+## Dependency rules
 
-This change moves 39 existing component files: 12 atoms, 6 molecules, 17 organisms,
-and 4 page-composition files. Component implementations, exports, API routes,
-backend behavior, and visual styles are preserved.
+Atoms may use atoms. Molecules may use atoms and molecules. Organisms may use
+these levels and other organisms. Pages may compose any UI level. Lower levels
+must not import higher levels. `npm run check:architecture` enforces this along
+with kebab-case source filenames and the existing frontend/backend ownership rules.
 
-## Validation
+## Cleanup
 
-- Production build and TypeScript: passed.
-- Architecture checks, including invalid upward UI imports: passed.
-- Component lint: no errors; existing warnings remain.
-- Full unit/integration suite: 45 passed, with the same 5 pre-existing failures
-  documented in `backend-frontend-separation.md`.
-- All 4 browser smoke checks passed using the installed Chromium browser. Contact
-  and resume responses were mocked to avoid external writes.
-- Existing invalid database configuration still causes build-time reads to use
-  their established fallbacks; no live database verification was added.
+Removed the redundant blog/recommendation page wrappers, unused HTTP transport
+and query-client factory, inactive filter state and commented controls, unused
+imports/constants, and an introduction debug log. Reused one initial-avatar atom
+for both recommendation presentations while retaining their original sizes/styles.
+
+Visible content, styling, public routes, backend workflows, and repository ownership
+are preserved. Existing validation limitations are documented in
+`backend-frontend-separation.md` and `seo-organization.md`.
+
+## Validation after naming cleanup
+
+- Production build, TypeScript, and architecture checks passed.
+- Full-project lint has no errors; 6 existing warnings remain, down from 31.
+- Unit/integration tests: 52 passed, with the same 5 pre-existing failures.
+- All 8 browser checks passed, including stylesheet/font loading, navigation,
+  contact submission, resume flow, and SEO output. External submission responses
+  are mocked; the existing database configuration limitation remains unchanged.

@@ -1,28 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { BookOpenIcon, GraduationCapIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useRecommendations } from "@/hooks/recommendations/useRecommendations";
+import { useRecommendations } from "@/hooks/recommendations/use-recommendations";
 import { RecommendationCard } from "@/app/recommendations/components/molecules/recommendation-card";
-import type { RecommendationCategory, RecommendationType } from "@/shared/contracts/recommendations";
-
-const typeOptions: { value: RecommendationType | "all"; label: string; icon?: React.ReactNode }[] = [
-    { value: "book", label: "Books", icon: <BookOpenIcon className="size-4" /> },
-];
-
 
 export function RecommendationsGrid() {
-    const [activeType, setActiveType] = useState<RecommendationType>("book");
-    const [activeCategory, setActiveCategory] = useState<RecommendationCategory | "all">("all");
 
     const { data: items = [], isLoading } = useRecommendations();
 
-
-
     return (
         <div className="space-y-8">
-
 
             {/* Grid */}
             {isLoading ? (

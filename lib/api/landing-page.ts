@@ -1,15 +1,15 @@
-import axios from "@/config/axios";
+import { apiClient } from "@/lib/api/client";
 import { landingPageContent } from "@/config/landing-page";
 import type { LandingPageContentType } from "@/shared/contracts/landing-page";
 
 
 async function fetchLandingPageContent() {
     try {
-        const response = await axios.get("/content/landing-page");
+        const response = await apiClient.get("/content/landing-page");
 
         if (!response.data || response.status != 200) return { data: landingPageContent };
         return response.data;
-    } catch (error) {
+    } catch {
         /*
         ** log error to sentry or any other error tracking service
         ** send default content to the user if the request fails, dont break the app
@@ -19,7 +19,7 @@ async function fetchLandingPageContent() {
     }
 }
 
-export const landingPageAction = {
+export const landingPageApi = {
     fetchLandingPageContent,
 };
 

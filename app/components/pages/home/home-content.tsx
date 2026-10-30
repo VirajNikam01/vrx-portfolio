@@ -1,10 +1,10 @@
 "use client";
 
-import { SiteFooter } from "@/app/components/organisms/site-footer";
+import { SiteFooter } from "@/app/components/organisms/layout/site-footer";
 import { BlogSection } from "@/app/blogs/components/organisms/blog-section";
 import { ContactSection } from "@/app/components/organisms/contact-section";
-import { Introduction } from "@/app/components/organisms/introduction";
-import { useLandingPageContent } from "@/hooks/landing-page/useLandingPageContent";
+import { Introduction } from "@/app/components/organisms/introduction/introduction";
+import { useLandingPageContent } from "@/hooks/landing-page/use-landing-page-content";
 import type { LandingPageContentType } from "@/shared/contracts/landing-page";
 import { SkillsSection } from "@/app/components/organisms/skills-section";
 import { FunProjectsSection } from "@/app/components/organisms/fun-projects-section";
@@ -14,7 +14,7 @@ import { getExperienceDurationLabel } from "@/lib/experience-duration";
 import { WorkExperience } from "@/app/components/organisms/work-experience";
 import { cn } from "@/lib/utils";
 
-export function MainContent() {
+export function HomeContent() {
     const { data: landingPageContent } = useLandingPageContent();
     const content =
         landingPageContent && "data" in landingPageContent

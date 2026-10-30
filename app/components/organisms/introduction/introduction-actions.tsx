@@ -2,7 +2,7 @@ import { DownloadIcon, MessageSquareTextIcon } from "lucide-react";
 
 import { Button } from "@/app/components/atoms/button";
 import type { IntroductionContentType } from "@/shared/contracts/introduction";
-import { ResumeDownloadDialog } from "@/app/components/organisms/resume-download-dialog";
+import { ResumeDownloadDialog } from "@/app/components/organisms/introduction/resume-download-dialog";
 
 type IntroductionActionsProps = {
     actions: IntroductionContentType["actions"];

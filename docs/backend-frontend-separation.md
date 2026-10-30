@@ -6,10 +6,10 @@ Implemented on 2026-10-31 following approval of the architecture PRD.
 
 | Location | Responsibility |
 | --- | --- |
-| `app/components/{atoms,molecules,organisms}/` | Homepage sections and reusable UI, layout, theme, and 3D components |
+| `app/components/{atoms,molecules,organisms,pages}/` | Homepage sections and reusable UI, layout, theme, and 3D components |
 | `app/blogs/components/organisms/` | Blog section UI |
 | `app/recommendations/components/{molecules,organisms}/` | Recommendation cards, notes, lists, and topic UI |
-| `app/**/page.tsx` and adjacent composition files | Route pages and client composition |
+| `app/**/page.tsx` and `app/components/pages/` | Route pages and client composition |
 | `hooks/<domain>/` | Browser query and mutation hooks |
 | `lib/api/` | Browser HTTP clients |
 | `shared/contracts/` | Browser-safe DTOs and validation schemas |

@@ -15,8 +15,8 @@ ownership, service composition, and public behavior requirements remain in force
 See `backend-frontend-separation.md` for the implemented layout.
 
 The subsequently approved Atomic Design organization divides component folders
-into atoms, molecules, and organisms, while page-composition files stay beside
-their routes. See `component-organization.md` for the current UI structure.
+into atoms, molecules, organisms, and pages. Page composition now lives in
+`app/components/pages/`. See `component-organization.md` for the current UI structure.
 
 ## Objective
 

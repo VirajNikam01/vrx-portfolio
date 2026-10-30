@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
 import { Button } from "@/app/components/atoms/button";
 import type { RecommendationItem } from "@/shared/contracts/recommendations";
-import { useFeaturedRecommendations } from "@/hooks/recommendations/useRecommendations";
+import { useFeaturedRecommendations } from "@/hooks/recommendations/use-recommendations";
 import { RecommendationCard } from "@/app/recommendations/components/molecules/recommendation-card";
 
 type RecommendationsPreviewProps = {

@@ -5,7 +5,7 @@ import type {
     IntroductionImageType,
     IntroductionStatementSegmentType,
 } from "@/shared/contracts/introduction";
-import { IntroductionActions } from "@/app/components/organisms/introduction-actions";
+import { IntroductionActions } from "@/app/components/organisms/introduction/introduction-actions";
 import { cn } from "@/lib/utils";
 
 type IntroductionProps = {
@@ -24,7 +24,6 @@ type IntroductionStatementSegmentProps = {
 };
 
 type IntroductionMediaProps = {
-    eyebrow: string;
     image: IntroductionImageType;
 };
 
@@ -60,7 +59,6 @@ export function Introduction({
         <section id="top" className={sectionClassName}>
             <div className={contentClassName}>
                 <IntroductionMedia
-                    eyebrow={content.eyebrow}
                     image={content.image}
                 />
                 <IntroductionStatement
@@ -73,11 +71,10 @@ export function Introduction({
     );
 }
 
-function IntroductionMedia({ eyebrow, image }: IntroductionMediaProps) {
-    console.log("image.src", image.src)
+function IntroductionMedia({ image }: IntroductionMediaProps) {
     return (
         <span className="w-full flex items-center justify-center">
-            < Image
+            <Image
                 priority
                 src={image.src}
                 alt={image.alt}
@@ -85,7 +82,7 @@ function IntroductionMedia({ eyebrow, image }: IntroductionMediaProps) {
                 height={INTRODUCTION_IMAGE_SIZE}
                 className="size-54 border-b border-primary object-cover"
             />
-        </span >
+        </span>
     );
 }
 

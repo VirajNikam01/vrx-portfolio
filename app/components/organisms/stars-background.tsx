@@ -9,7 +9,7 @@ import * as THREE from "three";
 
 const cameraPosVector = new THREE.Vector3(0, 0, 200);
 
-function Random(min: number, max: number): number {
+function randomBetween(min: number, max: number): number {
     return Math.random() * (max - min) + min;
 }
 
@@ -21,13 +21,13 @@ interface Particle {
     speed: number;
 }
 
-interface StarProps {
+interface StarFieldProps {
     scrollSpeed: number;
     scrollDirection: number;
     theme: string;
 }
 
-const Star: React.FC<StarProps> = ({ scrollSpeed, scrollDirection, theme }) => {
+const StarField: React.FC<StarFieldProps> = ({ scrollSpeed, scrollDirection, theme }) => {
     const light = useRef<THREE.PointLight>(null);
     const mesh = useRef<THREE.InstancedMesh>(null);
     const count = 150;
@@ -35,11 +35,11 @@ const Star: React.FC<StarProps> = ({ scrollSpeed, scrollDirection, theme }) => {
     const particles = useMemo<Particle[]>(() => {
         const temp: Particle[] = [];
         for (let i = 0; i < count; i++) {
-            const time = Random(0, 100);
-            const x = Random(-100, 100);
-            const y = Random(-100, 100);
-            const z = Random(-100, 100);
-            const speed = Random(0.01, 1) / 3;
+            const time = randomBetween(0, 100);
+            const x = randomBetween(-100, 100);
+            const y = randomBetween(-100, 100);
+            const z = randomBetween(-100, 100);
+            const speed = randomBetween(0.01, 1) / 3;
 
             temp.push({ time, x, y, z, speed });
         }
@@ -83,7 +83,7 @@ const Star: React.FC<StarProps> = ({ scrollSpeed, scrollDirection, theme }) => {
     );
 };
 
-export const Stars: React.FC = () => {
+export const StarsBackground: React.FC = () => {
     const [scrollSpeed, setScrollSpeed] = useState<number>(1);
     const [scrollDirection, setScrollDirection] = useState<number>(1);
     const lastScrollY = useRef<number>(0);
@@ -132,7 +132,7 @@ export const Stars: React.FC = () => {
         >
             <>
                 <PerspectiveCamera makeDefault position={cameraPosVector} />
-                <Star
+                <StarField
                     scrollSpeed={scrollSpeed}
                     scrollDirection={scrollDirection}
                     theme={activeTheme}
@@ -141,5 +141,3 @@ export const Stars: React.FC = () => {
         </Canvas>
     );
 };
-
-export default Stars;

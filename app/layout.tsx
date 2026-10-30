@@ -1,5 +1,5 @@
 import { Poppins } from "next/font/google";
-import "./globals.css";
+import "./styles/globals.css";
 import { cn } from "@/lib/utils";
 import { AppProviders } from "@/providers/app-providers";
 import { siteMetadata, siteViewport } from "@/lib/seo/metadata";

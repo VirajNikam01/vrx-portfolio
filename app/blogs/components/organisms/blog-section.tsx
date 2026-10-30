@@ -8,14 +8,14 @@ import { Separator } from "@/app/components/atoms/separator";
 import { Skeleton } from "@/app/components/atoms/skeleton";
 import type { BlogPostType } from "@/shared/contracts/blog";
 import { cn } from "@/lib/utils";
-import { useBlogPosts } from "@/hooks/blog/useBlogPosts";
+import { useBlogPosts } from "@/hooks/blog/use-blog-posts";
 import { formatPublishedDate } from "@/lib/blog-utils";
 
 type BlogSectionProps = {
     className?: string;
     heading?: string;
     description?: string;
-    /** Max number of posts to display. Defaults to 2. Pass Infinity for all. */
+    /** Max number of posts to display. Omit for all posts. */
     limit?: number;
     /** If provided and there are more posts than limit, show a "Show more" button linking here. */
     showMoreHref?: string;
@@ -23,7 +23,6 @@ type BlogSectionProps = {
 
 
 const BLOG_URL = "https://blog.virajnikam.in";
-const DEFAULT_LIMIT = 2;
 
 
 

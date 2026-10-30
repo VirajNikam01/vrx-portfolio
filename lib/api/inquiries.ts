@@ -1,4 +1,4 @@
-import axios from "@/config/axios";
+import { apiClient } from "@/lib/api/client";
 import { isAxiosError } from "axios";
 import type { InquirySubmissionType } from "@/shared/contracts/inquiries-schema";
 
@@ -23,7 +23,7 @@ export class InquirySubmissionError extends Error {
 
 export async function submitInquiry(values: InquirySubmissionType) {
     try {
-        const response = await axios({
+        const response = await apiClient({
             method: "POST",
             url: "/inquiries",
             data: values,

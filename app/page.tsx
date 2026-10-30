@@ -1,4 +1,4 @@
-import { HomePageClient } from "@/app/home-page-client";
+import { HomePage } from "@/app/components/pages/home/home-page";
 import { JsonLd } from "@/app/components/atoms/json-ld";
 import { homeMetadata } from "@/lib/seo/metadata";
 import { getHomeJsonLd } from "@/lib/seo/structured-data";
@@ -10,7 +10,7 @@ export default function Home() {
     return (
         <>
             <JsonLd data={structuredData} />
-            <HomePageClient />
+            <HomePage />
         </>
     );
 }

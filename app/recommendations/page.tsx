@@ -1,6 +1,6 @@
-import { SiteHeader } from "@/app/components/organisms/site-header";
-import { SiteFooter } from "@/app/components/organisms/site-footer";
-import { RecommendationsPageClient } from "@/app/recommendations/recommendations-page-client";
+import { SiteHeader } from "@/app/components/organisms/layout/site-header";
+import { SiteFooter } from "@/app/components/organisms/layout/site-footer";
+import { RecommendationsGrid } from "@/app/recommendations/components/organisms/recommendations-grid";
 
 import { JsonLd } from "@/app/components/atoms/json-ld";
 import { recommendationsMetadata } from "@/lib/seo/metadata";
@@ -25,7 +25,7 @@ export default function RecommendationsPage() {
                                 Books I&apos;ve found genuinely useful.
                             </p>
                         </div>
-                        <RecommendationsPageClient />
+                        <RecommendationsGrid />
                     </div>
                 </section>
                 <SiteFooter />

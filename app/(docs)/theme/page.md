@@ -258,7 +258,7 @@ The layout also wraps the app with the provider:
 File:
 
 ```txt
-app/globals.css
+app/styles/globals.css
 ```
 
 The project uses CSS variables for theme tokens:
@@ -295,7 +295,7 @@ className="bg-background text-foreground"
 File:
 
 ```txt
-components/theme/theme-toggle.tsx
+app/components/molecules/theme/theme-toggle.tsx
 ```
 
 The toggle waits for mount before using `resolvedTheme`:

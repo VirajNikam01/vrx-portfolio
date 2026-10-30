@@ -35,7 +35,7 @@ features/work-experience/api.ts
 Landing integration:
 
 ```txt
-components/splash/main-content.tsx
+app/components/pages/home/home-content.tsx
 ```
 
 ## Data setup
@@ -81,7 +81,7 @@ The runtime data comes through the feature API/query layer. The API response is 
 ```tsx
 export async function getWorkExperiences(): Promise<ExperienceItemType[]> {
   try {
-    const response = await httpClient.get<unknown>("/work-experience");
+    const response = await apiClient.get<unknown>("/work-experience");
 
     return resolveWorkExperiencePayload(response.data);
   } catch {
@@ -143,7 +143,7 @@ className = "bg-background";
 
 Why?
 
-`bg-background` resolves to the active theme background color from `app/globals.css`:
+`bg-background` resolves to the active theme background color from `app/styles/globals.css`:
 
 ```css
 :root {

@@ -1,37 +1,11 @@
-import Link from "next/link";
-import { ArrowUpRightIcon } from "lucide-react";
+import { InitialAvatar } from "@/app/components/atoms/initial-avatar";
 import { cn } from "@/lib/utils";
-import { Button } from "@/app/components/atoms/button";
 import type { RecommendationItem } from "@/shared/contracts/recommendations";
 
 type RecommendationCardProps = {
     item: RecommendationItem;
     className?: string;
 };
-
-
-function LetterAvatar({ title }: { title: string }) {
-    const initial = title.trim()[0]?.toUpperCase() ?? "?";
-    const colors = [
-        "from-blue-500 to-indigo-600",
-        "from-purple-500 to-pink-600",
-        "from-emerald-500 to-teal-600",
-        "from-orange-500 to-amber-600",
-        "from-rose-500 to-red-600",
-    ];
-    // Stable color from title char code
-    const color = colors[title.charCodeAt(0) % colors.length];
-    return (
-        <div
-            className={cn(
-                "flex h-16 w-12 shrink-0 items-center justify-center rounded-md bg-gradient-to-br text-xl font-bold text-white shadow-sm",
-                color,
-            )}
-        >
-            {initial}
-        </div>
-    );
-}
 
 export function RecommendationCard({ item, className }: RecommendationCardProps) {
 
@@ -50,7 +24,7 @@ export function RecommendationCard({ item, className }: RecommendationCardProps)
                         className="h-16 w-12 shrink-0 rounded-md object-cover shadow-sm"
                     />
                 ) : (
-                    <LetterAvatar title={item.title} />
+                    <InitialAvatar title={item.title} className="h-16 w-12 shrink-0 rounded-md text-xl shadow-sm" />
                 )}
 
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
