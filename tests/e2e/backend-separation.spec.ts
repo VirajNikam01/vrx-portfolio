@@ -9,14 +9,15 @@ test.beforeEach(async ({ page }) => {
     await page.route("**/api/recommendations**", route => route.fulfill({ json: { data: [] } }));
 });
 
-test("homepage renders and recommendations navigation works", async ({ page }) => {
+test("homepage renders and dedicated Bookshelf navigation works", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Software Engineer");
     await expect(page.getByRole("heading", { name: "Experience", exact: true })).toBeVisible();
     await expect(page.locator("body")).toHaveCSS("font-family", /Poppins/i);
-    await page.locator("#recommendations").getByRole("link", { name: "See all" }).click();
-    await expect(page).toHaveURL(/\/recommendations$/);
-    await expect(page.getByRole("heading", { name: "Recommendations", exact: true })).toBeVisible();
+    await expect(page.locator("#recommendations")).toHaveCount(0);
+    await page.locator("header").getByRole("link", { name: "Bookshelf", exact: true }).click();
+    await expect(page).toHaveURL(/\/bookshelf$/);
+    await expect(page.getByRole("heading", { name: "Bookshelf.", exact: true })).toBeVisible();
 });
 
 test("contact form submits through its frontend API client", async ({ page }) => {
