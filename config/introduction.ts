@@ -1,4 +1,4 @@
-import type { IntroductionContentType } from "@/features/introduction";
+import type { IntroductionContentType } from "@/shared/contracts/introduction";
 
 export const introductionContent = {
     eyebrow: "Software Developer",

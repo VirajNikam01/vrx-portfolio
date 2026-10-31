@@ -1,4 +1,4 @@
-import type { ExperienceItemType } from "@/features/work-experience";
+import type { ExperienceItemType } from "@/shared/contracts/work-experience";
 
 export const workExperiences = [
     {

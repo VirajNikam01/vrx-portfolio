@@ -1,4 +1,4 @@
-import { resumeDownloadRequestSchema } from "@/features/introduction/schema";
+import { resumeDownloadRequestSchema } from "@/shared/contracts/introduction-schema";
 
 describe("resume download request schema", () => {
   it("accepts a complete download request", () => {

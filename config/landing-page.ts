@@ -1,4 +1,4 @@
-import type { LandingPageContentType } from "@/features/landing-page/types";
+import type { LandingPageContentType } from "@/shared/contracts/landing-page";
 
 import { introductionContent } from "./introduction";
 import { workExperiences } from "./work-experience";

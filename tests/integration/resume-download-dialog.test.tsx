@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { IntroductionActions } from "@/features/introduction/components/introduction-actions";
+import { IntroductionActions } from "@/app/components/organisms/introduction/introduction-actions";
 import { introductionContent } from "@/config/introduction";
 
 describe("Resume download dialog", () => {
@@ -35,7 +35,8 @@ describe("Resume download dialog", () => {
     await user.click(screen.getByRole("button", { name: /download cv/i }));
     await user.click(screen.getByRole("button", { name: /download cv/i }));
 
-    expect(await screen.findByText("Please enter your name.")).toBeInTheDocument();
+    const nameValidationMessage = await screen.findByText("Please enter your name.");
+    expect(nameValidationMessage).toBeInTheDocument();
     expect(screen.getByText("Please enter a valid email address.")).toBeInTheDocument();
     expect(screen.getByText("Please share a little more context.")).toBeInTheDocument();
     expect(openSpy).not.toHaveBeenCalled();
@@ -99,9 +100,8 @@ describe("Resume download dialog", () => {
     );
     await user.click(screen.getAllByRole("button", { name: /download cv/i }).at(-1)!);
 
-    expect(
-      await screen.findByText("Unable to submit inquiry right now.")
-    ).toBeInTheDocument();
+    const submissionErrorMessage = await screen.findByText("Unable to submit inquiry right now.");
+    expect(submissionErrorMessage).toBeInTheDocument();
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(openSpy).not.toHaveBeenCalled();
   });
@@ -128,9 +128,8 @@ describe("Resume download dialog", () => {
     );
     await user.click(screen.getAllByRole("button", { name: /download cv/i }).at(-1)!);
 
-    expect(
-      await screen.findByText("Please use a non-temporary email address.")
-    ).toBeInTheDocument();
+    const emailValidationMessage = await screen.findByText("Please use a non-temporary email address.");
+    expect(emailValidationMessage).toBeInTheDocument();
     expect(screen.queryByText("Invalid email address.")).not.toBeInTheDocument();
     expect(openSpy).not.toHaveBeenCalled();
   });

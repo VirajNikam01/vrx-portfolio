@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { WorkExperience } from "@/features/work-experience/components";
+import { WorkExperience } from "@/app/components/organisms/work-experience";
 import { workExperiences } from "@/config/work-experience";
 
 describe("WorkExperience UI", () => {

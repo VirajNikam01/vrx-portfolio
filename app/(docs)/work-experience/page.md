@@ -7,14 +7,14 @@ This note explains how the work experience section is wired into the landing pag
 Main component:
 
 ```txt
-features/work-experience/components/work-experience.tsx
+app/components/organisms/work-experience.tsx
 ```
 
 Export file:
 
 ```txt
-features/work-experience/components/index.ts
-features/work-experience/index.ts
+app/components/organisms/work-experience.tsx
+lib/experience-duration.ts
 ```
 
 Data file:
@@ -26,8 +26,8 @@ config/work-experience.ts
 Feature data layer:
 
 ```txt
-features/work-experience/components/work-experience.tsx
-features/work-experience/types.ts
+app/components/organisms/work-experience.tsx
+shared/contracts/work-experience.ts
 features/work-experience/schema.ts
 features/work-experience/api.ts
 ```
@@ -35,7 +35,7 @@ features/work-experience/api.ts
 Landing integration:
 
 ```txt
-components/splash/main-content.tsx
+app/components/pages/home/home-content.tsx
 ```
 
 ## Data setup
@@ -43,7 +43,7 @@ components/splash/main-content.tsx
 The local fallback content is kept outside the UI component:
 
 ```tsx
-import type { ExperienceItemType } from "@/features/work-experience";
+import type { ExperienceItemType } from "@/shared/contracts/work-experience";
 
 export const workExperiences = [
   {
@@ -81,7 +81,7 @@ The runtime data comes through the feature API/query layer. The API response is 
 ```tsx
 export async function getWorkExperiences(): Promise<ExperienceItemType[]> {
   try {
-    const response = await httpClient.get<unknown>("/work-experience");
+    const response = await apiClient.get<unknown>("/work-experience");
 
     return resolveWorkExperiencePayload(response.data);
   } catch {
@@ -143,7 +143,7 @@ className = "bg-background";
 
 Why?
 
-`bg-background` resolves to the active theme background color from `app/globals.css`:
+`bg-background` resolves to the active theme background color from `app/styles/globals.css`:
 
 ```css
 :root {

@@ -1,9 +1,5 @@
-import {
-  getExperienceDurationLabel,
-  getPositionDurationLabel,
-  getPositionPeriodLabel,
-} from "@/features/work-experience";
-import type { ExperienceItemType } from "@/features/work-experience";
+import { getExperienceDurationLabel, getPositionDurationLabel, getPositionPeriodLabel } from "@/lib/experience-duration";
+import type { ExperienceItemType } from "@/shared/contracts/work-experience";
 
 const experience = (
   positions: ExperienceItemType["positions"]
