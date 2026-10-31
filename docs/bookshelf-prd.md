@@ -1,6 +1,6 @@
 # PRD: Bookshelf
 
-Status: Draft for review; implementation has not started.
+Status: Approved for implementation on 2026-10-31. See `bookshelf-implementation.md` for delivery and validation notes.
 Date: 2026-10-31
 Route: `/bookshelf`
 
@@ -63,7 +63,7 @@ Use **Articles** for externally authored blog posts and essays so visitors can d
 | `/bookshelf/[slug]?type=book&q=example` | Same item with browsing context retained |
 
 - Category values are `book`, `paper`, `article`, `movie`, `video`, and `course`. No `type` means All.
-- Category selection switches to the list presentation; All returns to the cover grid.
+- Category selection switches to the list presentation and automatically opens the first matching item when available; All returns to the cover grid.
 - Search is available in both presentations. It combines with the active category.
 - Selecting an item pushes a history entry. Category changes also push an entry; typing in search replaces the current entry after a short debounce to avoid a history entry per keystroke.
 - Switching category closes the selected item and preserves the search text. A clear-search control resets only the query.
@@ -133,7 +133,8 @@ Use **Articles** for externally authored blog posts and essays so visitors can d
 - Use clear source labels: “View book”, “Read paper”, “Read article”, “View movie”, “Watch video”, or “View course”. External links use safe HTTP(S) URLs and open in a new tab with an accessible indication.
 - Reuse existing published topic notes where an item has them; link to the existing topic routes in the first release rather than duplicating their content or building new topic routes.
 - Missing notes display “Personal notes coming soon.” Available source links remain usable.
-- Before selection on a category page, show “Select an item to read my notes.”
+- A populated category automatically selects its first matching item, including direct category URLs and newly matched search results. Empty categories/searches show a single empty state without a reader compartment. The reference's idle selection prompt is intentionally omitted.
+- Back to Bookshelf returns to the All items cover grid, so category auto-selection cannot immediately reopen the reader. Chapter back links open their parent Bookshelf item.
 - An item with neither notes nor a source still displays its description and the missing-notes state.
 - Source pages are never automatically embedded or fetched in the visitor's browser.
 
@@ -141,7 +142,7 @@ Use **Articles** for externally authored blog posts and essays so visitors can d
 
 ### Proposed decision
 
-Use the existing recommendations records as the shared collection. Bookshelf is a new browsing experience over that collection, not a second independent content store. Existing `/recommendations`, `/recommendations/[slug]`, topic routes, APIs, and home previews retain their current behavior.
+Use the existing recommendations records as the shared collection. Bookshelf is a new browsing experience over that collection, not a second independent content store. Existing `/recommendations`, `/recommendations/[slug]`, topic routes, and APIs remain available. Per the owner's later direction, remove the homepage recommendation preview and use the dedicated Bookshelf navigation instead.
 
 The current model supports `book` and `course`, title, author, description, cover, external link, notes, visibility, featured state, and sort order. Extend it deliberately for the additional content types and tags. Keep the existing subject category (`tech`, `philosophy`, `other`) separate from media type.
 
@@ -218,9 +219,9 @@ The current model supports `book` and `course`, title, author, description, cove
 5. Connect navigation, metadata, sitemap, and failure states.
 6. Validate responsive layouts, themes, accessibility, and existing recommendations behavior.
 
-## 14. Decisions proposed for review
+## 14. Decisions adopted for the first release
 
-These defaults make the draft actionable; they are not recorded as approved decisions:
+The following defaults were adopted when implementation was requested:
 
 - Keep Recommendations working and share its content store with Bookshelf.
 - Include Courses alongside the five reference media categories.

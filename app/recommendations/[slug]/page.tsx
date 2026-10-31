@@ -52,7 +52,7 @@ export default async function RecommendationDetailPage({ params }: Props) {
             <JsonLd data={structuredData} />
             <SiteHeader />
             <div className="relative z-10">
-                <article className="px-6 py-20">
+                <article className="px-6 pb-20 pt-36 sm:pt-40">
                     <div className="mx-auto w-full max-w-3xl">
                         <Link
                             href="/recommendations"
@@ -103,7 +103,7 @@ export default async function RecommendationDetailPage({ params }: Props) {
                             <TopicList recommendationSlug={item.slug} topics={topics} />
                         ) : item.notes ? (
                             <div className="rounded-xl border border-border/60 bg-background/60 p-6 backdrop-blur-sm">
-                                <RecommendationNotes notes={item.notes} />
+                                <RecommendationNotes notes={item.notes} allowHtml={false} />
                             </div>
                         ) : (
                             <p className="rounded-xl border border-border/60 bg-muted/40 p-6 text-sm text-muted-foreground">

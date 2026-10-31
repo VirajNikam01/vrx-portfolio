@@ -9,14 +9,16 @@ import { NotesCodeBlock } from "@/app/recommendations/components/molecules/notes
 
 type RecommendationNotesProps = {
     notes: string;
+    allowHtml?: boolean;
 };
 
-export function RecommendationNotes({ notes }: RecommendationNotesProps) {
+export function RecommendationNotes({ notes, allowHtml = true }: RecommendationNotesProps) {
     return (
         <div className="space-y-1">
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                rehypePlugins={allowHtml ? [rehypeRaw, rehypeHighlight] : [rehypeHighlight]}
+                skipHtml={!allowHtml}
                 components={customComponents}
             >
                 {notes}

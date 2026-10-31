@@ -8,7 +8,6 @@ import { useLandingPageContent } from "@/hooks/landing-page/use-landing-page-con
 import type { LandingPageContentType } from "@/shared/contracts/landing-page";
 import { SkillsSection } from "@/app/components/organisms/skills-section";
 import { FunProjectsSection } from "@/app/components/organisms/fun-projects-section";
-import { RecommendationsPreview } from "@/app/recommendations/components/organisms/recommendations-preview";
 import { ExperienceItemType } from "@/shared/contracts/work-experience";
 import { getExperienceDurationLabel } from "@/lib/experience-duration";
 import { WorkExperience } from "@/app/components/organisms/work-experience";
@@ -78,9 +77,6 @@ function LandingPageSections({
             )}
             {content.featureFlags.showFunProjects && (
                 <FunProjectsSection projects={content.funProjects} />
-            )}
-            {content.featureFlags.showRecommendations && (
-                <RecommendationsPreview items={content.recommendations} />
             )}
             <ContactSection />
         </>

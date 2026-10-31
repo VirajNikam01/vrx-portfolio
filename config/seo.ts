@@ -27,4 +27,8 @@ export const seoPages = {
         path: "/recommendations", title: "Recommendations & Book Notes",
         description: "Hand-picked recommendations and detailed chapter-by-chapter notes on engineering, software architecture, philosophy, and productivity books & courses.",
     },
+    bookshelf: {
+        path: "/bookshelf", title: "Bookshelf",
+        description: "Books, papers, articles, original notes, movies, videos, and courses from Viraj Nikam's personal collection.",
+    },
 } as const;

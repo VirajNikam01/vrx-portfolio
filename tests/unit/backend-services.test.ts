@@ -25,12 +25,12 @@ jest.mock("@/backend/integrations/blog/rss", () => ({ fetchBlogFeed: jest.fn() }
 
 const recommendation: Recommendation = {
     id: 7, slug: "visible-book", type: "book", category: "tech", title: "Book", author: "Author",
-    description: "Description", coverImageUrl: null, externalUrl: null, notes: null,
-    isFeatured: true, isVisible: true, sortOrder: 0, createdAt: new Date(), updatedAt: new Date(),
+    description: "Description", coverImageUrl: null, externalUrl: null, notes: null, tags: [],
+    isFeatured: true, isVisible: true, sortOrder: 0, version: 0, slugLocked: true, createdAt: new Date(), updatedAt: new Date(),
 };
 const topic: RecommendationTopic = {
     id: 8, recommendationId: 7, slug: "chapter", title: "Chapter", content: "Notes",
-    sortOrder: 0, isPublished: true, createdAt: new Date(), updatedAt: new Date(),
+    sortOrder: 0, isPublished: true, version: 0, slugLocked: true, createdAt: new Date(), updatedAt: new Date(),
 };
 
 beforeEach(() => {
@@ -51,7 +51,7 @@ describe("content service", () => {
     it("returns stored content without adding an active-record policy", async () => {
         const content = { ...landingPageContent, featureFlags: { ...landingPageContent.featureFlags, showBlog: false } };
         jest.mocked(contentConfigsRepository.findByKey).mockResolvedValue({
-            id: 1, key: "landing-page", content, config: {}, isActive: false, createdAt: new Date(), updatedAt: new Date(),
+            id: 1, key: "landing-page", content, config: {}, isActive: false, version: 0, createdAt: new Date(), updatedAt: new Date(),
         });
         await expect(contentConfigsService.readLandingPageContent()).resolves.toEqual(content);
     });
@@ -61,11 +61,11 @@ describe("recommendation service", () => {
     it("requires visible records, limits featured records to three, and maps public DTOs", async () => {
         jest.mocked(recommendationsRepository.findMany).mockResolvedValue([recommendation]);
         const items = await recommendationsService.readFeaturedRecommendations();
-        expect(recommendationsRepository.findMany).toHaveBeenCalledWith({ isVisible: true, isFeatured: true, limit: 3 });
+        expect(recommendationsRepository.findMany).toHaveBeenCalledWith({ isVisible: true, isFeatured: true, limit: 3, types: ["book", "course"] });
         expect(items[0]).not.toHaveProperty("createdAt");
         expect(items[0].slug).toBe("visible-book");
         await recommendationsService.readRecommendations();
-        expect(recommendationsRepository.findMany).toHaveBeenLastCalledWith({ isVisible: true });
+        expect(recommendationsRepository.findMany).toHaveBeenLastCalledWith({ isVisible: true, types: ["book", "course"] });
     });
 
     it("preserves empty-list and null-detail fallbacks on database failure", async () => {

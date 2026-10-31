@@ -13,6 +13,11 @@ import {
 export const recommendationType = pgEnum("recommendation_type", [
     "book",
     "course",
+    "paper",
+    "article",
+    "note",
+    "movie",
+    "video",
 ]);
 
 export const recommendationCategory = pgEnum("recommendation_category", [
@@ -34,9 +39,12 @@ export const recommendations = pgTable(
         coverImageUrl: text("cover_image_url"),
         externalUrl: text("external_url"),
         notes: text("notes"),
+        tags: text("tags").array().default([]).notNull(),
         isFeatured: boolean("is_featured").default(false).notNull(),
         isVisible: boolean("is_visible").default(true).notNull(),
         sortOrder: integer("sort_order").default(0).notNull(),
+        version: integer("version").default(0).notNull(),
+        slugLocked: boolean("slug_locked").default(false).notNull(),
         createdAt: timestamp("created_at", { withTimezone: true })
             .defaultNow()
             .notNull(),

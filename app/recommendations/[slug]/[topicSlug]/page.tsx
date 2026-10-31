@@ -55,7 +55,7 @@ export default async function TopicDetailPage({ params }: Props) {
             <JsonLd data={structuredData} />
             <SiteHeader />
             <div className="relative z-10">
-                <section className="px-6 py-20">
+                <section className="px-6 pb-20 pt-36 sm:pt-40">
                     <div className="mx-auto w-full max-w-3xl">
                         <TopicDetail
                             recommendation={recommendation}

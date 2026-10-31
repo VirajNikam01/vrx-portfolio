@@ -63,7 +63,7 @@ it("preserves recommendation/topic structured data and escapes closing script ta
 it("indexes only actual static pages and the provided visible recommendation/published topic URLs", () => {
     const entries = getSitemapEntries([item, item], [{ recommendationSlug: "book", topicSlug: "chapter" }]);
     expect(entries.map(entry => entry.url)).toEqual([
-        getSiteUrl("/"), getSiteUrl("/blogs"), getSiteUrl("/recommendations"),
+        getSiteUrl("/"), getSiteUrl("/blogs"), getSiteUrl("/recommendations"), getSiteUrl("/bookshelf"),
         getSiteUrl("/recommendations/book"), getSiteUrl("/recommendations/book/chapter"),
     ]);
     for (const path of ["/installation", "/theme", "/work-experience"]) {
@@ -72,7 +72,7 @@ it("indexes only actual static pages and the provided visible recommendation/pub
 });
 
 it("keeps robots, the manifest, and the AI discovery endpoint consistent with the site configuration", () => {
-    expect(getRobots()).toMatchObject({ rules: [{ disallow: ["/api/"] }], sitemap: getSiteUrl("/sitemap.xml") });
+    expect(getRobots()).toMatchObject({ rules: [{ disallow: ["/api/", "/admin/"] }], sitemap: getSiteUrl("/sitemap.xml") });
     expect(getManifest()).toMatchObject({ name: seoConfig.title, lang: seoConfig.language, start_url: getSiteUrl("/") });
     const text = getLlmsText();
     expect(text).toContain(getSiteUrl("/blogs"));

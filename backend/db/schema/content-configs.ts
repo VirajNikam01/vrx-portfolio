@@ -1,4 +1,4 @@
-import { bigserial, boolean, index, jsonb, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
+import { bigserial, boolean, index, integer, jsonb, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
 
 export const contentConfigs = pgTable(
     "content_configs",
@@ -8,6 +8,7 @@ export const contentConfigs = pgTable(
         content: jsonb("content").$type<Record<string, unknown>>().default({}).notNull(),
         config: jsonb("config").$type<Record<string, unknown>>().default({}).notNull(),
         isActive: boolean("is_active").default(true).notNull(),
+        version: integer("version").default(0).notNull(),
         createdAt: timestamp("created_at", { withTimezone: true })
             .defaultNow()
             .notNull(),

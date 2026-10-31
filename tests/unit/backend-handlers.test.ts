@@ -16,6 +16,7 @@ import sitemap from "@/app/sitemap";
 import type { RecommendationItem } from "@/shared/contracts/recommendations";
 
 jest.mock("@/backend/services/recommendations", () => ({ recommendationsService: {
+    readBookshelfCatalog: jest.fn(),
     readRecommendations: jest.fn(), readFeaturedRecommendations: jest.fn(), readRecommendationBySlug: jest.fn(),
 } }));
 jest.mock("@/backend/services/recommendation-topics", () => ({ recommendationTopicsService: {
@@ -122,6 +123,7 @@ it("preserves visitor validation and extracts request headers before calling its
 });
 
 it("builds recommendation and topic sitemap URLs through services", async () => {
+    jest.mocked(recommendationsService.readBookshelfCatalog).mockResolvedValue([]);
     jest.mocked(recommendationsService.readRecommendations).mockResolvedValue([item]);
     jest.mocked(recommendationTopicsService.readAllTopicSlugs).mockResolvedValue([{ recommendationSlug: "book", topicSlug: "intro" }]);
     const entries = await sitemap();
