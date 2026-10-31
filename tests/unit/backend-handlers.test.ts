@@ -91,6 +91,19 @@ it("wraps content and blog service results without changing response shape", asy
     expect(blogResponseBody).toEqual({ data: [] });
 });
 
+it("returns a non-cacheable error without defaults when landing content fails", async () => {
+    const errorLog = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+        jest.mocked(contentConfigsService.readLandingPageContent).mockRejectedValue(new Error("database credentials"));
+        const response = await getLandingPage();
+        expect(response.status).toBe(503);
+        expect(response.headers.get("Cache-Control")).toBe("no-store");
+        expect(await response.json()).toEqual({ error: "Landing page content is temporarily unavailable" });
+    } finally {
+        errorLog.mockRestore();
+    }
+});
+
 it("preserves visitor validation and extracts request headers before calling its service", async () => {
     const invalid = await recordVisit(new NextRequest("http://localhost/api/visitors", { method: "POST", body: "{}" }));
     expect(invalid.status).toBe(422);

@@ -8,7 +8,8 @@ import { ArrowUpRightIcon, CodeXmlIcon, IdCardIcon, MailIcon } from "lucide-reac
 export function SiteFooter() {
   const currentYear = new Date().getFullYear();
   const { data: landingPageContent } = useLandingPageContent();
-  const meta = landingPageContent.data.meta;
+  const meta = landingPageContent?.data.meta;
+  if (!meta) return null;
   const footerLinks = [
     {
       label: "Email",

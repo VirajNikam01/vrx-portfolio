@@ -1,22 +1,13 @@
 import { apiClient } from "@/lib/api/client";
-import { landingPageContent } from "@/config/landing-page";
 import type { LandingPageContentType } from "@/shared/contracts/landing-page";
 
 
-async function fetchLandingPageContent() {
-    try {
-        const response = await apiClient.get("/content/landing-page");
-
-        if (!response.data || response.status != 200) return { data: landingPageContent };
-        return response.data;
-    } catch {
-        /*
-        ** log error to sentry or any other error tracking service
-        ** send default content to the user if the request fails, dont break the app
-        */
-
-        return landingPageContent;
+async function fetchLandingPageContent(): Promise<{ data: LandingPageContentType }> {
+    const response = await apiClient.get<{ data: LandingPageContentType }>("/content/landing-page");
+    if (response.status !== 200 || !response.data?.data) {
+        throw new Error("Landing page content is unavailable");
     }
+    return response.data;
 }
 
 export const landingPageApi = {
@@ -25,5 +16,6 @@ export const landingPageApi = {
 
 
 export async function getLandingPageContent(): Promise<LandingPageContentType> {
-    return landingPageContent;
+    const response = await fetchLandingPageContent();
+    return response.data;
 }

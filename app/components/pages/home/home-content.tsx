@@ -15,11 +15,23 @@ import { WorkExperience } from "@/app/components/organisms/work-experience";
 import { cn } from "@/lib/utils";
 
 export function HomeContent() {
-    const { data: landingPageContent } = useLandingPageContent();
-    const content =
-        landingPageContent && "data" in landingPageContent
-            ? landingPageContent.data
-            : landingPageContent;
+    const { data: landingPageContent, isPending, isError, refetch } = useLandingPageContent();
+    const content = landingPageContent?.data;
+
+    if (isPending) {
+        return <p role="status" className="relative z-10 px-6 py-36 text-center text-muted-foreground">Loading content…</p>;
+    }
+
+    if (isError && !content) {
+        return (
+            <div role="alert" className="relative z-10 space-y-4 px-6 py-36 text-center">
+                <p className="text-muted-foreground">Content is temporarily unavailable. Please try again.</p>
+                <button type="button" onClick={() => void refetch()} className="rounded-lg bg-primary px-4 py-2 text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    Try again
+                </button>
+            </div>
+        );
+    }
 
     if (!content) {
         return null;

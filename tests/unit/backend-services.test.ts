@@ -41,10 +41,10 @@ beforeEach(() => {
 afterEach(() => jest.restoreAllMocks());
 
 describe("content service", () => {
-    it("keeps defaults for missing records and database failures", async () => {
+    it("rejects missing records and database failures instead of returning defaults", async () => {
         jest.mocked(contentConfigsRepository.findByKey).mockResolvedValueOnce(null).mockRejectedValueOnce(new Error("offline"));
-        await expect(contentConfigsService.readLandingPageContent()).resolves.toEqual(landingPageContent);
-        await expect(contentConfigsService.readLandingPageContent()).resolves.toEqual(landingPageContent);
+        await expect(contentConfigsService.readLandingPageContent()).rejects.toThrow("not configured");
+        await expect(contentConfigsService.readLandingPageContent()).rejects.toThrow("offline");
         expect(contentConfigsRepository.findByKey).toHaveBeenCalledWith("landing-page");
     });
 
