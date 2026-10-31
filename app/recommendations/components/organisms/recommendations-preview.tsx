@@ -35,8 +35,8 @@ export function RecommendationsPreview({ items: initialItems }: RecommendationsP
                         size="sm"
                         className="w-fit gap-1.5 text-sm font-medium"
                     >
-                        <Link href="/recommendations">
-                            See all
+                        <Link href="/bookshelf">
+                            Explore bookshelf
                             <ArrowRightIcon className="size-3.5" />
                         </Link>
                     </Button>

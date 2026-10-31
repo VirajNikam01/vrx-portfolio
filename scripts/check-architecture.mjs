@@ -10,6 +10,8 @@ const ownership = {
     visitors: ["visitors", "visitors"],
     recommendations: ["recommendations", "recommendations"],
     recommendation_topics: ["recommendation-topics", "recommendation-topics"],
+    admin_sessions: ["admin-sessions", "admin-sessions"],
+    admin_login_limits: ["admin-login-limits", "admin-login-limits"],
 };
 
 const componentLevels = { atoms: 0, molecules: 1, organisms: 2, pages: 3 };
@@ -52,6 +54,8 @@ export function checkArchitecture(sources) {
         if (!sources.has(`backend/repository/${table}.ts`)) errors.push(`Missing repository: ${table}`);
     }
     for (const [file, source] of sources) {
+        if (/^app\/admin\/\(protected\)\/(?:.*\/)?page\.tsx$/.test(file) && !source.includes("await requireAdminPage(")) errors.push(`${file}: protected admin pages must call requireAdminPage before loading data`);
+        if (/^app\/api\/admin\/.*\/route\.ts$/.test(file) && !source.includes("adminRequest(request,")) errors.push(`${file}: admin API routes must use the shared authorization guard`);
         if (file.startsWith("features/") || file.startsWith("components/") || file.startsWith("backend/handlers/")) errors.push(`${file}: use route-local components and API handlers`);
         if (!file.startsWith("backend/repository/") && !/^[a-z0-9]+(?:[.-][a-z0-9]+)*\.(?:tsx?|jsx?|mjs)$/.test(path.posix.basename(file))) {
             errors.push(`${file}: source filenames must use kebab-case`);
@@ -64,6 +68,8 @@ export function checkArchitecture(sources) {
             }
         }
         function visit(node) {
+            if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === "adminRequest" && node.arguments[2]?.kind === ts.SyntaxKind.FalseKeyword
+                && !/^app\/api\/admin\/auth\/(login|logout)\/route\.ts$/.test(file)) errors.push(`${file}: only login/logout may bypass the admin session guard`);
             if (ts.isImportDeclaration(node)) {
                 const clause = node.importClause;
                 const bindings = clause?.namedBindings;
@@ -104,7 +110,7 @@ export function checkArchitecture(sources) {
             if (file.startsWith("shared/") && /^(backend|features|components|providers|hooks|app)\//.test(target)) errors.push(`${file}: contract imports runtime layer ${target}`);
             if (repository && target.startsWith("backend/") && target !== "backend/db/client.ts"
                 && target !== `backend/db/schema/${ownership[repository]?.[1]}.ts`) errors.push(`${file}: foreign persistence dependency ${target}`);
-            if (target === "backend/db/client.ts" && !repository) errors.push(`${file}: database access outside repository`);
+            if (target === "backend/db/client.ts" && !repository && !edge.typeOnly) errors.push(`${file}: database access outside repository`);
             if ((edge.specifier === "postgres" && file !== "backend/db/client.ts")
                 || (edge.specifier.startsWith("drizzle-orm") && !repository && !file.startsWith("backend/db/"))) {
                 errors.push(`${file}: database driver outside persistence layer`);
@@ -146,6 +152,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (process.argv.includes("--self-test")) {
         for (const [file, source, expected] of [
             ["app/components/atoms/invalid.tsx", 'import "@/app/components/molecules/theme/theme-toggle";', "higher UI layer"],
+            ["app/admin/(protected)/unsafe/page.tsx", 'export default function Page() { return null; }', "must call requireAdminPage"],
+            ["app/api/admin/unsafe/route.ts", 'export function GET() { return Response.json({}); }', "shared authorization guard"],
+            ["app/api/admin/unsafe/route.ts", 'export function GET(request) { return adminRequest(request, async () => Response.json({}), false); }', "only login/logout"],
             ["app/components/pages/invalidClient.tsx", 'export {};', "kebab-case"],
             ["app/components/organisms/invalid.tsx", 'import "@/app/components/pages/home/home-page";', "higher UI layer"],
             ["app/recommendations/components/molecules/invalid.tsx", 'import "@/app/recommendations/components/organisms/topic-detail";', "higher UI layer"],

@@ -6,6 +6,7 @@ import * as schema from "./schema";
 
 let dbClient: ReturnType<typeof postgres> | undefined;
 let database: ReturnType<typeof drizzle<typeof schema>> | undefined;
+export type DatabaseTransaction = Parameters<Parameters<ReturnType<typeof getDb>["transaction"]>[0]>[0];
 
 export function getDb() {
     const databaseUrl = process.env.DATABASE_URL;

@@ -37,6 +37,13 @@ API behavior are preserved; backend services and repository ownership are unchan
 | `visitors.ts` | `services/visitors.ts` |
 | `recommendations.ts` | `services/recommendations.ts` |
 | `recommendation_topics.ts` | `services/recommendation-topics.ts` |
+| `admin_sessions.ts` | `services/admin-sessions.ts` |
+| `admin_login_limits.ts` | `services/admin-login-limits.ts` |
+
+Admin content transactions lock the parent through its owning repository and pass
+a typed transaction to the topic owner service. Services may import the transaction
+type only; runtime database access stays inside repositories. The schema ownership
+and browser import checks continue to enforce this boundary.
 
 Repositories cannot import each other or query foreign tables. Cross-table joins
 were replaced with service composition. The topic service obtains visible parents

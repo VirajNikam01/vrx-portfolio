@@ -22,6 +22,8 @@ export const recommendationTopics = pgTable(
         sortOrder: integer("sort_order").default(0).notNull(),
         content: text("content").notNull(),
         isPublished: boolean("is_published").default(true).notNull(),
+        version: integer("version").default(0).notNull(),
+        slugLocked: boolean("slug_locked").default(false).notNull(),
         createdAt: timestamp("created_at", { withTimezone: true })
             .defaultNow()
             .notNull(),

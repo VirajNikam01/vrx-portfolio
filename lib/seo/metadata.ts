@@ -5,6 +5,7 @@ import { META_THEME_COLORS } from "@/config/site";
 import { getSiteUrl, getRecommendationPath, getTopicPath } from "./urls";
 import type { RecommendationItem } from "@/shared/contracts/recommendations";
 import type { RecommendationTopicItem } from "@/shared/contracts/recommendation-topics";
+import type { BookshelfItem } from "@/shared/contracts/bookshelf";
 
 type PageMetadata = {
     title: string;
@@ -71,6 +72,15 @@ export const siteViewport: Viewport = {
 export const homeMetadata = createPageMetadata({ ...seoPages.home, type: "profile" });
 export const blogsMetadata = createPageMetadata(seoPages.blogs);
 export const recommendationsMetadata = createPageMetadata(seoPages.recommendations);
+export const bookshelfMetadata = createPageMetadata(seoPages.bookshelf);
+
+export function getBookshelfItemMetadata(item: BookshelfItem) {
+    return createPageMetadata({
+        title: `${item.title} — Notes`, description: item.description,
+        path: item.type === "book" || item.type === "course" ? getRecommendationPath(item.slug) : `/bookshelf/${encodeURIComponent(item.slug)}`,
+        type: "article", image: item.coverImageUrl,
+    });
+}
 
 export function getRecommendationMetadata(item: RecommendationItem) {
     return createPageMetadata({

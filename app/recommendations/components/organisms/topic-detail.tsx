@@ -27,7 +27,7 @@ export function TopicDetail({
             {/* Top Navigation */}
             <div className="flex items-center justify-between">
                 <Link
-                    href={`/recommendations/${recommendation.slug}`}
+                    href={`/bookshelf/${encodeURIComponent(recommendation.slug)}`}
                     className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
                     <ArrowLeftIcon className="size-3.5" />
@@ -47,7 +47,7 @@ export function TopicDetail({
 
             {/* Topic Content */}
             <div className="rounded-xl border border-border/60 bg-background/60 p-6 backdrop-blur-sm">
-                <RecommendationNotes notes={topic.content} />
+                <RecommendationNotes notes={topic.content} allowHtml={false} />
             </div>
 
             {/* Bottom Prev/Next Topic Navigation */}

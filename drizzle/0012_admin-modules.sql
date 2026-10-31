@@ -1,0 +1,1 @@
+ALTER TABLE "content_configs" ADD COLUMN "version" integer DEFAULT 0 NOT NULL;

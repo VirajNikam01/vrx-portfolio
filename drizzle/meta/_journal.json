@@ -71,6 +71,34 @@
       "when": 1788592461786,
       "tag": "0009_secret_prima",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793428060344,
+      "tag": "0010_bookshelf",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793431589103,
+      "tag": "0011_bookshelf-admin",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1793440014091,
+      "tag": "0012_admin-modules",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1793441803214,
+      "tag": "0013_bookshelf-notes",
+      "breakpoints": true
     }
   ]
 }
